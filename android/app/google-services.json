@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "14109689512",
+    "firebase_url": "https://tldwallet.firebaseio.com",
+    "project_id": "tldwallet",
+    "storage_bucket": "tldwallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14109689512:android:73bcdac4065ab373afe49d",
+        "android_client_info": {
+          "package_name": "com.master.pan_pacific_pay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14109689512-3kpmk634e62g8fget6477048mqjv4lik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPpz02vWx-zsZeSwO1eWWv7kXLLYZQvN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14109689512-3dpi35mhnaijdi96g2g1onc16shufq80.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

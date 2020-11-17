@@ -1,0 +1,95 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+//   throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+android {
+    compileSdkVersion 28
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        signingConfigs {
+        release {
+            keyAlias 'key'
+            keyPassword 'tlddollar'
+            storeFile file('key/key.jks')
+            storePassword 'tlddollar'
+        }
+        }
+        // ndk {
+        //     //选择要添加的对应cpu类型的.so库。
+        //     abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
+        //     // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        // }
+        applicationId "com.master.pan_pacific_pay"
+        minSdkVersion 18
+        targetSdkVersion 28
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+        JPUSH_PKGNAME : "com.master.pan_pacific_pay",
+        JPUSH_APPKEY : "553c2e8d1d518aa0a1359151", // NOTE: JPush 上注册的包名对应的 Appkey.
+        JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+    ]
+    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
+
+            minifyEnabled true  //资源压缩设置
+             useProguard true    //代码压缩设置
+             //读取代码压缩配置文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    // implementation 'org.web3j:core:4.2.0'
+    // implementation files ('libs/core-4.2.0.jar')
+}
