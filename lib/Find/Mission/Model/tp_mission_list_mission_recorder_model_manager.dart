@@ -37,7 +37,9 @@ class TPMissionOrderListModel {
     this.remarkPayNo,
     this.profitCount,
     this.profitRate,
-    this.payImage
+    this.payImage,
+    this.realPayAmount,
+    this.cnyPayAmount
   });
 
   factory TPMissionOrderListModel.fromJson(Map<String, dynamic> jsonRes) =>
@@ -70,7 +72,9 @@ class TPMissionOrderListModel {
               remarkPayNo: asT<String>(jsonRes['remarkPayNo']),
               profitCount: asT<String>(jsonRes['profitCount']),
               profitRate: asT<String>(jsonRes['profitRate']),
-              payImage : asT<String>(jsonRes['payImage'])
+              payImage : asT<String>(jsonRes['payImage']),
+              realPayAmount: asT<String>(jsonRes['realPayAmount']),
+              cnyPayAmount: asT<String>(jsonRes['cnyPayAmount'])
             );
 
   int orderId;
@@ -99,6 +103,8 @@ class TPMissionOrderListModel {
   String profitCount;
   String profitRate;
   String payImage;
+  String cnyPayAmount;
+  String realPayAmount;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'orderId': orderId,
@@ -126,7 +132,9 @@ class TPMissionOrderListModel {
         'remarkPayNo': remarkPayNo,
         'profitRate' : profitRate,
         'profitCount' : profitCount,
-        'payImage' : payImage
+        'payImage' : payImage,
+        'cnyPayAmount' : cnyPayAmount,
+        'realPayAmount' : realPayAmount
       };
 
   @override

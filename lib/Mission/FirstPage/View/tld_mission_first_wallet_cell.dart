@@ -46,7 +46,7 @@ class _TPMissionFirstWalletCellState extends State<TPMissionFirstWalletCell> {
                       ),
                       Container(
                         padding: EdgeInsets.only(top : ScreenUtil().setWidth(8),right: ScreenUtil().setWidth(20),left: ScreenUtil().setWidth(20),bottom: ScreenUtil().setHeight(20)),
-                        child: Text('= 423.32CNY',style: TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
+                        child: Text('= 423.32USD',style: TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
                       )
                     ],
                   ),

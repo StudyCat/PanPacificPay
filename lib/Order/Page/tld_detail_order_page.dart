@@ -104,9 +104,9 @@ class _TPDetailOrderPageState extends State<TPDetailOrderPage> {
       }
       _detailOrderModel = detailModel;
       if ((_detailOrderModel.payMethodVO.type == 2 && _detailOrderModel.status == 0 && _detailOrderModel.amIBuyer)){
-                      showDialog(context: context,builder: (context) => TPDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
+                      showDialog(context: context,builder: (context) => TPDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.cnyPayAmount,));
                   }else if (_detailOrderModel.payMethodVO.type == 3  && _detailOrderModel.status == 0 && _detailOrderModel.amIBuyer){
-                    showDialog(context: context,builder: (context) => TPDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
+                    showDialog(context: context,builder: (context) => TPDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.cnyPayAmount,));
                   }else if (_detailOrderModel.payMethodVO.type == 4 && _detailOrderModel.status == 0 && _detailOrderModel.amIBuyer){
                     if (_detailOrderModel.payMethodVO.imageUrl.length > 0) {
                       showDialog(context: context,builder: (context) => TPDetailDiyQrcodeShowView(paymentName: _detailOrderModel.payMethodVO.myPayName,qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,)); 
@@ -448,9 +448,9 @@ void  _openGallery() async {
                 },
                 didClickQrCodeCallBack: (){
                   if (_detailOrderModel.payMethodVO.type == 2){
-                      showDialog(context: context,builder: (context) => TPDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));
+                      showDialog(context: context,builder: (context) => TPDetailWechatQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.cnyPayAmount,));
                   }else if (_detailOrderModel.payMethodVO.type == 3){
-                      showDialog(context: context,builder: (context) => TPDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,));                    
+                      showDialog(context: context,builder: (context) => TPDetailAlipayQrCodeShowView(qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.cnyPayAmount,));                    
                   }else if (_detailOrderModel.payMethodVO.type == 4){
                     if (_detailOrderModel.payMethodVO.imageUrl.length > 0) {
                       showDialog(context: context,builder: (context) => TPDetailDiyQrcodeShowView(paymentName: _detailOrderModel.payMethodVO.myPayName,qrCode: _detailOrderModel.payMethodVO.imageUrl,amount: _detailOrderModel.txCount,)); 
@@ -530,7 +530,7 @@ void  _openGallery() async {
     }else if(index == 1){
       content = _detailOrderModel.txCount + 'TP';
     }else if(index == 2){
-      content = '¥'+_detailOrderModel.txCount;
+      content =  _detailOrderModel.realPayAmount;
     }else{
       content = _detailOrderModel.buyerAddress;
     }

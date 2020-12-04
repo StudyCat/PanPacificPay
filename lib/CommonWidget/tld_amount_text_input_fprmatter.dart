@@ -27,3 +27,4 @@ class TPAmountTextInputFormatter extends TextInputFormatter {
     );
   }
 }
+  

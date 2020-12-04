@@ -77,7 +77,7 @@ class _TPAcceptanceWithdrawListCellState extends State<TPAcceptanceWithdrawListC
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children : <Widget>[
           _getMissionInfoColumWidget(I18n.of(context).countLabel, '${widget.orderListModel.tldCount}TP', null),
-          _getMissionInfoColumWidget(I18n.of(context).amount,  '${widget.orderListModel.cashPrice}CNY', null),
+          _getMissionInfoColumWidget(I18n.of(context).amount,  '${widget.orderListModel.cashPrice}USD', null),
           _getMissionInfoColumWidget(I18n.of(context).statusLabel, infoModel.orderStatusName, infoModel.orderStatusColor)
         ]
       ),

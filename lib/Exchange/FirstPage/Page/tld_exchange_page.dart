@@ -206,9 +206,9 @@ class _TPExchangePageState extends State<TPExchangePage> {
               double amount = double.parse(_formModel.saleAmount) * double.parse(_formModel.rate);
               double trueAmount = double.parse(_formModel.saleAmount) - amount;
               String trueAmountString = (NumUtil.getNumByValueDouble(trueAmount, 3)).toStringAsFixed(3);
-              content = '¥' + trueAmountString;
+              content = '\$' + trueAmountString;
             }else{
-              content = '¥0';
+              content = '\$0';
             }
           }
           return TPExchangeNormalCell(

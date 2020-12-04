@@ -10,6 +10,7 @@ import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
@@ -201,6 +202,45 @@ class _TPBuyPageState extends State<TPBuyPage> with AutomaticKeepAliveClientMixi
     });
   }
 
+//type 为0普通购买  1 快捷
+  void _getRate(int type,TPBuyListInfoModel model,String count,String walletAddress){
+     setState(() {
+        _isLoading = true;
+      });
+    _modelManager.getRate((double rate){
+        if (mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
+      if (type == 0){
+        showCupertinoModalPopup(context: context, builder: (BuildContext context){
+              return TPBuyActionSheet(model: model,rate: rate,didClickBuyBtnCallBack: (TPBuyPramaterModel pramaterModel){
+                buyTPCoinWithPramaterModel(pramaterModel);
+              },);
+            });
+      }else{
+        showCupertinoModalPopup(context: context, builder: (BuildContext context){
+              return TPQuickBuyActionSheet(count: _quickBuyCount,rate: rate,didClickBuyCallBack: (String count,String walletAddress){
+                quickBuyInputPassword(count, walletAddress);
+              });
+            });
+      }
+    }, (TPError error){
+       if(mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
+      if (error.code == 1000){
+        showDialog(context: context,builder : (context)=> TPAlertView(type: TPAlertViewType.normal,alertString: error.msg,title: '温馨提示',didClickSureBtn: (){},));
+      }else{
+        Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      }
+    });
+  }
+
   void _quickBuy(String count ,String walletAddress){
       setState(() {
         _isLoading = true;
@@ -298,11 +338,7 @@ class _TPBuyPageState extends State<TPBuyPage> with AutomaticKeepAliveClientMixi
           _quickBuyCount = text;
         },didClickDonehBtnCallBack: (){
           if (_quickBuyCount.length > 0){
-           showCupertinoModalPopup(context: context, builder: (BuildContext context){
-              return TPQuickBuyActionSheet(count: _quickBuyCount,didClickBuyCallBack: (String count,String walletAddress){
-                quickBuyInputPassword(count, walletAddress);
-              });
-            });
+            _getRate(1, null, _quickBuyCount,walletAdress);
           }else{
             Fluttertoast.showToast(msg: '请填写购买数量');
           }
@@ -310,11 +346,7 @@ class _TPBuyPageState extends State<TPBuyPage> with AutomaticKeepAliveClientMixi
         Expanded(child: TPEmptyListView(getListViewCellCallBack:(int index){
         TPBuyListInfoModel model = _dataSource[index];
           return TPBuyFirstPageCell(model: model,didClickBuyBtnCallBack: (){
-            showCupertinoModalPopup(context: context, builder: (BuildContext context){
-              return TPBuyActionSheet(model: model,didClickBuyBtnCallBack: (TPBuyPramaterModel pramaterModel){
-                buyTPCoinWithPramaterModel(pramaterModel);
-              },);
-            });
+            _getRate(0, model, null,null);
           },);
       }, getEmptyViewCallBack:(){
         return TPEmptyDataView(imageAsset: 'assetss/images/creating_purse.png', title: '暂无可购买的单子');

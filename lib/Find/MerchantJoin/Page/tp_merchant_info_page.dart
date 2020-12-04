@@ -78,6 +78,7 @@ class _TPMerchantInfoPageState extends State<TPMerchantInfoPage> {
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(30),right: ScreenUtil().setWidth(30),left: ScreenUtil().setWidth(30)),
       child: SingleChildScrollView(child :Container(
         margin: EdgeInsets.only(bottom : ScreenUtil().setHeight(30)),
+        padding: EdgeInsets.only(bottom : ScreenUtil().setHeight(30)),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(4)),
           color: Colors.white
@@ -88,10 +89,14 @@ class _TPMerchantInfoPageState extends State<TPMerchantInfoPage> {
             _merchantNameRowWidget(),
             _getTitleWidget('商户ID'),
             TPMerchantInfoItem(content : _infoModel.merchantId),
-            _getTitleWidget('API私钥'),
+            _getTitleWidget('API公钥'),
             TPMerchantInfoItem(content : _infoModel.merchantPrivateKey),
             _getTitleWidget('文档地址'),
             TPMerchantInfoItem(content : _infoModel.apiDocUrl),
+            _getTitleWidget('商户钱包地址'),
+            TPMerchantInfoItem(content : _infoModel.walletAddress),
+            _getTitleWidget('商户钱包私钥'),
+            TPMerchantInfoItem(content : _infoModel.walletPrivateKey),
           ]
         ),
       ),

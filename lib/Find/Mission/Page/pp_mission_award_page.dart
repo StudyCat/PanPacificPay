@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 
 class PPMissionAwardPage extends StatefulWidget {
   PPMissionAwardPage({Key key}) : super(key: key);
@@ -92,6 +93,7 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget()),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
@@ -104,7 +106,11 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
           ),
           heroTag: 'mission_root_page',
           transitionBetweenRoutes: false,
-          middle: Text('任务'),),
+          middle: Text('任务'),
+          trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder : (context) => TPWebPage(type: TPWebPageType.upgradeDesc,title: '升级说明',)));
+        }),
+          ),
     );
   }
 
@@ -241,7 +247,7 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(30))),
                   padding: EdgeInsets.zero,
-                  child: Text('兑换',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).hintColor),), 
+                  child: Text('兑换',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),), 
                   onPressed: (){
                     showModalBottomSheet(context: context, builder: (context) => PPMissionExchargeActionSheet(
                       didExchargeCallBack: (String amount,String walletAddress){

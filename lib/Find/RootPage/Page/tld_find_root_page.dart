@@ -30,6 +30,7 @@ import 'package:dragon_sword_purse/Find/RootPage/Page/tld_bill_Repaying_page.dar
 import 'package:dragon_sword_purse/Find/RootPage/Page/tld_game_page.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_ad_banner_view.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_page_cell.dart';
+import 'package:dragon_sword_purse/Find/RootPage/View/tp_find_section_title_cell.dart';
 import 'package:dragon_sword_purse/Find/YLB/Page/tld_ylb_tab_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
 import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_first_page.dart';
@@ -69,8 +70,8 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
     super.initState();
 
     _modelManager = TPFindRootModelManager();
-    
-    _iconDataSource =  TPFindRootModelManager.uiModelList;
+
+    _iconDataSource = TPFindRootModelManager.uiModelList;
 
     _getBannerList();
 
@@ -82,76 +83,81 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
   void _get3rdWebList() async {
     List webList = await TPDataManager.instance.get3rdPartWebList();
 
-    _addWebAppInPage(webList,[]);
+    _addWebAppInPage(webList, []);
   }
 
-
-  void _addWebAppInPage(List playList,List otherList){
+  void _addWebAppInPage(List playList, List otherList) {
     TPFindRootCellUIModel playFindRootCellUIModel = _iconDataSource.first;
     List newPlayWebList = [];
     for (TP3rdWebInfoModel item in playList) {
-        TPFindRootCellUIItemModel uiItemModel = TPFindRootCellUIItemModel(title: item.name,iconUrl: item.iconUrl,url: item.url,isNeedHideNavigation: item.isNeedHideNavigation,appType: item.appType);
-        newPlayWebList.add(uiItemModel);
+      TPFindRootCellUIItemModel uiItemModel = TPFindRootCellUIItemModel(
+          title: item.name,
+          iconUrl: item.iconUrl,
+          url: item.url,
+          isNeedHideNavigation: item.isNeedHideNavigation,
+          appType: item.appType);
+      newPlayWebList.add(uiItemModel);
     }
 
     TPFindRootCellUIModel otherFindRootCellUIModel = _iconDataSource[1];
     List newOtherWebList = [];
     for (TP3rdWebInfoModel item in otherList) {
-        TPFindRootCellUIItemModel uiItemModel = TPFindRootCellUIItemModel(title: item.name,iconUrl: item.iconUrl,url: item.url,isNeedHideNavigation: item.isNeedHideNavigation,appType: item.appType);
-        newOtherWebList.add(uiItemModel);
+      TPFindRootCellUIItemModel uiItemModel = TPFindRootCellUIItemModel(
+          title: item.name,
+          iconUrl: item.iconUrl,
+          url: item.url,
+          isNeedHideNavigation: item.isNeedHideNavigation,
+          appType: item.appType);
+      newOtherWebList.add(uiItemModel);
     }
 
     setState(() {
-      playFindRootCellUIModel.items.insertAll(playFindRootCellUIModel.items.length - 1, newPlayWebList);
+      playFindRootCellUIModel.items.addAll(newPlayWebList);
 
       otherFindRootCellUIModel.items.addAll(newOtherWebList);
     });
   }
 
-  void _getBannerList(){
-    _modelManager.getBannerInfo((List bannerList){
-    _bannerList = [];
-    if(mounted){
-      setState(() {
-        _bannerList.addAll(bannerList);
-      });
-    }
-    }, (TPError error){
+  void _getBannerList() {
+    _modelManager.getBannerInfo((List bannerList) {
+      _bannerList = [];
+      if (mounted) {
+        setState(() {
+          _bannerList.addAll(bannerList);
+        });
+      }
+    }, (TPError error) {
       Fluttertoast.showToast(msg: error.msg);
     });
   }
 
-  void _getPlatformWeb(){
-    _modelManager.getPlatform3rdWeb((List playList,List otherList){
-      _addWebAppInPage(playList,otherList);
-    }, (error) {
-
-    });
+  void _getPlatformWeb() {
+    _modelManager.getPlatform3rdWeb((List playList, List otherList) {
+      _addWebAppInPage(playList, otherList);
+    }, (error) {});
   }
 
-   void _isMerchant(){
-     setState(() {
+  void _isMerchant() {
+    setState(() {
       _isLoading = true;
     });
-    _modelManager.isMerchant((bool isHave){
-      if (mounted){}
+    _modelManager.isMerchant((bool isHave) {
+      if (mounted) {}
       setState(() {
-      _isLoading = false;
-    });
-      if (isHave){
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) =>  TPMerchantInfoPage()
-        ));
-      }else{
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) =>  TPMerchantJoinPage()
-        ));
+        _isLoading = false;
+      });
+      if (isHave) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => TPMerchantInfoPage()));
+      } else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => TPMerchantJoinPage()));
       }
-    }, (TPError error){
-      if (mounted){
+    }, (TPError error) {
+      if (mounted) {
         setState(() {
-      _isLoading = false;
-    });
+          _isLoading = false;
+        });
       }
       Fluttertoast.showToast(msg: error.msg);
     });
@@ -159,17 +165,22 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(),),
+    return Scaffold(
+      body: LoadingOverlay(
+        isLoading: _isLoading,
+        child: _getBodyWidget(),
+      ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
         backgroundColor: Colors.white,
         border: Border.all(
-          color : Color.fromARGB(0, 0, 0, 0),
+          color: Color.fromARGB(0, 0, 0, 0),
         ),
         heroTag: 'find_root_page',
         transitionBetweenRoutes: false,
-        middle: Text(I18n.of(context).findPageTitle,),
+        middle: Text(
+          I18n.of(context).findPageTitle,
+        ),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(
               child: Icon(
@@ -184,90 +195,150 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
         }),
         automaticallyImplyLeading: false,
         trailing: Container(
-          width : ScreenUtil().setWidth(160),
-          child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            CupertinoButton(
-                child: Icon(
-                  IconData(0xe663, fontFamily: 'appIconFonts'),
-                  color: Color.fromARGB(255, 51, 51, 51),
-                ),
-                padding: EdgeInsets.all(0),
-                minSize: 20,
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => TPOrderListPage()));
-                }),
-            MessageButton(
-              didClickCallBack: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TPMessagePage()));
-                },
-            )
-          ],
-        )
-        ),
+            width: ScreenUtil().setWidth(160),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                CupertinoButton(
+                    child: Icon(
+                      IconData(0xe663, fontFamily: 'appIconFonts'),
+                      color: Color.fromARGB(255, 51, 51, 51),
+                    ),
+                    padding: EdgeInsets.all(0),
+                    minSize: 20,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TPOrderListPage()));
+                    }),
+                MessageButton(
+                  didClickCallBack: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TPMessagePage()));
+                  },
+                )
+              ],
+            )),
       ),
     );
   }
 
-  Widget _getBodyWidget(){
+  Widget _getBodyWidget() {
     return ListView.builder(
-      itemCount: _iconDataSource.length + 1,
-      itemBuilder: (context,index){
-        if (index == 0){
-          return TPFindRootADBannerView(bannerList: _bannerList,didClickBannerViewCallBack: (TPBannerModel bannerModel){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TP3rdPartWebPage(isNeedHideNavigation: !bannerModel.isNeedNavigation,urlStr: bannerModel.bannerHref,)));
-          },);
-        }else{
-          TPFindRootCellUIModel uiModel = _iconDataSource[index - 1];
-          return TPFindRootPageCell(uiModel: uiModel,didClickItemCallBack: (TPFindRootCellUIItemModel itemModel){
-          if (itemModel.url.length > 0){
-              if (itemModel.url == 'BIND_INVITE_CODE'){
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  TPBindInvitePeoplePage(),)).then((value){
-                  _iconDataSource =  TPFindRootModelManager.uiModelList;
-                  _get3rdWebList();
-                  _getPlatformWeb();
-                });
-              }else if (itemModel.url == 'INVITE'){
-                 Navigator.push(context, MaterialPageRoute(builder: (context) =>  TPPromotionPage(),));
-              }
-              else if (itemModel.url == 'MERCHANT_JOIN'){
-                _isMerchant();
-              }else if (itemModel.url == 'TP_TASK'){
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  PPMissionTabPage(),));
-              }
-              // else if (itemModel.url == 'TASK_UPGRADE'){
-              //   Navigator.push(context, MaterialPageRoute(builder: (context) => TPAccountUpgradePage()));
-              // }
-              else{
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> TP3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
-              }
-          }else if (itemModel.title.length == 0 && itemModel.url.length == 0){
-            _scanPhoto();
-          }
-          },
-          didLongClickItemCallBack: (TPFindRootCellUIItemModel itemModel){
-            if (itemModel.url.length > 0 && itemModel.appType == 0){
-              showDialog(context: context,builder : (context){
-                return TPAlertView(
-                  title: I18n.of(context).warning,
-                  alertString: I18n.of(context).areYouSureToDelete + '${itemModel.title}?',
-                  didClickSureBtn: (){
-                    setState(() {
-                      uiModel.items.remove(itemModel);
+        itemCount: _iconDataSource.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return TPFindRootADBannerView(
+              bannerList: _bannerList,
+              didClickBannerViewCallBack: (TPBannerModel bannerModel) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TP3rdPartWebPage(
+                              isNeedHideNavigation:
+                                  !bannerModel.isNeedNavigation,
+                              urlStr: bannerModel.bannerHref,
+                            )));
+              },
+            );
+          } else {
+            TPFindRootCellUIModel uiModel = _iconDataSource[index - 1];
+            return TPFindSectionTitleCell(
+              uiModel: uiModel,
+              didClickItemCallBack: (TPFindRootCellUIItemModel itemModel) {
+                if (itemModel.url.length > 0) {
+                  if (itemModel.url == 'BIND_INVITE_CODE') {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TPBindInvitePeoplePage(),
+                        )).then((value) {
+                      _iconDataSource = TPFindRootModelManager.uiModelList;
+                      _get3rdWebList();
+                      _getPlatformWeb();
                     });
-                    _delete3rdPartWebInfo(itemModel);
-                  },
-                );
-              });
-            }
-          },
-          didClickQuestionItem: (){
-            Navigator.push(context, MaterialPageRoute(builder : (context) => TPWebPage(type: TPWebPageType.playDescUrl,title: '玩法说明',)));
-          },
-          );
-        }
-      });
+                  } else if (itemModel.url == 'INVITE') {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TPPromotionPage(),
+                        ));
+                  } else if (itemModel.url == 'MERCHANT_JOIN') {
+                    _isMerchant();
+                  } else if (itemModel.url == 'TP_TASK') {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PPMissionTabPage(),
+                        ));
+                  } else if (itemModel.url == 'RECHARGE') {
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TP3rdPartWebPage(
+                                  urlStr: itemModel.url,
+                                  isNeedHideNavigation:
+                                      itemModel.isNeedHideNavigation,
+                                )));
+                  }
+                } else if (itemModel.title.length == 0 &&
+                    itemModel.url.length == 0) {
+                  _scanPhoto();
+                }
+              },
+            );
+
+            // TPFindRootCellUIModel uiModel = _iconDataSource[index - 1];
+            // return TPFindRootPageCell(uiModel: uiModel,didClickItemCallBack: (TPFindRootCellUIItemModel itemModel){
+            // if (itemModel.url.length > 0){
+            //     if (itemModel.url == 'BIND_INVITE_CODE'){
+            //       Navigator.push(context, MaterialPageRoute(builder: (context) =>  TPBindInvitePeoplePage(),)).then((value){
+            //         _iconDataSource =  TPFindRootModelManager.uiModelList;
+            //         _get3rdWebList();
+            //         _getPlatformWeb();
+            //       });
+            //     }else if (itemModel.url == 'INVITE'){
+            //        Navigator.push(context, MaterialPageRoute(builder: (context) =>  TPPromotionPage(),));
+            //     }
+            //     else if (itemModel.url == 'MERCHANT_JOIN'){
+            //       _isMerchant();
+            //     }else if (itemModel.url == 'TP_TASK'){
+            //       Navigator.push(context, MaterialPageRoute(builder: (context) =>  PPMissionTabPage(),));
+            //     }else if (itemModel.url == 'RECHARGE'){
+
+            //     }else{
+            //       Navigator.push(context, MaterialPageRoute(builder: (context)=> TP3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
+            //     }
+            // }else if (itemModel.title.length == 0 && itemModel.url.length == 0){
+            //   _scanPhoto();
+            // }
+            // },
+            // didLongClickItemCallBack: (TPFindRootCellUIItemModel itemModel){
+            //   if (itemModel.url.length > 0 && itemModel.appType == 0){
+            //     showDialog(context: context,builder : (context){
+            //       return TPAlertView(
+            //         title: I18n.of(context).warning,
+            //         alertString: I18n.of(context).areYouSureToDelete + '${itemModel.title}?',
+            //         didClickSureBtn: (){
+            //           setState(() {
+            //             uiModel.items.remove(itemModel);
+            //           });
+            //           _delete3rdPartWebInfo(itemModel);
+            //         },
+            //       );
+            //     });
+            //   }
+            // },
+            // didClickQuestionItem: (){
+            //   Navigator.push(context, MaterialPageRoute(builder : (context) => TPWebPage(type: TPWebPageType.playDescUrl,title: '玩法说明',)));
+            // },
+            // );
+          }
+        });
   }
 
   Future _scanPhoto() async {
@@ -275,8 +346,8 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
     if (status == PermissionStatus.denied ||
         status == PermissionStatus.restricted ||
         status == PermissionStatus.undetermined) {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.camera,
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.camera,
       ].request();
       return;
     }
@@ -288,25 +359,39 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
                   scanCallBack: (String result) {
                     _modelManager.get3rdWebInfo(result,
                         (TP3rdWebInfoModel infoModel) {
-                          bool isHaveSameUrl = false;
-                          TPFindRootCellUIModel findRootCellUIModel = _iconDataSource.first;
-                          for (TPFindRootCellUIItemModel item in findRootCellUIModel.items) {
-                            if (item.url == infoModel.url){
-                              isHaveSameUrl = true;
-                              break;
-                            }
-                          }
-                          if (isHaveSameUrl){
-                            Fluttertoast.showToast(msg: I18n.of(context).haveSameApplicationAlertDesc);
-                          }else{
-                            Fluttertoast.showToast(msg: I18n.of(context).jointhirdPartyApplictionAlertDesc);
-                            TPFindRootCellUIItemModel uiItemModel = TPFindRootCellUIItemModel(title: infoModel.name,iconUrl: infoModel.iconUrl,url: infoModel.url,appType: 0,isNeedHideNavigation: infoModel.isNeedHideNavigation);
-                            setState(() {
-                              findRootCellUIModel.items.insert(findRootCellUIModel.items.length - 1,uiItemModel);
-                            });
+                      bool isHaveSameUrl = false;
+                      TPFindRootCellUIModel findRootCellUIModel =
+                          _iconDataSource.first;
+                      for (TPFindRootCellUIItemModel item
+                          in findRootCellUIModel.items) {
+                        if (item.url == infoModel.url) {
+                          isHaveSameUrl = true;
+                          break;
+                        }
+                      }
+                      if (isHaveSameUrl) {
+                        Fluttertoast.showToast(
+                            msg: I18n.of(context).haveSameApplicationAlertDesc);
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: I18n.of(context)
+                                .jointhirdPartyApplictionAlertDesc);
+                        TPFindRootCellUIItemModel uiItemModel =
+                            TPFindRootCellUIItemModel(
+                                title: infoModel.name,
+                                iconUrl: infoModel.iconUrl,
+                                url: infoModel.url,
+                                appType: 0,
+                                isNeedHideNavigation:
+                                    infoModel.isNeedHideNavigation);
+                        setState(() {
+                          findRootCellUIModel.items.insert(
+                              findRootCellUIModel.items.length - 1,
+                              uiItemModel);
+                        });
 
-                            _save3rdPartWebInfo(infoModel);
-                          }
+                        _save3rdPartWebInfo(infoModel);
+                      }
                     }, (TPError error) {
                       Fluttertoast.showToast(
                           msg: error.msg,
@@ -318,44 +403,39 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
   }
 
   void _save3rdPartWebInfo(TP3rdWebInfoModel infoModel) async {
-      List webInfoList = TPDataManager.instance.webList;
-      webInfoList.add(infoModel);
-      List result = [];
-      for (TP3rdWebInfoModel infoModel  in webInfoList) {
-        result.add(infoModel.toJson());
-      }
-      String jsonStr = jsonEncode(result);
-      SharedPreferences pre = await SharedPreferences.getInstance();
-      pre.setString('3rdPartWeb', jsonStr);
+    List webInfoList = TPDataManager.instance.webList;
+    webInfoList.add(infoModel);
+    List result = [];
+    for (TP3rdWebInfoModel infoModel in webInfoList) {
+      result.add(infoModel.toJson());
+    }
+    String jsonStr = jsonEncode(result);
+    SharedPreferences pre = await SharedPreferences.getInstance();
+    pre.setString('3rdPartWeb', jsonStr);
 
-      _save3rdPartWebInService(infoModel);
+    _save3rdPartWebInService(infoModel);
   }
 
   void _delete3rdPartWebInfo(TPFindRootCellUIItemModel infoModel) async {
-     List webInfoList = TPDataManager.instance.webList;
-     TP3rdWebInfoModel deleteModel;
-     for (TP3rdWebInfoModel item  in webInfoList) {
-       if (item.url == infoModel.url){
-         deleteModel = item;
-         break;
-       }
-     }
-     List result = [];
-     webInfoList.remove(deleteModel);
-      for (TP3rdWebInfoModel infoModel  in webInfoList) {
-        result.add(infoModel.toJson());
+    List webInfoList = TPDataManager.instance.webList;
+    TP3rdWebInfoModel deleteModel;
+    for (TP3rdWebInfoModel item in webInfoList) {
+      if (item.url == infoModel.url) {
+        deleteModel = item;
+        break;
       }
-      String jsonStr = jsonEncode(result);
-      SharedPreferences pre = await SharedPreferences.getInstance();
-      pre.setString('3rdPartWeb', jsonStr);
+    }
+    List result = [];
+    webInfoList.remove(deleteModel);
+    for (TP3rdWebInfoModel infoModel in webInfoList) {
+      result.add(infoModel.toJson());
+    }
+    String jsonStr = jsonEncode(result);
+    SharedPreferences pre = await SharedPreferences.getInstance();
+    pre.setString('3rdPartWeb', jsonStr);
   }
 
-  void _save3rdPartWebInService(TP3rdWebInfoModel infoModel){
-    _modelManager.save3rdPartWeb(infoModel, (){
-
-    }, (error) {
-
-    });
+  void _save3rdPartWebInService(TP3rdWebInfoModel infoModel) {
+    _modelManager.save3rdPartWeb(infoModel, () {}, (error) {});
   }
-
 }

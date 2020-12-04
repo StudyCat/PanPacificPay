@@ -101,7 +101,7 @@ class TPFindRootModelManager {
   static List get uiModelList {
     return [
       TPFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).playingMethodLabel, isHaveNotice: true, items: [
-        TPFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true),
+        // TPFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true),
       ]),
       TPFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, isHaveNotice: false,items: [
        

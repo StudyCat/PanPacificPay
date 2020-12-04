@@ -8,10 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../CommonFunction/tld_common_function.dart';
 
 class TPPurseHeaderCell extends StatefulWidget {
-  TPPurseHeaderCell({Key key,this.didClickCreatePurseButtonCallBack,this.didClickImportPurseButtonCallBack,this.totalAmount = 0.000}) : super(key: key);
+  TPPurseHeaderCell({Key key,this.totalAmount = 0.000}) : super(key: key);
 
-  final Function didClickCreatePurseButtonCallBack;
-  final Function didClickImportPurseButtonCallBack;
   final double totalAmount;
 
   @override
@@ -31,21 +29,26 @@ class _TPPurseHeaderCellState extends State<TPPurseHeaderCell> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    String moneyStr = widget.totalAmount > 0 ?  NumUtil.getNumByValueDouble(widget.totalAmount, 3).toStringAsFixed(3) : '0.0';
     return Container(
-      color: Theme.of(context).primaryColor,
-      padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
       width: screenSize.width - 30,
-      child: Column(
+      child: _getBodyWidget(),
+    );
+  }
+
+  Widget _getContentWidget(){
+    Size screenSize = MediaQuery.of(context).size;
+    String moneyStr = widget.totalAmount > 0 ?  NumUtil.getNumByValueDouble(widget.totalAmount, 3).toStringAsFixed(3) : '0.0';
+    return  Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text('TP',style: TextStyle(color:Theme.of(context).hintColor,fontSize: 12),),
+          Text('总资产（TP）',style: TextStyle(color:Theme.of(context).primaryColor,fontSize: 12),),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                width: screenSize.width - ScreenUtil().setWidth(150),
-                child: Text(_isShowMoney ? getMoneyStyleStr(moneyStr):'***',style : TextStyle(fontSize : 26,color : Theme.of(context).hintColor)),
+                width: screenSize.width - ScreenUtil().setWidth(250),
+                child: Text(_isShowMoney ? getMoneyStyleStr(moneyStr):'***',style : TextStyle(fontSize : 26,color : Theme.of(context).primaryColor)),
               ),
               GestureDetector(
                 onTap: (){
@@ -56,65 +59,54 @@ class _TPPurseHeaderCellState extends State<TPPurseHeaderCell> {
                 child: Container(
                 width: ScreenUtil().setWidth(80),
                 height: ScreenUtil().setHeight(40),
-                padding : EdgeInsets.only(right : 0,left: 10),
-                child:  _isShowMoney ? Icon(IconData(0xe60c,fontFamily: 'appIconFonts'),color: Theme.of(context).hintColor,size: ScreenUtil().setWidth(50),) : Icon(IconData(0xe648,fontFamily: 'appIconFonts'),color: Theme.of(context).hintColor,size: ScreenUtil().setWidth(50)),
+                child:  _isShowMoney ? Icon(IconData(0xe60c,fontFamily: 'appIconFonts'),color: Theme.of(context).primaryColor,) : Icon(IconData(0xe648,fontFamily: 'appIconFonts'),color: Theme.of(context).primaryColor,size: ScreenUtil().setWidth(50)),
               ),
               )
             ],
           ),
-          
           Container(
             padding: EdgeInsets.only(left : 0 ,top : 6),
-            child: Text('1.00TP=1.00CNY',style: TextStyle(color:Theme.of(context).hintColor,fontSize: 12),),
-          ),
-
-          Container(
-            padding: EdgeInsets.only(top : 10),
-            height: ScreenUtil().setHeight(80),
-            child: _getActionWidget(),
-          ),
+            child: Text('1.00TP=1.00USD',style: TextStyle(color:Theme.of(context).primaryColor,fontSize: 12),),
+          )
         ],
-      ),
+      );
+  }
+
+  Widget _getBodyWidget(){
+    return  Stack(
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: ScreenUtil().setHeight(120),
+          color: Theme.of(context).primaryColor,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(20)),
+          child: Container(
+            padding: EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 10),
+            decoration: BoxDecoration(
+              borderRadius : BorderRadius.all(Radius.circular(4)),
+              color : Colors.white,
+              boxShadow: [
+                        BoxShadow(
+                            color: Colors.black12,
+                            offset: Offset(0.0, 5.0), //阴影xy轴偏移量
+                            blurRadius: 5.0, //阴影模糊程度
+                            spreadRadius: 1.0 //阴影扩散程度
+                            )
+                      ]
+            ),
+            child: _getContentWidget(),
+          ),
+        )
+      ],
     );
   }
 
-  Widget _getActionWidget(){
-    List purseList = TPDataManager.instance.purseList;
-    bool isHaveImport = false;
-    for (TPWallet wallet in purseList) {
-        if (wallet.type != null && wallet.type == 1){
-          isHaveImport = true;
-          break;
-        }else{
-          
-        }
-    }
+  // Widget _getRowHeaderRowWidget(){
+  //   return Row(
 
-    if (isHaveImport){
-      return getButton(()=>widget.didClickCreatePurseButtonCallBack(), I18n.of(context).createWalletBtnTitle, MediaQuery.of(context).size.width * 2);
-    }else{
-      return  Row(
-              mainAxisAlignment : MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                getButton(()=>widget.didClickCreatePurseButtonCallBack(), I18n.of(context).createWalletBtnTitle, MediaQuery.of(context).size.width),
-                getButton(()=>widget.didClickImportPurseButtonCallBack(), I18n.of(context).importWalletBtnTitle, MediaQuery.of(context).size.width),
-              ]);
-    }
-  }
+  //   )
+  // }
 
-  Widget getButton(Function didClickCallBack,String title, double scrrenWidth){
-      return Container(
-                 width : scrrenWidth / 2.0 - 30,
-                  child: CupertinoButton(
-                  color: Theme.of(context).hintColor,
-              onPressed: () => didClickCallBack(),
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
-                  child: Text(
-                           title,
-                           textAlign: TextAlign.center,
-                           style : TextStyle(color: Colors.white,fontSize: 14)),
-                      ),
-              );
-  } 
 }

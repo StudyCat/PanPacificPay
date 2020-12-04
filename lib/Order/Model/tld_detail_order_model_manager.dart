@@ -25,6 +25,8 @@ class TPDetailOrderModel {
   bool amIBuyer;
   int orderType; // 1.普通订单 2.任务订单
   String payImage;
+  String realPayAmount;//实际付款
+  String cnyPayAmount;//人密闭
 
   TPDetailOrderModel(
       {this.finishTime,
@@ -48,7 +50,9 @@ class TPDetailOrderModel {
       this.sellerUserName,
       this.amIBuyer,
       this.orderType,
-      this.payImage});
+      this.payImage,
+      this.realPayAmount,
+      this.cnyPayAmount});
 
   TPDetailOrderModel.fromJson(Map<String, dynamic> json) {
     finishTime = json['finishTime'];
@@ -73,6 +77,8 @@ class TPDetailOrderModel {
     orderType = json['orderType'];
     amIBuyer = json['amIBuyer'];
     payImage = json['payImage'];
+    realPayAmount = json['realPayAmount'];
+    cnyPayAmount = json['cnyPayAmount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -99,6 +105,8 @@ class TPDetailOrderModel {
     data['amIBuyer'] = this.amIBuyer;
     data['orderType'] = this.orderType;
     data['payImage'] = this.payImage;
+    data['realPayAmount'] = this.realPayAmount;
+    data['cnyPayAmount'] = this.cnyPayAmount;
     return data;
   }
 }

@@ -413,7 +413,7 @@ class _TPAcceptanceDetailWithdrawPageState extends State<TPAcceptanceDetailWithd
     }else if(index == 1){
       content = _detailModel.tldCount + 'TP';
     }else if(index == 2){
-      content = '¥'+_detailModel.cashPrice;
+      content = '\$'+_detailModel.cashPrice;
     }else if(index == 4){
       content = _detailModel.inviteWalletAddress;
     }else if(index == 5){

@@ -26,22 +26,29 @@ class TPMyPurseHeaderView extends StatefulWidget {
 class _TPMyPurseHeaderViewState extends State<TPMyPurseHeaderView> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      padding: EdgeInsets.only(
-          left: ScreenUtil().setWidth(30),
+    return Column(
+        children : [
+        Container(
+          padding: EdgeInsets.only(left: ScreenUtil().setWidth(30),
           right: ScreenUtil().setWidth(30),
           top: ScreenUtil().setHeight(48),
           bottom: ScreenUtil().setHeight(20)),
-      child: Column(
+          color : Theme.of(context).primaryColor,
+          child : Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           getNumView(),
           getCopyAdressView(context),
-          getButtonView(context)
         ],
-      ),
-    );
+        )
+        ),
+        Padding(padding:  EdgeInsets.only(left: ScreenUtil().setWidth(30),
+          right: ScreenUtil().setWidth(30),
+          top: ScreenUtil().setHeight(20),
+          bottom: ScreenUtil().setHeight(20)),
+          child: getButtonView(context),
+          )
+        ]);
   }
 
   Widget getNumView() {
@@ -55,11 +62,11 @@ class _TPMyPurseHeaderViewState extends State<TPMyPurseHeaderView> {
             RichText(
                   text: TextSpan(
                     text : getMoneyStyleStr(widget.infoModel == null ? '0':widget.infoModel.value),
-                    style : TextStyle(fontSize : ScreenUtil().setSp(52),color : Theme.of(context).hintColor),
+                    style : TextStyle(fontSize : ScreenUtil().setSp(52),color : Colors.white),
                     children: <InlineSpan>[
                       TextSpan(
                         text : '  TP',
-                        style: TextStyle(fontSize : ScreenUtil().setSp(24),color :Theme.of(context).hintColor)
+                        style: TextStyle(fontSize : ScreenUtil().setSp(24),color :Colors.white)
                       )
                     ],
                   ),
@@ -77,7 +84,7 @@ class _TPMyPurseHeaderViewState extends State<TPMyPurseHeaderView> {
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(28), color: Colors.white)),
                 onPressed: widget.didClickChangeBtnCallBack,
-                color: Theme.of(context).hintColor,
+                color: Color.fromARGB(255, 22, 128, 205),
               ),
             ),
           ],
@@ -97,7 +104,7 @@ class _TPMyPurseHeaderViewState extends State<TPMyPurseHeaderView> {
       height: ScreenUtil().setHeight(80),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
-        color: Color.fromARGB(255, 82, 82, 82),
+        color: Colors.white
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,7 +117,7 @@ class _TPMyPurseHeaderViewState extends State<TPMyPurseHeaderView> {
               widget.infoModel == null ? "":widget.infoModel.walletAddress,
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(28),
-                  color: Colors.white),
+                  color: Color.fromARGB(255, 102, 102, 102)),
             ),
           ),
           Container(
@@ -123,7 +130,7 @@ class _TPMyPurseHeaderViewState extends State<TPMyPurseHeaderView> {
                 icon: Icon(
                   IconData(0xe601, fontFamily: 'appIconFonts'),
                   size: ScreenUtil().setWidth(32),
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 102, 102, 102),
                 ),
                 onPressed: () {}),
           )
@@ -144,20 +151,16 @@ class _TPMyPurseHeaderViewState extends State<TPMyPurseHeaderView> {
           Container(
               width: (size.width - ScreenUtil().setWidth(90)) / 2,
               height: ScreenUtil().setHeight(80),
-              child: OutlineButton(
+              child: CupertinoButton(
                 onPressed: widget.didClickQRCodeBtnCallBack,
-                shape: StadiumBorder(
-                 
-                ),
-                borderSide: BorderSide(
-                    color: Theme.of(context).hintColor,
-                    width: 1,
-                  ),
+                borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
+                color: Theme.of(context).primaryColor,
+                padding: EdgeInsets.zero,
                 child: Text(
                   I18n.of(context).receivingQRCode,
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(28),
-                      color: Theme.of(context).hintColor),
+                      color: Colors.white),
                 ),
               )),
           Container(

@@ -73,7 +73,9 @@ class _TPDetailDiyQrcodeShowViewState extends State<TPDetailDiyQrcodeShowView> {
   // }
 
   Widget _getQrView(){
-    return Container(
+    return RepaintBoundary(
+          key : repainKey,
+          child :Container(
       height: ScreenUtil().setWidth(850),
       width: ScreenUtil().setWidth(584),
       decoration: BoxDecoration(
@@ -96,7 +98,7 @@ class _TPDetailDiyQrcodeShowViewState extends State<TPDetailDiyQrcodeShowView> {
           )
         ],
       ),
-    );
+    ));
   }
 
 
@@ -109,7 +111,7 @@ class _TPDetailDiyQrcodeShowViewState extends State<TPDetailDiyQrcodeShowView> {
         QrImage(data: widget.qrCode,size :ScreenUtil().setWidth(340)),
         Padding(
           padding: EdgeInsets.only(top : ScreenUtil().setHeight(60)),
-          child: Text('支付：¥'+widget.amount,style:TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(32),decoration: TextDecoration.none)),
+          child: Text('支付：\$'+widget.amount,style:TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(32),decoration: TextDecoration.none)),
         )
       ],
     );

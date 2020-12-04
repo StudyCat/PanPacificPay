@@ -111,4 +111,11 @@ class TPBuyModelManager{
       success();
     }, (error) => failure(error));
   }
+
+  void getRate(Function success,Function failure){
+    TPBaseRequest request = TPBaseRequest({},'order/getUsdRate');
+    request.postNetRequest((value) {
+      success(double.parse(value));
+    }, (error) => failure(error));
+  }
 }

@@ -38,7 +38,7 @@ class _TPPurseFirstPageCellState extends State<TPPurseFirstPageCell> {
                       ),
                       Container(
                         padding: EdgeInsets.only(top : 4,right: 15,bottom: 10),
-                        child: Text('='+widget.walletInfo.value+'CNY',style: TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
+                        child: Text('='+widget.walletInfo.value+'USD',style: TextStyle(color: Color.fromARGB(255, 153, 153, 153),fontSize: 12),),
                       )
                     ],
                   ),

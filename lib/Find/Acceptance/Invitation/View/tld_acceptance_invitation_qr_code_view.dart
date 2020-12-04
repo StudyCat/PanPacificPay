@@ -23,7 +23,7 @@ class _TPAcceptanceInvitationQRCodeViewState extends State<TPAcceptanceInvitatio
        child: Container(
          height : ScreenUtil().setHeight(760),
          width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(140),
-         color :Theme.of(context).primaryColor,
+         color :Color.fromARGB(255, 57, 57, 57),
          child : Column(
            children : <Widget>[
              Padding(

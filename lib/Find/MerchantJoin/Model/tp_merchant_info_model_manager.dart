@@ -16,6 +16,8 @@ class TPMerchantInfoModel {
     this.merchantId,
     this.apiDocUrl,
     this.appName,
+    this.walletAddress,
+    this.walletPrivateKey
   });
 
   factory TPMerchantInfoModel.fromJson(Map<String, dynamic> jsonRes) =>
@@ -27,6 +29,8 @@ class TPMerchantInfoModel {
               merchantId: asT<String>(jsonRes['merchantId']),
               apiDocUrl: asT<String>(jsonRes['apiDocUrl']),
               appName: asT<String>(jsonRes['appName']),
+              walletAddress : asT<String>(jsonRes['walletAddress']),
+              walletPrivateKey: asT<String>(jsonRes['walletPrivateKey'])
             );
 
   String realName;
@@ -34,6 +38,8 @@ class TPMerchantInfoModel {
   String merchantId;
   String apiDocUrl;
   String appName;
+  String walletAddress;
+  String walletPrivateKey;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'realName': realName,
@@ -41,6 +47,8 @@ class TPMerchantInfoModel {
         'merchantId': merchantId,
         'apiDocUrl': apiDocUrl,
         'appName': appName,
+        'walletPrivateKey' : walletPrivateKey,
+        'walletAddress':walletAddress
       };
 
   @override

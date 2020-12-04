@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:dragon_sword_purse/Buy/FirstPage/Model/tld_buy_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_do_mission_model_manager.dart';
 import 'package:dragon_sword_purse/Mission/WalletMission/Model/tld_do_mission_model_manager.dart';
@@ -11,13 +12,15 @@ import '../View/tld_buy_action_sheet_input_view.dart';
 import '../../../Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 
 class TPBuyActionSheet extends StatefulWidget {
-  TPBuyActionSheet({Key key,this.model,this.missionModel,this.didClickBuyBtnCallBack}) : super(key: key);
+  TPBuyActionSheet({Key key,this.model,this.missionModel,this.didClickBuyBtnCallBack,this.rate}) : super(key: key);
 
   final TPBuyListInfoModel model;
 
   final TPMissionBuyModel missionModel;
 
   final Function(TPBuyPramaterModel) didClickBuyBtnCallBack;
+
+  final double rate;
 
   @override
   _TPBuyActionSheetState createState() => _TPBuyActionSheetState();
@@ -44,6 +47,9 @@ class _TPBuyActionSheetState extends State<TPBuyActionSheet> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double cnyAmountNum = double.parse(_pramaterModel.buyCount) * widget.rate;
+    String cnyAmountStr = (NumUtil.getNumByValueDouble(cnyAmountNum, 2)).toStringAsFixed(2);
+    String amount = _pramaterModel.buyCount + 'USD' + '≈' + cnyAmountStr + 'CNY';
     return AnimatedPadding(
         //showModalBottomSheet 键盘弹出时自适应
         padding: MediaQuery.of(context).viewInsets, //边距（必要）
@@ -93,7 +99,7 @@ class _TPBuyActionSheetState extends State<TPBuyActionSheet> {
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-            child: getNormalView(I18n.of(context).realPaymentLabel, _pramaterModel.buyCount + 'CNY'),
+            child: getNormalView(I18n.of(context).realPaymentLabel, amount),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),

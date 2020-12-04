@@ -63,7 +63,7 @@ class _TPMissionHallBuyActionSheetState
                     color: Color.fromARGB(255, 51, 51, 51),
                     decoration: TextDecoration.none)),
             _getNormalRowView('数量', widget.buyInfoModel.quote + 'TP'),
-            _getNormalRowView('应付款', widget.buyInfoModel.quote + 'CNY'),
+            _getNormalRowView('应付款', widget.buyInfoModel.quote + 'USD'),
             GestureDetector(
               onTap: (){
                 // Navigator.push(context, MaterialPageRoute(builder: (context) => TPEchangeChooseWalletPage(isNeedFliter: false,didChooseWalletCallBack: (TPWalletInfoModel infoModel){

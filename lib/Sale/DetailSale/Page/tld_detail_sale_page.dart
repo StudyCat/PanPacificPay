@@ -180,9 +180,9 @@ class _TPDetailSalePageState extends State<TPDetailSalePage> {
                 }else if(index == 6){
                   content = _saleModel != null ? (_saleModel.rate + '%') : '0.6%'; 
                 }else if(index == 7){
-                  content = _saleModel != null ? ('¥'+ _saleModel.charge) : '¥0';
+                  content = _saleModel != null ? ('\$'+ _saleModel.charge) : '\$0';
                 }else if(index == 8){
-                  content = _saleModel != null ? ('¥'+ _saleModel.recCount) : '¥0';
+                  content = _saleModel != null ? ('\$'+ _saleModel.recCount) : '\$0';
                 }else{
                   content = _saleModel != null ? formatDate(DateTime.fromMillisecondsSinceEpoch(_saleModel.createTime), [yyyy,'-',mm,'-',dd]): '';
                 }

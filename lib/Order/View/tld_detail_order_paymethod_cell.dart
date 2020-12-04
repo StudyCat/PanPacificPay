@@ -199,7 +199,8 @@ class _TPDetailOrderPayMethodCellState extends State<TPDetailOrderPayMethodCell>
                 Padding(
                   padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
                   child: Container(
-                    child :Text(bankAcount,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102)),textAlign: TextAlign.end,maxLines: null,)
+                    width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(400),
+                    child :Text(bankAcount,style : TextStyle(fontSize : ScreenUtil().setSp(24),color : Color.fromARGB(255, 102, 102, 102)),textAlign: TextAlign.end,maxLines: 1,softWrap: true,overflow: TextOverflow.ellipsis,)
                   ),
                 ),
                 Padding(
@@ -212,5 +213,4 @@ class _TPDetailOrderPayMethodCellState extends State<TPDetailOrderPayMethodCell>
     )
     );
   }
-
 }

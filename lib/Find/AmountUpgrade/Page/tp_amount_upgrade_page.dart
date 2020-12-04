@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
-import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_plus_star_notice_cell.dart';
 import 'package:dragon_sword_purse/Find/AmountUpgrade/Model/tp_account_upgrade_model_manager.dart';
 import 'package:dragon_sword_purse/Find/AmountUpgrade/View/tp_account_upgrade_action_sheet.dart';
@@ -127,9 +126,7 @@ class _TPAccountUpgradePageState extends State<TPAccountUpgradePage> {
           heroTag: 'mission_root_page',
           transitionBetweenRoutes: false,
           middle: Text('任务'),
-           trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder : (context) => TPWebPage(type: TPWebPageType.upgradeDesc,title: '升级说明',)));
-        }),),
+         ),
     );
   }
 
@@ -203,7 +200,7 @@ class _TPAccountUpgradePageState extends State<TPAccountUpgradePage> {
                   borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
                   padding: EdgeInsets.zero,
                   color: Theme.of(context).primaryColor,
-                  child: Text('升级',style : TextStyle(color : Theme.of(context).hintColor,fontSize:ScreenUtil().setSp(36))), onPressed: (){
+                  child: Text('升级',style : TextStyle(color : Colors.white,fontSize:ScreenUtil().setSp(36))), onPressed: (){
                     _getUpgradeCondition();
                 })
               ),

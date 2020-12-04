@@ -159,12 +159,12 @@ class _PPMissionDetailOrderHeaderViewState extends State<PPMissionDetailOrderHea
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text(_subStr,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).hintColor),),
+        Text(_subStr,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),
         Offstage(
           offstage: !isNeedAppeal,
           child: GestureDetector(
             onTap: () => widget.didClickAppealBtnCallBack(),
-            child : Text(_getAppealStatusString(),style: TextStyle(fontSize : ScreenUtil().setSp(32),color : Theme.of(context).hintColor),),
+            child : Text(_getAppealStatusString(),style: TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white),),
           ),
         ),
       ],
@@ -197,8 +197,8 @@ class _PPMissionDetailOrderHeaderViewState extends State<PPMissionDetailOrderHea
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text(statusStr,style :TextStyle(fontSize : ScreenUtil().setSp(44),color: Theme.of(context).hintColor)),
-        IconButton(icon: Icon(IconData(0xe6a2,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(46),color:Theme.of(context).hintColor),onPressed:widget.didClickChatBtnCallBack,)
+        Text(statusStr,style :TextStyle(fontSize : ScreenUtil().setSp(44),color: Colors.white)),
+        IconButton(icon: Icon(IconData(0xe6a2,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(46),color:Colors.white),onPressed:widget.didClickChatBtnCallBack,)
       ],
     );
   }

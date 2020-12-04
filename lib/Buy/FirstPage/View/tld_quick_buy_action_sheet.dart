@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
@@ -7,11 +8,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TPQuickBuyActionSheet extends StatefulWidget {
-  TPQuickBuyActionSheet({Key key,this.count,this.didClickBuyCallBack}) : super(key: key);
+  TPQuickBuyActionSheet({Key key,this.count,this.didClickBuyCallBack,this.rate}) : super(key: key);
 
   final String count;
 
   final Function didClickBuyCallBack;
+
+  final double rate;
 
   @override
   _TPQuickBuyActionSheetState createState() => _TPQuickBuyActionSheetState();
@@ -23,6 +26,9 @@ class _TPQuickBuyActionSheetState extends State<TPQuickBuyActionSheet> {
 
   @override
   Widget build(BuildContext context) {
+    double cnyAmountNum = double.parse(widget.count) * widget.rate;
+    String cnyAmountStr = (NumUtil.getNumByValueDouble(cnyAmountNum, 2)).toStringAsFixed(2);
+    String amount = widget.count + 'USD' + '≈' + cnyAmountStr + 'CNY';
     Size size = MediaQuery.of(context).size;
     return AnimatedPadding(
         //showModalBottomSheet 键盘弹出时自适应
@@ -61,7 +67,7 @@ class _TPQuickBuyActionSheetState extends State<TPQuickBuyActionSheet> {
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),
-            child: getNormalView(I18n.of(context).shouldPayAmountLabel, widget.count + 'CNY'),
+            child: getNormalView(I18n.of(context).shouldPayAmountLabel, amount),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(32)),

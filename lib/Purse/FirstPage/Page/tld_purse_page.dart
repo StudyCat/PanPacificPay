@@ -8,11 +8,13 @@ import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/View/tld_unopen_red_e
 import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_detail_red_envelope_model_manager.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
+import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -175,24 +177,34 @@ class _TPPursePageState extends State<TPPursePage> with AutomaticKeepAliveClient
   Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, index) => _getListViewItem(context,index),
-      itemCount: _dataSource.length + 2,
+      itemCount: _dataSource.length + 4,
     );
   }
 
   Widget _getListViewItem(BuildContext context, int index) {
     if (index == 0) {
-      return TPPurseHeaderCell(totalAmount:  _totalAmount,
-        didClickCreatePurseButtonCallBack: (){
-          _createPurse(context);
-        },
-        didClickImportPurseButtonCallBack: (){
-          _importPurse(context);
-        },
-        );
-    } else if (index == _dataSource.length + 1) {
+      return TPPurseHeaderCell(totalAmount:  _totalAmount,);
+    }else if (index == 1){
+      return Padding(padding: EdgeInsets.only(top : ScreenUtil().setHeight(20),left : ScreenUtil().setWidth(30)),
+      child: Row(
+        children : [
+          Container(
+            height : ScreenUtil().setHeight(30),
+            width : ScreenUtil().setWidth(6),
+            color: Theme.of(context).primaryColor,
+          ),
+          Padding(padding: EdgeInsets.only(left : ScreenUtil().setWidth(10)),
+          child: Text('我的钱包',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontWeight : FontWeight.bold,fontSize : ScreenUtil().setSp(32))),
+          )
+        ]
+      ),
+      );
+    }else if (index == _dataSource.length + 2) {
       return TPPurseFirstPageBottomCell();
-    } else {
-      TPWalletInfoModel model = _dataSource[index - 1];
+    } else if (index == _dataSource.length + 3){
+      return _getActionWidget();
+    }else {
+      TPWalletInfoModel model = _dataSource[index - 2];
       return TPPurseFirstPageCell(
         walletInfo: model,
         didClickCallBack: () {
@@ -312,6 +324,54 @@ class _TPPursePageState extends State<TPPursePage> with AutomaticKeepAliveClient
       Fluttertoast.showToast(msg: error.msg);
     });
   }
+
+   Widget _getActionWidget(){
+    List purseList = TPDataManager.instance.purseList;
+    bool isHaveImport = false;
+    for (TPWallet wallet in purseList) {
+        if (wallet.type != null && wallet.type == 1){
+          isHaveImport = true;
+          break;
+        }else{
+          
+        }
+    }
+
+    if (isHaveImport){
+      return Padding(
+        padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(30))
+      ,child: getButton(()=>(){}, I18n.of(context).createWalletBtnTitle, MediaQuery.of(context).size.width * 2,Theme.of(context).primaryColor));
+    }else{
+      return Padding(
+        padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(30)),
+        child  :Row(
+              mainAxisAlignment : MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                getButton(()=>(){
+                  _createPurse(context);
+                }, I18n.of(context).createWalletBtnTitle, MediaQuery.of(context).size.width,Theme.of(context).primaryColor),
+                getButton(()=>(){
+                  _importPurse(context);
+                }, I18n.of(context).importWalletBtnTitle, MediaQuery.of(context).size.width,Theme.of(context).hintColor),
+              ]));
+    }
+  }
+
+  Widget getButton(Function didClickCallBack,String title, double scrrenWidth,Color color){
+      return Container(
+                 width : (scrrenWidth  - ScreenUtil().setWidth(100)) / 2.0,
+                  child: CupertinoButton(
+                  color: color,
+              onPressed: () => didClickCallBack(),
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
+                  child: Text(
+                           title,
+                           textAlign: TextAlign.center,
+                           style : TextStyle(color: Colors.white,fontSize: 14)),
+                      ),
+              );
+  } 
 
     @override
   // TODO: implement wantKeepAlive

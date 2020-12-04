@@ -58,7 +58,7 @@ class _TPIntegrationDescPageState extends State<TPIntegrationDescPage> {
       itemBuilder: (BuildContext context, int index){
         String title = '';
         if (index == 0) {
-          title = I18n.of(context).SubscriptionRatio + '：1TP=1CNY';
+          title = I18n.of(context).SubscriptionRatio + '：1TP=1USD';
         }else{
           title = _rate != null ? _rate : '';
         }

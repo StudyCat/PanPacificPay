@@ -95,7 +95,7 @@ class _TPOrderListCellState extends State<TPOrderListCell> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           _getInfoView(I18n.of(context).countLabel,  widget.orderListModel.txCount + 'TP', null),
-          _getInfoView(I18n.of(context).orderListAmountLabel, '¥' + widget.orderListModel.txCount, null),
+          _getInfoView(I18n.of(context).orderListAmountLabel, '\$' + widget.orderListModel.txCount, null),
           _getInfoView(I18n.of(context).statusLabel, infoModel.orderStatusName, infoModel.orderStatusColor),
         ],
       ),

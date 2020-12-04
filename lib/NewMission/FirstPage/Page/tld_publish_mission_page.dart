@@ -231,7 +231,7 @@ class _TPPublishMissionPageState extends State<TPPublishMissionPage> {
             double profit = double.parse(_formModel.totalCount) * profitRate;
             double amount = double.parse(_formModel.totalCount) - profit;
             String amountString = (NumUtil.getNumByValueDouble(amount, 3)).toStringAsFixed(3);
-            content = '¥' + amountString;
+            content = '\$' + amountString;
           }
           return TPExchangeNormalCell(
             type: TPExchangeNormalCellType.normal,

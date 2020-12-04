@@ -209,8 +209,8 @@ class _MyAppState extends State<MyApp> {
       },
       navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
-        primaryColor : Color.fromARGB(255, 57, 57, 57),
-        hintColor: Color.fromARGB(255, 217, 176, 123)
+        primaryColor : Color.fromARGB(255, 1, 141, 248),
+        hintColor: Color.fromARGB(255, 254, 168, 89)
       ),
       home: TPHomePage(),
       // home: PlatformChannel(),
