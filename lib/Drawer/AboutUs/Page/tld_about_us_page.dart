@@ -15,11 +15,10 @@ class TPAboutUsPage extends StatefulWidget {
 
 class _TPAboutUsPageState extends State<TPAboutUsPage> {
   List titles = [
-    I18n.of(navigatorKey.currentContext).officialWebsite,
     I18n.of(navigatorKey.currentContext).VersionUpdating,
   ];
 
-  List contents = ['http://www.tldollar.com\nhttp://www.tldwallet.com', I18n.of(navigatorKey.currentContext).TheCurrentVersionIsTheLatest];
+  List contents = [ I18n.of(navigatorKey.currentContext).TheCurrentVersionIsTheLatest];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,7 @@ class _TPAboutUsPageState extends State<TPAboutUsPage> {
 
   Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
-        itemCount: 3,
+        itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
           if (index == 0) {
             return TPAboutUsHeaderCell();

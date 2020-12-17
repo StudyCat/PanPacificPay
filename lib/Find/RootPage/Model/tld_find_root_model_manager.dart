@@ -100,10 +100,10 @@ class TPFindRootCellUIItemModel {
 class TPFindRootModelManager {
   static List get uiModelList {
     return [
-      TPFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).playingMethodLabel, isHaveNotice: true, items: [
+      TPFindRootCellUIModel(title: '专栏', isHaveNotice: true, items: [
         // TPFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true),
       ]),
-      TPFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, isHaveNotice: false,items: [
+      TPFindRootCellUIModel(title: '商务合作', isHaveNotice: false,items: [
        
       ])
     ];

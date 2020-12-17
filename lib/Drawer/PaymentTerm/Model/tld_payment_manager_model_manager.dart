@@ -1,6 +1,45 @@
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import '../Page/tld_payment_manager_page.dart';
+import 'dart:convert' show json;
+
+T asT<T>(dynamic value) {
+  if (value is T) {
+    return value;
+  }
+  return null;
+}     
+ 
+
+class TPPaymentTypeModel {
+    TPPaymentTypeModel({
+this.payType,
+this.payIcon,
+this.payName,
+    });
+
+
+  factory TPPaymentTypeModel.fromJson(Map<String, dynamic> jsonRes)=>jsonRes == null? null:TPPaymentTypeModel(payType : asT<int>(jsonRes['payType']),
+payIcon : asT<String>(jsonRes['payIcon']),
+payName : asT<String>(jsonRes['payName']),
+);
+
+  int payType;
+  String payIcon;
+  String payName;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'payType': payType,
+        'payIcon': payIcon,
+        'payName': payName,
+};
+
+  @override
+String  toString() {
+    return json.encode(this);
+  }
+}
+
 
 
 class TPPaymentModel {
@@ -15,6 +54,7 @@ class TPPaymentModel {
   String subBranch;
   String realName;
   String myPayName;
+  String payIcon;
 
   TPPaymentModel(
       {this.createTime,
@@ -27,7 +67,7 @@ class TPPaymentModel {
       this.account,
       this.subBranch,
       this.realName,
-      this.myPayName});
+      this.myPayName,this.payIcon});
 
   TPPaymentModel.fromJson(Map<String, dynamic> json) {
     createTime = json['createTime'];
@@ -41,6 +81,7 @@ class TPPaymentModel {
     subBranch = json['subBranch'];
     realName = json['realName'];
     myPayName = json['myPayName'];
+    payIcon = json['payIcon'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,22 +97,14 @@ class TPPaymentModel {
     data['subBranch'] = this.subBranch;
     data['realName'] = this.realName;
     data['myPayName'] = this.myPayName;
+    data['payIcon'] = this.payIcon;
     return data;
   }
 }
 
 class TPPaymentManagerModelManager{
-  void getPaymentInfoList(String walletAddress,TPPaymentType type,Function(List) success,Function(TPError)failure){
-    String typeStr;
-    if(type == TPPaymentType.wechat){
-      typeStr = '2';
-    }else if(type == TPPaymentType.alipay){
-      typeStr = '3';
-    }else if (type == TPPaymentType.bank){
-      typeStr = '1';
-    }else{
-      typeStr = '4';
-    }
+  void getPaymentInfoList(String walletAddress,int type,Function(List) success,Function(TPError)failure){
+    String typeStr = type.toString();
     TPBaseRequest request = TPBaseRequest({'type':typeStr,'walletAddress':walletAddress},'pay/queryPay');
     request.postNetRequest((dynamic value) {
       Map data = value;
@@ -83,5 +116,16 @@ class TPPaymentManagerModelManager{
       }
       success(result);
      }, (error) => failure(error));
+  }
+
+  void getPaymentTypeList(Function success,Function failure){
+    TPBaseRequest request = TPBaseRequest({},'pay/payTypeList');
+    request.postNetRequest((value) {
+      List result = []; 
+      for (Map item in value) {
+        result.add(TPPaymentTypeModel.fromJson(item));
+      }
+      success(result);
+    }, (error) => failure(error));
   }
 }

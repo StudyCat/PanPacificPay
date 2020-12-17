@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,18 +59,6 @@ class _TPDetailOrderPayMethodCellState extends State<TPDetailOrderPayMethodCell>
   }
 
   Widget _getHedaerView(Icon arrowIcon){
-    int iconInt;
-    if (widget.paymentModel == null){
-      iconInt = 0xe679;
-    }else if (widget.paymentModel.type == 1){
-      iconInt = 0xe679;
-  }else if(widget.paymentModel.type == 2){
-      iconInt = 0xe61d;
-  }else if(widget.paymentModel.type == 3){
-      iconInt = 0xe630;
-  }else{
-    iconInt = 0xe65e;
-  }
     return GestureDetector(
       onTap: widget.didClickCallBack,
       child: Row(
@@ -85,7 +74,7 @@ class _TPDetailOrderPayMethodCellState extends State<TPDetailOrderPayMethodCell>
               child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Icon(IconData(iconInt,fontFamily : 'appIconFonts'),size: ScreenUtil().setWidth(30),),
+                CachedNetworkImage(imageUrl: widget.paymentModel.payIcon,height: ScreenUtil().setWidth(32),width: ScreenUtil().setWidth(32),),
                 Expanded(child: arrowIcon)
               ]
             ),
@@ -113,7 +102,7 @@ class _TPDetailOrderPayMethodCellState extends State<TPDetailOrderPayMethodCell>
           ],
         ),
       );
-    }else if (widget.paymentModel.type == 4){
+    }else if (widget.paymentModel.type > 3){
       return Padding(
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(40),right : ScreenUtil().setWidth(40),top: ScreenUtil().setHeight(30),bottom: ScreenUtil().setHeight(36)),
         child: Column(
@@ -134,7 +123,8 @@ class _TPDetailOrderPayMethodCellState extends State<TPDetailOrderPayMethodCell>
           ],
         ),
       );
-    }else{
+    }
+    else{
       return Padding(
         padding: EdgeInsets.only(left : ScreenUtil().setWidth(40),right : ScreenUtil().setWidth(40),top: ScreenUtil().setHeight(30),bottom: ScreenUtil().setHeight(36)),
         child: Column(

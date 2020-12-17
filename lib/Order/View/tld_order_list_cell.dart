@@ -88,6 +88,12 @@ class _TPOrderListCellState extends State<TPOrderListCell> {
 
   Widget _getNumAmountStatusView(BuildContext context) {
     TPOrderStatusInfoModel infoModel = TPDataManager.orderListStatusMap[widget.orderListModel.status];
+    String statustStr = infoModel.orderStatusName;
+    Color statusColor = infoModel.orderStatusColor;
+    if (widget.orderListModel.status == 2 && widget.orderListModel.orderType == 2){
+      statustStr = '预计24h后到账';
+      statusColor = Colors.red;
+    }
     return Padding(
       padding: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
       child: Row(
@@ -96,7 +102,7 @@ class _TPOrderListCellState extends State<TPOrderListCell> {
         children: <Widget>[
           _getInfoView(I18n.of(context).countLabel,  widget.orderListModel.txCount + 'TP', null),
           _getInfoView(I18n.of(context).orderListAmountLabel, '\$' + widget.orderListModel.txCount, null),
-          _getInfoView(I18n.of(context).statusLabel, infoModel.orderStatusName, infoModel.orderStatusColor),
+          _getInfoView(I18n.of(context).statusLabel, statustStr, statusColor),
         ],
       ),
     );

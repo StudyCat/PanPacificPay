@@ -1,6 +1,7 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Buy/FirstPage/Model/tld_buy_model_manager.dart';
 import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_buy_action_sheet.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_do_mission_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Mission/Page/pp_mission_detail_order_page.dart';
 import 'package:dragon_sword_purse/Find/Mission/View/pp_mission_list_do_mission_cell.dart';
@@ -61,6 +62,39 @@ class _PPMissionListDoMissionPageState extends State<PPMissionListDoMissionPage>
       _refreshController.loadComplete();
       _refreshController.refreshCompleted();
       Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+
+
+  void _getRate(TPMissionBuyModel model){
+     setState(() {
+        _isLoading = true;
+      });
+    _modelManager.getRate((double rate){
+        if (mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
+        showCupertinoModalPopup(context: context, builder: (BuildContext context){
+              return TPBuyActionSheet(missionModel: model,rate: rate,didClickBuyBtnCallBack: (TPBuyPramaterModel pramaterModel){
+                _buyTask(pramaterModel);
+              },);
+            });
+    
+    }, (TPError error){
+       if(mounted){
+              setState(() {
+        _isLoading = false;
+      });
+      }
+      if (error.code == 1000){
+        showDialog(context: context,builder : (context)=> TPAlertView(type: TPAlertViewType.normal,alertString: error.msg,title: '温馨提示',didClickSureBtn: (){},));
+      }else{
+        Fluttertoast.showToast(msg: error.msg,toastLength: Toast.LENGTH_SHORT,
+                        timeInSecForIosWeb: 1);
+      }
     });
   }
 
@@ -139,12 +173,7 @@ class _PPMissionListDoMissionPageState extends State<PPMissionListDoMissionPage>
       return PPMissionListDoMissionCell(
         missionModel: missionBuyModel,
         didClickBuyBtnCallBack: (){
-          showModalBottomSheet(context: context,builder :(context){
-            TPMissionBuyModel missionBuyModel = _dataSource[index];
-            return TPBuyActionSheet(missionModel: missionBuyModel,didClickBuyBtnCallBack: (TPBuyPramaterModel pramaterModel){
-              _buyTask(pramaterModel);
-            },);
-          });
+          _getRate(missionBuyModel);
         },
       );
      },

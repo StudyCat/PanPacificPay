@@ -1,14 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TPChoosePaymentCell extends StatefulWidget {
-  TPChoosePaymentCell({Key key,this.title,this.didClickCallBack,this.iconInt}) : super(key: key);
+  TPChoosePaymentCell({Key key,this.title,this.didClickCallBack,this.iconUrl}) : super(key: key);
 
   final Function didClickCallBack;
 
   final String title;
 
-  final int iconInt;
+  final String iconUrl;
 
   @override
   _TPChoosePaymentCellState createState() => _TPChoosePaymentCellState();
@@ -34,7 +35,7 @@ class _TPChoosePaymentCellState extends State<TPChoosePaymentCell> {
                 children : <Widget>[
                    Padding(
                 padding: EdgeInsets.only(left:ScreenUtil().setWidth(20)),
-                child: Icon(IconData(widget.iconInt,fontFamily : 'appIconFonts'),size: ScreenUtil().setWidth(32),),
+                child: CachedNetworkImage(imageUrl: widget.iconUrl,height : ScreenUtil().setWidth(32),width : ScreenUtil().setWidth(32))
               ),
               Padding(
                 padding: EdgeInsets.only(left : ScreenUtil().setWidth(30)),

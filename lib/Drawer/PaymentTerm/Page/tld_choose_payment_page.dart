@@ -1,9 +1,11 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import '../View/tld_choose_payment_cell.dart';
 import 'tld_bank_card_info_page.dart';
 import 'tld_wecha_alipay_info_page.dart';
@@ -24,19 +26,37 @@ class TPChoosePaymentPage extends StatefulWidget {
 
 class _TPChoosePaymentPageState extends State<TPChoosePaymentPage> {
 
-    List titles = [
-    I18n.of(navigatorKey.currentContext).bankCard,
-    I18n.of(navigatorKey.currentContext).weChat,
-    I18n.of(navigatorKey.currentContext).aliPay,
-    I18n.of(navigatorKey.currentContext).CustomizeTheCollectionMethod
-    ];
+  TPPaymentManagerModelManager _modelManager;
+
+  bool _isLoading = true;
+
+  List _dataSource = [];
+
+  @override
+  void initState() { 
+    super.initState();
     
-    List icons = [
-      0xe679,
-      0xe61d,
-      0xe630,
-      0xe65e,
-    ];
+    _modelManager = TPPaymentManagerModelManager();
+    _getPaymentType();
+  }
+
+  
+  void _getPaymentType(){
+    _modelManager.getPaymentTypeList((List paymentTypeList){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+          _dataSource.addAll(paymentTypeList);
+        });
+      }
+    }, (TPError error){
+            if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,28 +71,19 @@ class _TPChoosePaymentPageState extends State<TPChoosePaymentPage> {
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
       ),
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(isLoading: _isLoading,child: _getBodyWidget(context),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
 
   Widget _getBodyWidget(BuildContext context){
     return ListView.builder(
-      itemCount: titles.length,
+      itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index){
-        return TPChoosePaymentCell(title : titles[index], iconInt: icons[index],
+        TPPaymentTypeModel typeModel = _dataSource[index];
+        return TPChoosePaymentCell(title : typeModel.payName, iconUrl: typeModel.payIcon,
           didClickCallBack: (){
-            TPPaymentType type;
-            if (index == 0){
-              type = TPPaymentType.bank;
-            }else if (index == 1) {
-                type = TPPaymentType.wechat;
-             }else if (index == 2){
-                type = TPPaymentType.alipay;
-            }else{
-              type = TPPaymentType.diy;
-            }
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TPPaymentManagerPage(type: type,walletAddress: widget.walletAddress,isChoosePayment: widget.isChoosePayment,didChoosePaymentCallBack: widget.didChoosePaymentCallBack,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TPPaymentManagerPage(typeModel : typeModel,walletAddress: widget.walletAddress,isChoosePayment: widget.isChoosePayment,didChoosePaymentCallBack: widget.didChoosePaymentCallBack,)));
           },
         );
       }

@@ -1,11 +1,13 @@
 
 
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
+
 class TPDetailSaleModel {
   int sellId;
   int createTime;
   String rate;
   String currentCount;
-  PayMethodVO payMethodVO;
+  TPPaymentModel payMethodVO;
   int payId;
   String max;
   String sellNo;
@@ -41,7 +43,7 @@ class TPDetailSaleModel {
     max = json['max'];
     currentCount = json['currentCount'];
     payMethodVO = json['payMethodVO'] != null
-        ? new PayMethodVO.fromJson(json['payMethodVO'])
+        ? new TPPaymentModel.fromJson(json['payMethodVO'])
         : null;
     payId = json['payId'];
     sellNo = json['sellNo'];
@@ -77,51 +79,3 @@ class TPDetailSaleModel {
   }
 }
 
-class PayMethodVO {
-  String realName;
-  int createTime;
-  String payMethodName;
-  String quota;
-  int payId;
-  String subBranch;
-  int type;
-  String walletAddress;
-  String account;
-
-  PayMethodVO(
-      {this.realName,
-      this.createTime,
-      this.payMethodName,
-      this.quota,
-      this.payId,
-      this.subBranch,
-      this.type,
-      this.walletAddress,
-      this.account});
-
-  PayMethodVO.fromJson(Map<String, dynamic> json) {
-    realName = json['realName'];
-    createTime = json['createTime'];
-    payMethodName = json['payMethodName'];
-    quota = json['quota'];
-    payId = json['payId'];
-    subBranch = json['subBranch'];
-    type = json['type'];
-    walletAddress = json['walletAddress'];
-    account = json['account'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['realName'] = this.realName;
-    data['createTime'] = this.createTime;
-    data['payMethodName'] = this.payMethodName;
-    data['quota'] = this.quota;
-    data['payId'] = this.payId;
-    data['subBranch'] = this.subBranch;
-    data['type'] = this.type;
-    data['walletAddress'] = this.walletAddress;
-    data['account'] = this.account;
-    return data;
-  }
-}

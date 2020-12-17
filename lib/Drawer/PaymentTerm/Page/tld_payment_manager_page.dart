@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_diy_info_page.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tp_new_payment_info_page.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,17 +15,11 @@ import 'tld_bank_card_info_page.dart';
 import 'tld_wecha_alipay_info_page.dart';
 
 
-enum TPPaymentType{
-  wechat,
-  alipay,
-  bank,
-  diy
-}
 
 class TPPaymentManagerPage extends StatefulWidget {
-  TPPaymentManagerPage({Key key,this.type,this.walletAddress,this.isChoosePayment,this.didChoosePaymentCallBack}) : super(key: key);
+  TPPaymentManagerPage({Key key,this.typeModel,this.walletAddress,this.isChoosePayment,this.didChoosePaymentCallBack}) : super(key: key);
 
-  final TPPaymentType type;
+  final TPPaymentTypeModel typeModel;
 
   final bool isChoosePayment;
 
@@ -58,7 +53,7 @@ class _TPPaymentManagerPageState extends State<TPPaymentManagerPage> {
 
 
   void _getPaymentList(){
-    _manager.getPaymentInfoList(widget.walletAddress, widget.type, (List dataList){
+    _manager.getPaymentInfoList(widget.walletAddress, widget.typeModel.payType, (List dataList){
       _dataSource = [];
       _refreshController.refreshCompleted();
       if (mounted){
@@ -111,15 +106,7 @@ class _TPPaymentManagerPageState extends State<TPPaymentManagerPage> {
   }
 
   String _getPageTitle(){
-    if(widget.type == TPPaymentType.wechat){
-      return I18n.of(context).manageWechat;
-    }else if(widget.type == TPPaymentType.alipay){
-      return I18n.of(context).manageAlipay;
-    }else if (widget.type == TPPaymentType.bank){
-      return I18n.of(context).manageAlipay;
-    }else {
-      return I18n.of(context).manageCustomMethod;
-    }
+    return widget.typeModel.payName + '管理';
   }
 
   Widget _getBodyWidget(){
@@ -127,14 +114,16 @@ class _TPPaymentManagerPageState extends State<TPPaymentManagerPage> {
       itemCount: _dataSource.length + 1,
       itemBuilder: (BuildContext context,int index){
         if(index == _dataSource.length){
-          return TPPaymentManagerAddPaymentCell(type: widget.type,didClickItemCallBack: (){
-            if (widget.type == TPPaymentType.bank){
+          return TPPaymentManagerAddPaymentCell(typeModel: widget.typeModel,didClickItemCallBack: (){
+            if (widget.typeModel.payType == 1){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPBankCardInfoPage(walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
-            }else if(widget.type == TPPaymentType.diy){
+            }else if(widget.typeModel.payType == 4){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPPaymentDiyInfoPage(walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
+            }else if (widget.typeModel.payType > 4){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TPNewPaymentInfoPage(typeModel: widget.typeModel,walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
             }else{
               TPWechatAliPayInfoPageType pageType;
-              if (widget.type == TPPaymentType.wechat){
+              if (widget.typeModel.payType == 2){
                 pageType = TPWechatAliPayInfoPageType.weChat;
               }else{
                 pageType = TPWechatAliPayInfoPageType.aliPay;
@@ -153,9 +142,11 @@ class _TPPaymentManagerPageState extends State<TPPaymentManagerPage> {
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPBankCardInfoPage(walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
             }else if(paymentModel.type == 4){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPPaymentDiyInfoPage(walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
+            }else if (widget.typeModel.payType > 4){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TPNewPaymentInfoPage(typeModel: widget.typeModel,walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
             }else{
               TPWechatAliPayInfoPageType pageType;
-              if (widget.type == TPPaymentType.wechat){
+              if (widget.typeModel.payType == 2){
                 pageType = TPWechatAliPayInfoPageType.weChat;
               }else{
                 pageType = TPWechatAliPayInfoPageType.aliPay;

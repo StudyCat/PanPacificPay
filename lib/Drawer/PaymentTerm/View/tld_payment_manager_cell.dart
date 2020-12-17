@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,7 +52,7 @@ class _TPPaymentManagerCellState extends State<TPPaymentManagerCell> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Icon(_getIcon(),size: ScreenUtil().setWidth(32),),
+        CachedNetworkImage(imageUrl: widget.paymentModel.payIcon,width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32),),
         Padding(
           padding: EdgeInsets.only(left :ScreenUtil().setWidth(20)),
           child: Text(_getPaymentInfoString(),style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(28)),),
@@ -60,17 +61,7 @@ class _TPPaymentManagerCellState extends State<TPPaymentManagerCell> {
     );
   }
 
-  IconData _getIcon(){
-     if(widget.paymentModel.type == 1){
-      return IconData(0xe679,fontFamily: 'appIconFonts');
-    }else if(widget.paymentModel.type == 2){
-      return IconData(0xe61d,fontFamily: 'appIconFonts');
-    }else if(widget.paymentModel.type == 3){
-      return IconData(0xe630,fontFamily: 'appIconFonts');
-    }else{
-      return IconData(0xe65e,fontFamily: 'appIconFonts');
-    }
-  }
+
 
   String _getPaymentInfoString(){
     if(widget.paymentModel.type == 1){
@@ -80,8 +71,10 @@ class _TPPaymentManagerCellState extends State<TPPaymentManagerCell> {
       return widget.paymentModel.account;
     }else if(widget.paymentModel.type == 3){
       return widget.paymentModel.account;
-    }else{
+    }else if (widget.paymentModel.type == 4){
       return widget.paymentModel.myPayName;
+    }else {
+      return widget.paymentModel.account;
     }
   }
 

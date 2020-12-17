@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../Page/tld_payment_manager_page.dart';
 
 class TPPaymentManagerAddPaymentCell extends StatefulWidget {
-  TPPaymentManagerAddPaymentCell({Key key,this.type,this.didClickItemCallBack}) : super(key: key);
+  TPPaymentManagerAddPaymentCell({Key key,this.typeModel,this.didClickItemCallBack}) : super(key: key);
 
-  final TPPaymentType type;
+  final TPPaymentTypeModel typeModel;
 
   final Function didClickItemCallBack;
 
@@ -42,14 +43,6 @@ class _TPPaymentManagerAddPaymentCellState extends State<TPPaymentManagerAddPaym
   }
 
   String getTitleString(){
-     if(widget.type == TPPaymentType.wechat){
-      return I18n.of(context).addWeChat;
-    }else if(widget.type == TPPaymentType.alipay){
-      return I18n.of(context).addAlipay;
-    }else if(widget.type == TPPaymentType.bank){
-      return I18n.of(context).addBankCard;
-    }else{
-      return I18n.of(context).addCustomMethod;
-    }
+     return '添加' + widget.typeModel.payName;
   }
 }

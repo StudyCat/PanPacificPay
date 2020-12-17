@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/CommonWidget/ltd_sale_buy_cell_header.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PPMissionListDoMissionCell extends StatefulWidget {
   PPMissionListDoMissionCell({Key key,this.didClickBuyBtnCallBack,this.missionModel}) : super(key: key);
@@ -58,21 +59,10 @@ class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell>
         Container(
           padding : EdgeInsets.only( right :ScreenUtil().setWidth(20)),
           alignment: Alignment.centerRight,
-          child: isTextType ? Text(content,style: TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 51, 51, 51)),maxLines: 1,) : Icon(IconData(_getIconInt(paymentType),fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(28),)
+          child: isTextType ? Text(content,style: TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 51, 51, 51)),maxLines: 1,) : CachedNetworkImage(imageUrl: widget.missionModel.payMethodVO.payIcon,height: ScreenUtil().setWidth(32),width: ScreenUtil().setWidth(32))
         ),
       ],
     ),
   );
-}}
-
-int _getIconInt(int paymentType){
-  if (paymentType == 1){
-    return 0xe679;
-  }else if (paymentType == 2){
-    return 0xe61d;
-  }else if (paymentType == 3){
-    return 0xe630;
-  }else{
-    return 0xe65e;
-  }
+}
 }

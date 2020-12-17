@@ -44,8 +44,6 @@ class _TPUserFeedBackPageState extends State<TPUserFeedBackPage> {
 
   PageController _pageController;
 
-  List icons = [0xe679, 0xe61d, 0xe630];
-
   TPUserFeedBackPramatersModel _pramatersModel;
 
   TPUserFeedBackModelManager _manager;

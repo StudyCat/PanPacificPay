@@ -165,10 +165,8 @@ class _TPDetailSalePageState extends State<TPDetailSalePage> {
               }else{
                 bool isShowIcon = false;
                 String content  = '';
-                int payStatus = 0;
                 if (index == 2) {
                   isShowIcon = true;
-                  payStatus = _saleModel != null ? _saleModel.payMethodVO.type : 0;
                 }else if(index == 3){
                   content = widget.walletName;
                 }else if(index == 4){
@@ -186,7 +184,7 @@ class _TPDetailSalePageState extends State<TPDetailSalePage> {
                 }else{
                   content = _saleModel != null ? formatDate(DateTime.fromMillisecondsSinceEpoch(_saleModel.createTime), [yyyy,'-',mm,'-',dd]): '';
                 }
-                return TPDetailSaleRowView(isShowIcon: isShowIcon,title: titles[index - 2],content: content,payStatus: payStatus,);
+                return TPDetailSaleRowView(isShowIcon: isShowIcon,title: titles[index - 2],content: content,payIcon: _saleModel != null ?  _saleModel.payMethodVO.payIcon : '',);
               }
            },
           )

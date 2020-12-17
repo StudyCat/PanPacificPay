@@ -23,12 +23,12 @@ class _TPAcceptanceInvitationQRCodeViewState extends State<TPAcceptanceInvitatio
        child: Container(
          height : ScreenUtil().setHeight(760),
          width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(140),
-         color :Color.fromARGB(255, 57, 57, 57),
+         color :Theme.of(context).primaryColor,
          child : Column(
            children : <Widget>[
              Padding(
                padding: EdgeInsets.only(top : ScreenUtil().setHeight(40)),
-               child: Text(I18n.of(context).myInvitationCode,style: TextStyle(color:Theme.of(context).hintColor,fontSize: ScreenUtil().setSp(40)),),
+               child: Text(I18n.of(context).myInvitationCode,style: TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(40)),),
              ),
              Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(24)),
@@ -40,7 +40,7 @@ class _TPAcceptanceInvitationQRCodeViewState extends State<TPAcceptanceInvitatio
              ),
               Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(48)),
-                child: Image.asset('assetss/images/tld_icon.png',width: ScreenUtil().setWidth(236),height: ScreenUtil().setHeight(54),alignment: Alignment.center,),
+                child: Image.asset('assetss/images/white_logo.png',width: ScreenUtil().setWidth(236),height: ScreenUtil().setHeight(54),alignment: Alignment.center,),
               ),
            ]
          )

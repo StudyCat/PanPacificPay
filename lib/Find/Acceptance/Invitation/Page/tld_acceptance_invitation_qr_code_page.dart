@@ -71,7 +71,7 @@ class _TPAcceptanceInvitationQRCodePageState extends State<TPAcceptanceInvitatio
               child: Container(
                 height : ScreenUtil().setHeight(80),
                 width : MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
-                child : CupertinoButton(child: Text(I18n.of(context).savePicture,style:TextStyle(color:Theme.of(context).hintColor)), padding: EdgeInsets.zero,borderRadius: BorderRadius.all(Radius.circular(4)),color: Theme.of(context).primaryColor,onPressed: ()async{
+                child : CupertinoButton(child: Text(I18n.of(context).savePicture,style:TextStyle(color:Colors.white)), padding: EdgeInsets.zero,borderRadius: BorderRadius.all(Radius.circular(4)),color: Theme.of(context).primaryColor,onPressed: ()async{
                     Uint8List bytes = await _capturePng();
                    await _saveQrCodeImage(bytes);
             }) 

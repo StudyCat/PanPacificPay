@@ -107,7 +107,9 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
           heroTag: 'mission_root_page',
           transitionBetweenRoutes: false,
           middle: Text('任务'),
-          trailing: IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+          trailing: GestureDetector(
+            child: Text('更高奖励'),
+           onTap : (){
           Navigator.push(context, MaterialPageRoute(builder : (context) => TPWebPage(type: TPWebPageType.upgradeDesc,title: '升级说明',)));
         }),
           ),
@@ -118,7 +120,7 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _getUserLevelWidget(),
+        // _getUserLevelWidget(),
         _getAwardPoolWidget(),
         Padding(
           padding: EdgeInsets.only(left: ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(10),),

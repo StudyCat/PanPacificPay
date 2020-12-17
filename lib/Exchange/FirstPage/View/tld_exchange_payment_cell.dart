@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Model/tld_payment_manager_model_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
@@ -56,17 +57,9 @@ class _TPExchangePaymentCellState extends State<TPExchangePaymentCell> {
 
   Widget _getPaymentIcon(){
     if (widget.paymentModel != null){
-      if (widget.paymentModel.type == 1){
-        return Icon(IconData(0xe679,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);
-      }else if(widget.paymentModel.type == 2){
-        return Icon(IconData(0xe61d,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);
-      }else if(widget.paymentModel.type == 3){
-        return Icon(IconData(0xe630,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);
-      }else{
-        return Icon(IconData(0xe65e,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);
-      }
+      return CachedNetworkImage(imageUrl: widget.paymentModel.payIcon,width: ScreenUtil().setWidth(36),height: ScreenUtil().setWidth(36),);
     }
-    return Icon(IconData(0xe630,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(32),);
+    return Container();
   }
 
 }
