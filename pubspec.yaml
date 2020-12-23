@@ -150,6 +150,12 @@ flutter:
      - assetss/images/icon_aaa_plus_star_unsel.png
      - assetss/images/icon_aaa_plus_star.png
      - assetss/images/white_logo.png
+     - assetss/images/first_purse_bottom.png
+     - assetss/images/purse_detail_bg.png
+     - assetss/images/my_purse_exchange.png
+     - assetss/images/my_purse_get_money.png
+     - assetss/images/my_purse_scan.png
+     - assetss/images/find_bg.png
      
     
 

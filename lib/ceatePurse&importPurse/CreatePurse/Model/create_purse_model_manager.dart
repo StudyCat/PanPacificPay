@@ -32,16 +32,16 @@ class TPCreatePurseModelManager {
     }, (error)=> failure(error));
   }
 
-  Future createPurse(String password, Function(TPWallet) success,Function(TPError) failure) async {
-    TPWallet wallet = await _getWalletWithNoting();
+  Future createPurse(String password,String walletName, Function(TPWallet) success,Function(TPError) failure) async {
+    TPWallet wallet = await _getWalletWithNoting(walletName);
     createServiceWallet(wallet, (TPWallet wallet)async{
       await _insertDB(wallet);
       success(wallet);
     }, (error) => failure(error));
   }
 
-  Future importPurseWithWord(String mnemonicString,Function(TPWallet) success,Function(TPError) failure) async {
-    TPWallet wallet = await _getWalletWithWord(mnemonicString);
+  Future importPurseWithWord(String mnemonicString,String walletName,Function(TPWallet) success,Function(TPError) failure) async {
+    TPWallet wallet = await _getWalletWithWord(mnemonicString,walletName);
     if (await _isHaveSamePurse(wallet)){
       failure(TPError(800,'已拥有该钱包'));
     }else{
@@ -52,8 +52,8 @@ class TPCreatePurseModelManager {
     }
   }
 
-   Future importPurseWithPrivateKey(String privateKey,Function(TPWallet) success,Function(TPError) failure) async {
-    TPWallet wallet = await _getWalletWithPrivateKey(privateKey);
+   Future importPurseWithPrivateKey(String privateKey,String walletName,Function(TPWallet) success,Function(TPError) failure) async {
+    TPWallet wallet = await _getWalletWithPrivateKey(privateKey,walletName);
      if (await _isHaveSamePurse(wallet)){
        failure(TPError(800,'已拥有该钱包'));
     }else{
@@ -73,15 +73,15 @@ class TPCreatePurseModelManager {
     await manager.closeDataBase();
   }
 
-  Future<TPWallet> _getWalletWithNoting() async{
+  Future<TPWallet> _getWalletWithNoting(String walletName) async{
     String randomMnemonic =  bip39.generateMnemonic();
     String seed = bip39.mnemonicToSeedHex(randomMnemonic);
     KeyData master = ED25519_HD_KEY.getMasterKeyFromSeed(seed);
     String privateKey = HEX.encode(master.key);
-    return await _getWallet(privateKey,randomMnemonic,0);
+    return await _getWallet(privateKey,randomMnemonic,0,walletName);
   }
 
-  Future<TPWallet> _getWallet(String privateKey,String mnemonic,int type) async{
+  Future<TPWallet> _getWallet(String privateKey,String mnemonic,int type,String walletName)async{
     EthPrivateKey private = EthPrivateKey.fromHex(privateKey);
     EthereumAddress address = await private.extractAddress();
     Uint8List addressList = address.addressBytes;
@@ -93,22 +93,19 @@ class TPCreatePurseModelManager {
     Random rng = Random.secure();
     Wallet wallet = Wallet.createNew(private, '', rng);
     String walletJson = wallet.toJson();
-    Map walletMap = jsonDecode(walletJson);
-    String walletId = walletMap['id'];
-    String walletName = 'TP钱包' + walletId.split('-').first;
     TPWallet tldWallet = TPWallet(null, walletJson, mnemonic,privateKey,addressHex,walletName,type);
     return tldWallet;
   }
 
-  Future<TPWallet> _getWalletWithWord(String mnemonicString) async{
+  Future<TPWallet> _getWalletWithWord(String mnemonicString,String walletName) async{
     String seed = bip39.mnemonicToSeedHex(mnemonicString);
     KeyData master = ED25519_HD_KEY.getMasterKeyFromSeed(seed);
     String privateKey = HEX.encode(master.key);
-    return await _getWallet(privateKey, mnemonicString,1);
+    return await _getWallet(privateKey, mnemonicString,1,walletName);
   }
 
-    Future<TPWallet> _getWalletWithPrivateKey(String privateKey) async{
-    return await _getWallet(privateKey, '',1);
+    Future<TPWallet> _getWalletWithPrivateKey(String privateKey,String walletName) async{
+    return await _getWallet(privateKey, '',1,walletName);
   }
 
 

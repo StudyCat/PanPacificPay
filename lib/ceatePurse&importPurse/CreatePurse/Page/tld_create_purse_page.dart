@@ -176,16 +176,17 @@ class _TPCreatePursePageState extends State<TPCreatePursePage> {
 
   void _registerUser(){
       _savePassword();
-      if (widget.type == TPCreatePursePageType.create){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TPCreatingPursePage(type: TPCreatingPursePageType.create,)));
-      }else if (widget.type == TPCreatePursePageType.import){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TPImportPursePage()));
-      }else {
+      // if (widget.type == TPCreatePursePageType.create){
+      //     Navigator.push(context, MaterialPageRoute(builder: (context) => TPCreatingPursePage(type: TPCreatingPursePageType.create,)));
+      // }else if (widget.type == TPCreatePursePageType.import){
+      //     Navigator.push(context, MaterialPageRoute(builder: (context) => TPImportPursePage()));
+      // }else {
+        Navigator.pop(context);
           if (widget.setPasswordSuccessCallBack != null){
                 widget.setPasswordSuccessCallBack();
           }
-          Navigator.pop(context);
-      }
+          
+      // }
   }
 
   void _savePassword() async{

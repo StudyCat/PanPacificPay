@@ -8,7 +8,9 @@ import 'tld_import_purse_word_page.dart';
 
 
 class TPImportPursePage extends StatefulWidget {
-  TPImportPursePage({Key key}) : super(key: key);
+  TPImportPursePage({Key key,this.walletName}) : super(key: key);
+
+  final String walletName;
 
   @override
   _TPImportPursePageState createState() => _TPImportPursePageState();
@@ -71,8 +73,8 @@ class _TPImportPursePageState extends State<TPImportPursePage> with SingleTicker
           Expanded(
               child: TabBarView(
             children: [
-              TPImportPurseWordPage(),
-              TPImportPurseKeyPage()
+              TPImportPurseWordPage(walletName: widget.walletName,),
+              TPImportPurseKeyPage(walletName: widget.walletName,)
             ],
             controller: _tabController,
           ))

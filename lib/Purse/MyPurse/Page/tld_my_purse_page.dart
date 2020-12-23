@@ -4,6 +4,8 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_page.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
 import 'package:dragon_sword_purse/Purse/MyPurse/Model/tld_my_purse_model_manager.dart';
+import 'package:dragon_sword_purse/Purse/MyPurse/View/tp_new_my_purse_header_view.dart';
+import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
@@ -164,17 +166,19 @@ class _TPMyPursePageState extends State<TPMyPursePage> {
 
   Widget _getBodyWidget(BuildContext context) {
     return Column(children: <Widget>[
-      TPMyPurseHeaderView(infoModel: _infoModel,didClickTransferAccountsBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TPTransferAccountsPage(walletInfoModel: _infoModel,transferSuccessCallBack: (String str){
-          _getWalletInfo();
-        },)));
-      },
-      didClickChangeBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> TPExchangePage(infoModel: _infoModel,)));
-      },
-      didClickQRCodeBtnCallBack: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TPQRCodePage(infoModel: _infoModel,)));
-      },
+      TPNewMyPurseHeaderView(
+        infoModel: _infoModel,
+        didClickActionCallBack: (int index){
+          if (index == 0){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> TPExchangePage(infoModel: _infoModel,)));
+          }else if (index == 1){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TPQRCodePage(infoModel: _infoModel,)));
+          }else if (index == 2){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TPTransferAccountsPage(walletInfoModel: _infoModel,transferSuccessCallBack: (String str){
+              _getWalletInfo();
+            },)));
+          }
+        },
       ),
       Expanded(
         child: TPMyPurseContentView(walletAddress: widget.wallet.address,),

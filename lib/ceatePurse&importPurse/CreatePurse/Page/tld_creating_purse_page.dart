@@ -17,10 +17,12 @@ enum TPCreatingPursePageType { create, import }
 
 class TPCreatingPursePage extends StatefulWidget {
   TPCreatingPursePage(
-      {Key key, @required this.type, this.mnemonicString, this.privateKey})
+      {Key key, @required this.type, this.mnemonicString, this.privateKey,this.walletName})
       : super(key: key);
 
   final TPCreatingPursePageType type;
+
+  final String walletName;
 
   final String mnemonicString;
 
@@ -51,7 +53,7 @@ class _TPCreatingPursePageState extends State<TPCreatingPursePage> {
   }
 
   void _createPurse() async {
-    await _manager.createPurse('', (TPWallet wallet) {
+    await _manager.createPurse('', widget.walletName,(TPWallet wallet) {
       TPDataManager.instance.purseList.add(wallet);
       Navigator.push(
           context,
@@ -71,7 +73,7 @@ class _TPCreatingPursePageState extends State<TPCreatingPursePage> {
 
 
   void _importPurseWithWord() async {
-    await _manager.importPurseWithWord(widget.mnemonicString,
+    await _manager.importPurseWithWord(widget.mnemonicString,widget.walletName,
         (TPWallet wallet) {
       TPDataManager.instance.purseList.add(wallet);
       Navigator.push(context,
@@ -86,7 +88,7 @@ class _TPCreatingPursePageState extends State<TPCreatingPursePage> {
   }
 
   void _importPurseWithPrivateKey()async{
-    await _manager.importPurseWithPrivateKey(widget.privateKey, (TPWallet wallet){
+    await _manager.importPurseWithPrivateKey(widget.privateKey,widget.walletName, (TPWallet wallet){
       TPDataManager.instance.purseList.add(wallet);
           Navigator.push(context,
                MaterialPageRoute(builder: (context) => TPImportPurseSuccessPage()));

@@ -21,12 +21,10 @@ class _TPFindRootADBannerViewState extends State<TPFindRootADBannerView> {
   @override
   Widget build(BuildContext context) {
     double height =
-        (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) /
-            345 *
-            170;
+        (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)) / 345 * 170;
     return Padding(
       padding: EdgeInsets.only(
-          left: ScreenUtil().setWidth(30), right: ScreenUtil().setWidth(30)),
+          left: ScreenUtil().setWidth(30), right: ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(40)),
       child: Container(
         height: height,
         child: Swiper(

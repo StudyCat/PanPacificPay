@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
+import 'dart:convert' show json;
 
 class TPBannerModel {
   int bannerId;
@@ -45,37 +46,133 @@ class TPBannerModel {
   }
 }
 
-class TP3rdWebInfoModel{
-  String url;
-  String iconUrl;
-  String name;
-  bool isNeedHideNavigation;
-  int appType;
+T asT<T>(dynamic value) {
+  if (value is T) {
+    return value;
+  }
+  return null;
+}
 
-   TP3rdWebInfoModel(
-      {this.url,
-      this.iconUrl,
-      this.name,
-      this.isNeedHideNavigation,
-      this.appType
-      });
+class TPfindUserModel {
+  TPfindUserModel({
+    this.playList,
+    this.iconList,
+    this.nickname,
+    this.avatar,
+    this.otherList,
+  });
 
-  TP3rdWebInfoModel.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    iconUrl = json['iconUrl'];
-    name = json['name'];
-    isNeedHideNavigation = json["isNeedHideNavigation"];
-    appType = json["appType"];
+  factory TPfindUserModel.fromJson(Map<String, dynamic> jsonRes) {
+    if (jsonRes == null) {
+      return null;
+    }
+    final List<TP3rdWebInfoModel> playList =
+        jsonRes['playList'] is List ? <TP3rdWebInfoModel>[] : null;
+    if (playList != null) {
+      for (final dynamic item in jsonRes['playList']) {
+        if (item != null) {
+          playList
+              .add(TP3rdWebInfoModel.fromJson(asT<Map<String, dynamic>>(item)));
+        }
+      }
+    }
+
+    final List<TP3rdWebInfoModel> iconList =
+        jsonRes['iconList'] is List ? <TP3rdWebInfoModel>[] : null;
+    if (iconList != null) {
+      for (final dynamic item in jsonRes['iconList']) {
+        if (item != null) {
+          iconList
+              .add(TP3rdWebInfoModel.fromJson(asT<Map<String, dynamic>>(item)));
+        }
+      }
+    }
+
+    final List<TP3rdWebInfoModel> otherList =
+        jsonRes['otherList'] is List ? <TP3rdWebInfoModel>[] : null;
+    if (otherList != null) {
+      for (final dynamic item in jsonRes['otherList']) {
+        if (item != null) {
+          otherList
+              .add(TP3rdWebInfoModel.fromJson(asT<Map<String, dynamic>>(item)));
+        }
+      }
+    }
+
+    return TPfindUserModel(
+      playList: playList,
+      iconList: iconList,
+      nickname: asT<String>(jsonRes['nickname']),
+      avatar: asT<String>(jsonRes['avatar']),
+      otherList: otherList,
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['url'] = this.url;
-    data['iconUrl'] = this.iconUrl;
-    data['name'] = this.name;
-    data["isNeedHideNavigation"] = this.isNeedHideNavigation;
-    data["appType"] = this.appType;
-    return data;
+  List<TP3rdWebInfoModel> playList;
+  List<TP3rdWebInfoModel> iconList;
+  String nickname;
+  String avatar;
+  List<TP3rdWebInfoModel> otherList;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'playList': playList,
+        'iconList': iconList,
+        'nickname': nickname,
+        'avatar': avatar,
+        'otherList': otherList,
+      };
+
+  @override
+  String toString() {
+    return json.encode(this);
+  }
+}
+
+class TP3rdWebInfoModel {
+  TP3rdWebInfoModel({
+    this.appType,
+    this.appId,
+    this.uploadType,
+    this.name,
+    this.iconUrl,
+    this.url,
+    this.isNeedHideNavigation,
+  });
+
+  factory TP3rdWebInfoModel.fromJson(Map<String, dynamic> jsonRes) =>
+      jsonRes == null
+          ? null
+          : TP3rdWebInfoModel(
+              appType: asT<int>(jsonRes['appType']),
+              appId: asT<int>(jsonRes['appId']),
+              uploadType: asT<int>(jsonRes['uploadType']),
+              name: asT<String>(jsonRes['name']),
+              iconUrl: asT<String>(jsonRes['iconUrl']),
+              url: asT<String>(jsonRes['url']),
+              isNeedHideNavigation: asT<bool>(jsonRes['isNeedHideNavigation']),
+            );
+
+  int appType;
+  int appId;
+  int uploadType;
+  String name;
+  String iconUrl;
+  String url;
+  bool isNeedHideNavigation;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'appType': appType,
+        'appId': appId,
+        'uploadType': uploadType,
+        'name': name,
+        'iconUrl': iconUrl,
+        'url': url,
+        'isNeedHideNavigation': isNeedHideNavigation,
+      };
+
+  @override
+  String toString() {
+    return json.encode(this);
   }
 }
 
@@ -98,6 +195,7 @@ class TPFindRootCellUIItemModel {
 }
 
 class TPFindRootModelManager {
+
   static List get uiModelList {
     return [
       TPFindRootCellUIModel(title: '专栏', isHaveNotice: true, items: [
@@ -109,8 +207,8 @@ class TPFindRootModelManager {
     ];
   }
 
-  void getBannerInfo(Function success,Function(TPError) failure){
-    TPBaseRequest request = TPBaseRequest({},'banner/bannerList');
+  void getBannerInfo(Function success, Function(TPError) failure) {
+    TPBaseRequest request = TPBaseRequest({}, 'banner/bannerList');
     request.postNetRequest((value) {
       List dataList = value;
       List result = [];
@@ -121,95 +219,84 @@ class TPFindRootModelManager {
     }, (error) => failure(error));
   }
 
-  void get3rdWebInfo(String qrCodeStr,Function(TP3rdWebInfoModel) success,Function(TPError) failure){
-     try {
-       if (qrCodeStr.contains('isTP=true')){
+  void get3rdWebInfo(String qrCodeStr, Function(TP3rdWebInfoModel) success,
+      Function(TPError) failure) {
+    try {
+      if (qrCodeStr.contains('isTP=true')) {
         Uri uri = Uri.parse(qrCodeStr);
-       String path = uri.path;
-       String origin = uri.origin;
-       if (uri.queryParameters.length == 0){
-          TPError error = TPError(400,'无效的二维码');
+        String path = uri.path;
+        String origin = uri.origin;
+        if (uri.queryParameters.length == 0) {
+          TPError error = TPError(400, '无效的二维码');
           failure(error);
           return;
-       }
-       String iconUrl = uri.queryParameters['iconUrl'];
-       String name = uri.queryParameters['name'];
-       String url = origin + path;
-       if (iconUrl == null || name == null || url == null){
-         TPError error = TPError(400,'无效的二维码');
+        }
+        String iconUrl = uri.queryParameters['iconUrl'];
+        String name = uri.queryParameters['name'];
+        String url = origin + path;
+        if (iconUrl == null || name == null || url == null) {
+          TPError error = TPError(400, '无效的二维码');
+          failure(error);
+          return;
+        }
+        TP3rdWebInfoModel infoModel = TP3rdWebInfoModel();
+        infoModel.url = origin + path;
+        infoModel.iconUrl = iconUrl;
+        infoModel.isNeedHideNavigation = false;
+        infoModel.appType = 0;
+        if (uri.queryParameters["isNeedHideNavigation"] != null) {
+          if (uri.queryParameters["isNeedHideNavigation"] == "true") {
+            infoModel.isNeedHideNavigation = true;
+          }
+        }
+        infoModel.name = name;
+        success(infoModel);
+      } else {
+        TPError error = TPError(400, '无效的二维码');
         failure(error);
-        return;
-       }
-       TP3rdWebInfoModel infoModel = TP3rdWebInfoModel();
-       infoModel.url = origin + path;
-       infoModel.iconUrl = iconUrl;
-       infoModel.isNeedHideNavigation = false;
-       infoModel.appType = 0;
-       if (uri.queryParameters["isNeedHideNavigation"] != null){
-         if (uri.queryParameters["isNeedHideNavigation"] == "true"){
-           infoModel.isNeedHideNavigation = true;
-         }
-       }
-       infoModel.name = name;
-       success(infoModel);
-       }else{
-         TPError error = TPError(400,'无效的二维码');
-        failure(error);
-       }
-     }catch(e){
-       TPError error = TPError(400,'二维码解析失败');
-       failure(error);
-     }
+      }
+    } catch (e) {
+      TPError error = TPError(400, '二维码解析失败');
+      failure(error);
+    }
   }
-  
 
-  void save3rdPartWeb(TP3rdWebInfoModel infoModel ,Function success,Function(TPError) failure){
-    TPBaseRequest request = TPBaseRequest({'appUrl':infoModel.url,'iconUrl':infoModel.iconUrl,"appName":infoModel.name,"isNeedHideNavigation":infoModel.isNeedHideNavigation},"play/saveApp");
+  void save3rdPartWeb(TP3rdWebInfoModel infoModel, Function success,
+      Function(TPError) failure) {
+    TPBaseRequest request = TPBaseRequest({
+      'appUrl': infoModel.url,
+      'iconUrl': infoModel.iconUrl,
+      "appName": infoModel.name,
+      "isNeedHideNavigation": infoModel.isNeedHideNavigation
+    }, "play/saveApp");
     request.postNetRequest((value) {
       success();
-    }, (error){
+    }, (error) {
       failure(error);
-    } );
+    });
   }
 
-
-  void getPlatform3rdWeb(Function success,Function(TPError) failure){
-    TPBaseRequest request = TPBaseRequest({},"play/appList");
+  void getPlatform3rdWeb(Function success, Function(TPError) failure) {
+    TPBaseRequest request = TPBaseRequest({}, "play/appList");
     request.postNetRequest((value) {
-      List playList = value['playList'];
-      List otherList = value['otherList'];
-      List playResult = [];
-      List otherResult = [];
-      for (var item in playList) {
-        TP3rdWebInfoModel infoModel = TP3rdWebInfoModel.fromJson(item);
-        infoModel.appType = 1;
-        playResult.add(infoModel);
-      }
-      for (var item in otherList) {
-        TP3rdWebInfoModel infoModel = TP3rdWebInfoModel.fromJson(item);
-        infoModel.appType = 1;
-        otherResult.add(infoModel);
-      }
-      success(playResult,otherResult);
-    }, (error){
+      TPfindUserModel userModel = TPfindUserModel.fromJson(value);
+      success(userModel);
+    }, (error) {
       failure(error);
-    } );
+    });
   }
 
-
-  void isOpenMission(Function success,Function(TPError) failure){
-    TPBaseRequest request = TPBaseRequest({},"common/isOpenTask");
+  void isOpenMission(Function success, Function(TPError) failure) {
+    TPBaseRequest request = TPBaseRequest({}, "common/isOpenTask");
     request.postNetRequest((value) {
       success(value);
-    }, (error){
+    }, (error) {
       failure(error);
-    } );
+    });
   }
 
-
-
-  void getGamePageInfo(Function success,Function failure){
-    TPBaseRequest request = TPBaseRequest({},'play/gameAppList');
+  void getGamePageInfo(Function success, Function failure) {
+    TPBaseRequest request = TPBaseRequest({}, 'play/gameAppList');
 
     request.postNetRequest((value) {
       List bannerStrList = value['gameBannerList'];
@@ -222,12 +309,12 @@ class TPFindRootModelManager {
       for (var item in gameStrList) {
         gameList.add(TP3rdWebInfoModel.fromJson(item));
       }
-      success(bannerList,gameList);
+      success(bannerList, gameList);
     }, (error) => failure(error));
   }
 
-  void haveAcceptanceUser(Function success,Function failure){
-     TPBaseRequest request = TPBaseRequest({},'acpt/user/existAcptAccount');
+  void haveAcceptanceUser(Function success, Function failure) {
+    TPBaseRequest request = TPBaseRequest({}, 'acpt/user/existAcptAccount');
     request.postNetRequest((value) {
       String walletAddress = value['walletAddress'];
       bool isExist = value['isExist'];
@@ -235,33 +322,31 @@ class TPFindRootModelManager {
       bool haveSameWallet = false;
       List purseList = TPDataManager.instance.purseList;
       for (TPWallet wallet in purseList) {
-        if (wallet.address == walletAddress){
+        if (wallet.address == walletAddress) {
           haveSameWallet = true;
           break;
         }
       }
-      if (isExist == true ){
-        if (haveSameWallet == false){
+      if (isExist == true) {
+        if (haveSameWallet == false) {
           needBinding = true;
         }
-      }else{
+      } else {
         needBinding = true;
       }
       success(needBinding);
     }, (error) => failure(error));
   }
 
-
-  void haveAAAUserInfo(Function success,Function failure){
-      TPBaseRequest request = TPBaseRequest({},'aaa/isExistAccount');
+  void haveAAAUserInfo(Function success, Function failure) {
+    TPBaseRequest request = TPBaseRequest({}, 'aaa/isExistAccount');
     request.postNetRequest((value) {
       success(value);
     }, (error) => failure(error));
   }
 
-
-  void isMerchant(Function success,Function failure){
-      TPBaseRequest request = TPBaseRequest({},'merchant/isMerchant');
+  void isMerchant(Function success, Function failure) {
+    TPBaseRequest request = TPBaseRequest({}, 'merchant/isMerchant');
     request.postNetRequest((value) {
       success(value);
     }, (error) => failure(error));

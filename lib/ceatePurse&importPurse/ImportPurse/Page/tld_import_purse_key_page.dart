@@ -9,7 +9,9 @@ import '../../CreatePurse/Page/tld_creating_purse_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class TPImportPurseKeyPage extends StatefulWidget {
-  TPImportPurseKeyPage({Key key}) : super(key: key);
+  TPImportPurseKeyPage({Key key,this.walletName}) : super(key: key);
+
+  final String walletName;
 
   @override
   _TPImportPurseKeyPageState createState() => _TPImportPurseKeyPageState();
@@ -100,7 +102,7 @@ class _TPImportPurseKeyPageState extends State<TPImportPurseKeyPage> {
                           ));
                 } else {
                    _manager.jugePrivateKeyLegal(_keyString, (privateKey){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatingPursePage(type: TPCreatingPursePageType.import,privateKey: privateKey,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatingPursePage(walletName: widget.walletName,type: TPCreatingPursePageType.import,privateKey: privateKey,)));
                   }, (int value) {
                     String msg; 
                     if(value == 0){

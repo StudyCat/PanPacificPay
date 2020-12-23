@@ -12,7 +12,9 @@ import 'tld_import_purse_success_page.dart';
 import '../Model/tld_import_purse_model_manager.dart';
 
 class TPImportPurseWordPage extends StatefulWidget {
-  TPImportPurseWordPage({Key key}) : super(key: key);
+  TPImportPurseWordPage({Key key,this.walletName}) : super(key: key);
+ 
+  final String walletName;
 
   @override
   _TPImportPurseWordPageState createState() => _TPImportPurseWordPageState();
@@ -93,7 +95,7 @@ class _TPImportPurseWordPageState extends State<TPImportPurseWordPage> {
                   showDialog(context: context , builder : (context) => TPAlertView(title : '温馨提示',type : TPAlertViewType.normal ,alertString: '需要将助记词补满哦',didClickSureBtn: (){},));
                 }else{
                   _manager.jugeMnemonicisLegal(words, (mnemonicString){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatingPursePage(type: TPCreatingPursePageType.import,mnemonicString: mnemonicString,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatingPursePage(walletName: widget.walletName,type: TPCreatingPursePageType.import,mnemonicString: mnemonicString,)));
                   }, (int value) {
                     String msg; 
                     if(value == 0){

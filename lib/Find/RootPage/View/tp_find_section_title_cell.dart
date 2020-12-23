@@ -18,7 +18,7 @@ class TPFindSectionTitleCell extends StatefulWidget {
 class _TPFindSectionTitleCellState extends State<TPFindSectionTitleCell> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(8),right: ScreenUtil().setWidth(30)),
       child:  Column(
         children: <Widget>[
@@ -57,6 +57,7 @@ class _TPFindSectionTitleCellState extends State<TPFindSectionTitleCell> {
     return Container(
       height: ScreenUtil().setHeight(96) * widget.uiModel.items.length,
       child: ListView.builder(
+      padding: EdgeInsets.only(top : 0),
       physics: new NeverScrollableScrollPhysics(), //增加
       itemCount: widget.uiModel.items.length,
       itemBuilder: (BuildContext context, int index) {

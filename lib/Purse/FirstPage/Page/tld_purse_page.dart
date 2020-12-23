@@ -7,7 +7,10 @@ import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/Page/tld_deteail_reci
 import 'package:dragon_sword_purse/Find/RecieveRedEnvelope/View/tld_unopen_red_envelope_alert_view.dart';
 import 'package:dragon_sword_purse/Find/RedEnvelope/Model/tld_detail_red_envelope_model_manager.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/View/tp_purse_info_list_view.dart';
+import 'package:dragon_sword_purse/Purse/MyPurse/View/tp_add_purse_action_sheet.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tp_create_import_purse_input_password_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
@@ -177,7 +180,7 @@ class _TPPursePageState extends State<TPPursePage> with AutomaticKeepAliveClient
   Widget _getBodyWidget(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, index) => _getListViewItem(context,index),
-      itemCount: _dataSource.length + 4,
+      itemCount: 3,
     );
   }
 
@@ -185,30 +188,9 @@ class _TPPursePageState extends State<TPPursePage> with AutomaticKeepAliveClient
     if (index == 0) {
       return TPPurseHeaderCell(totalAmount:  _totalAmount,);
     }else if (index == 1){
-      return Padding(padding: EdgeInsets.only(top : ScreenUtil().setHeight(20),left : ScreenUtil().setWidth(30)),
-      child: Row(
-        children : [
-          Container(
-            height : ScreenUtil().setHeight(30),
-            width : ScreenUtil().setWidth(6),
-            color: Theme.of(context).primaryColor,
-          ),
-          Padding(padding: EdgeInsets.only(left : ScreenUtil().setWidth(10)),
-          child: Text('我的钱包',style : TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontWeight : FontWeight.bold,fontSize : ScreenUtil().setSp(32))),
-          )
-        ]
-      ),
-      );
-    }else if (index == _dataSource.length + 2) {
-      return TPPurseFirstPageBottomCell();
-    } else if (index == _dataSource.length + 3){
-      return _getActionWidget();
-    }else {
-      TPWalletInfoModel model = _dataSource[index - 2];
-      return TPPurseFirstPageCell(
-        walletInfo: model,
-        didClickCallBack: () {
-          Navigator.push(
+      return TPPurseInfoListView(walletList: _dataSource,didClickItemCallBack: (int dataIndex){
+        TPWalletInfoModel model = _dataSource[dataIndex];
+        Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) {
@@ -220,9 +202,45 @@ class _TPPursePageState extends State<TPPursePage> with AutomaticKeepAliveClient
               },
             ),
           ).then((value) => _getPurseInfoList(context));
-        },
+      },
+      didClickAddPurseCallBack: (){
+        showModalBottomSheet(context: context, builder: (context){
+          return TPAddPurseActionSheet(
+            didClickCreatePurseCallBack: (){
+              _createPurse(context);
+            },
+            didClickImportPurseCallBack: (){
+              _importPurse(context);
+            },
+          );
+        });
+      },
       );
-    }
+    }else {
+      return TPPurseFirstPageBottomCell();
+    } 
+    // else if (index == _dataSource.length + 3){
+    //   return _getActionWidget();
+    // }else {
+    //   TPWalletInfoModel model = _dataSource[index - 2];
+    //   return TPPurseFirstPageCell(
+    //     walletInfo: model,
+    //     didClickCallBack: () {
+    //       Navigator.push(
+    //         context,
+    //         MaterialPageRoute(
+    //           builder: (context) {
+    //             return  TPMyPursePage(wallet: model.wallet,changeNameSuccessCallBack: (String name){
+    //               setState(() {
+    //                 TPDataManager.instance.purseList;
+    //               });
+    //             },);
+    //           },
+    //         ),
+    //       ).then((value) => _getPurseInfoList(context));
+    //     },
+    //   );
+    // }
   }
 
   void _createPurse(BuildContext context) async{
@@ -236,9 +254,14 @@ class _TPPursePageState extends State<TPPursePage> with AutomaticKeepAliveClient
       Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
-    jugeHavePassword(context, (){
-       Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatingPursePage(type: TPCreatingPursePageType.create,)));
-    },TPCreatePursePageType.create,null);
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context){
+        return TPCreateImportPurseInputPasswordPage(type : 0);
+      }
+    ));
+    // jugeHavePassword(context, (){
+    //    Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatingPursePage(type: TPCreatingPursePageType.create,)));
+    // },TPCreatePursePageType.create,null);
   }
 
   void _importPurse(BuildContext context) async{
@@ -252,9 +275,15 @@ class _TPPursePageState extends State<TPPursePage> with AutomaticKeepAliveClient
       Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
-    jugeHavePassword(context,(){
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> TPImportPursePage()));
-    },TPCreatePursePageType.import,null);
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context){
+        return TPCreateImportPurseInputPasswordPage(type : 1);
+      }
+    ));
+
+    // jugeHavePassword(context,(){
+    //   Navigator.push(context, MaterialPageRoute(builder: (context)=> TPImportPursePage()));
+    // },TPCreatePursePageType.import,null);
   }
 
   void _getPurseInfoList(BuildContext context){

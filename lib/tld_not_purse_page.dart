@@ -22,6 +22,7 @@ import 'ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'dart:io';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter/services.dart';
+import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tp_create_import_purse_input_password_page.dart';
 
 class TPNotPurseHomePage extends StatefulWidget {
   TPNotPurseHomePage({Key key}) : super(key: key);
@@ -206,14 +207,22 @@ class _TPNotPurseHomePageState extends State<TPNotPurseHomePage> with WidgetsBin
       Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
-    jugeHavePassword(context, () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => TPCreatingPursePage(
-                    type: TPCreatingPursePageType.create,
-                  )));
-    }, TPCreatePursePageType.create, null);
+    String password = await TPDataManager.instance.getPassword();
+    if (password == null){
+         Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatePursePage(type: TPCreatePursePageType.create,setPasswordSuccessCallBack: (){
+           Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreateImportPurseInputPasswordPage(type : 0)));
+         },)));
+         return;
+    }
+     Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreateImportPurseInputPasswordPage(type : 0)));
+    // jugeHavePassword(context, () {
+    //   Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //           builder: (context) => TPCreatingPursePage(
+    //                 type: TPCreatingPursePageType.create,
+    //               )));
+    // }, TPCreatePursePageType.create, null);
   }
 
   void _importPurse(BuildContext context) async {
@@ -227,10 +236,18 @@ class _TPNotPurseHomePageState extends State<TPNotPurseHomePage> with WidgetsBin
       Fluttertoast.showToast(msg: I18n.of(navigatorKey.currentContext).PleaseTurnOnTheStoragePermissions);
       return;
     }
-    jugeHavePassword(context, () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => TPImportPursePage()));
-    }, TPCreatePursePageType.import, null);
+    String password = await TPDataManager.instance.getPassword();
+    if (password == null){
+         Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatePursePage(type: TPCreatePursePageType.import,setPasswordSuccessCallBack: (){
+           Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreateImportPurseInputPasswordPage(type : 1)));
+         },)));
+         return;
+    }
+     Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreateImportPurseInputPasswordPage(type : 1)));
+    // jugeHavePassword(context, () {
+    //   Navigator.push(context,
+    //       MaterialPageRoute(builder: (context) => TPImportPursePage()));
+    // }, TPCreatePursePageType.import, null);
   }
 
   
