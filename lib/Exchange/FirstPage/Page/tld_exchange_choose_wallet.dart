@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_wallet_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_emty_list_view.dart';
+import 'package:dragon_sword_purse/Exchange/FirstPage/View/tp_choose_wallet_cell.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/TabbarPage/Page/tld_acceptance_tabbar_page.dart';
 import 'package:dragon_sword_purse/Purse/TransferAccounts/Page/tld_transfer_accounts_page.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
@@ -97,9 +98,9 @@ class _TPEchangeChooseWalletPageState extends State<TPEchangeChooseWalletPage> {
 
   Widget _getListViewItem(BuildContext context, int index) {
       TPWalletInfoModel model = _dataSource[index];
-      return TPPurseFirstPageCell(
+      return TPChooseWalletCell(
         walletInfo: model,
-        didClickCallBack: () {
+        didClickItemCallBack: () {
           if (widget.type == TPEchangeChooseWalletPageType.normal){
             widget.didChooseWalletCallBack(model);
             Navigator.of(context).pop();

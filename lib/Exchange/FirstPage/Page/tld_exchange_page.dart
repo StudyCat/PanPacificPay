@@ -98,6 +98,7 @@ class _TPExchangePageState extends State<TPExchangePage> {
       itemBuilder: (BuildContext context, int index) {
         if (index == 0) {
           return TPExchangeNormalCell(
+            borderRadius: 0,
             type: TPExchangeNormalCellType.normalArrow,
             title: titleList[index],
             content: _formModel.infoModel == null
@@ -127,7 +128,9 @@ class _TPExchangePageState extends State<TPExchangePage> {
             },
           );
         } else if (index == 2) {
-          return TPExchangeInputSliderCell(
+          return TPExchangeInputCell(
+            borderRadius: 0,
+            top: 1,
             title: titleList[index],
             infoModel: _formModel.infoModel,
             focusNode: _saleAmountFocusNode,
@@ -139,6 +142,8 @@ class _TPExchangePageState extends State<TPExchangePage> {
           );
         } else if (index == 3) {
           return TPExchangeInputCell(
+             borderRadius: 0,
+             top: 1,
               title: titleList[index],
               infoModel: _formModel.infoModel,
               focusNode: _minAmountFocusNode,
@@ -147,6 +152,7 @@ class _TPExchangePageState extends State<TPExchangePage> {
               });
         }else if (index == 4){
           return TPExchangeInputCell(
+            borderRadius: 0,
               title: titleList[index],
               top: 1,
               infoModel: _formModel.infoModel,
@@ -182,7 +188,11 @@ class _TPExchangePageState extends State<TPExchangePage> {
                 onPressed: () => submitSaleForm()),
           );
         }else if(index == 5){
-          return TPExchangeRateSliderCell(title: titleList[index],infoModel: _formModel.infoModel,didChangeRateCallBack: (String rate){
+          return TPExchangeRateSliderCell(
+            borderRadius: 0,
+            title: titleList[index],
+            infoModel: _formModel.infoModel,
+            didChangeRateCallBack: (String rate){
             setState(() {
               _formModel.rate = rate;
             });
@@ -213,6 +223,7 @@ class _TPExchangePageState extends State<TPExchangePage> {
           }
           return TPExchangeNormalCell(
             type: TPExchangeNormalCellType.normal,
+            borderRadius: 0,
             title: titleList[index],
             content: content,
             contentStyle: TextStyle(

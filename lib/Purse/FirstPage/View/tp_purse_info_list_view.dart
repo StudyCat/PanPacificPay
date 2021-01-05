@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Purse/FirstPage/View/purse_cell.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/View/tp_purse_no_purse_cell.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +26,7 @@ class _TPPurseInfoListViewState extends State<TPPurseInfoListView> {
           left: ScreenUtil().setWidth(30),
           right: ScreenUtil().setWidth(30)),
       child: Container(
-        height: ScreenUtil().setHeight(103) + ScreenUtil().setHeight(130) * widget.walletList.length,
+        height: widget.walletList.length == 0 ? ScreenUtil().setHeight(220) : ScreenUtil().setHeight(103) + ScreenUtil().setHeight(130) * widget.walletList.length,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             color: Colors.white,
@@ -44,14 +45,20 @@ class _TPPurseInfoListViewState extends State<TPPurseInfoListView> {
 
   Widget _getListView() {
     return ListView.builder(
-      itemCount: widget.walletList.length + 1,
+      itemCount: widget.walletList.length == 0 ? 2 : widget.walletList.length + 1,
       itemBuilder: (BuildContext context, int index) {
         if (index == 0) {
           return _getHeaderCell();
         }else{
-          return TPPurseFirstPageCell(walletInfo: widget.walletList[index - 1],didClickCallBack: (){
-            widget.didClickItemCallBack(index - 1);
-          },);
+          if (widget.walletList.length == 0){
+             return TPPurseNoPurseCell(didClickAddPurseCallBack: (){
+               widget.didClickAddPurseCallBack();
+             },);
+          }else{
+            return TPPurseFirstPageCell(walletInfo: widget.walletList[index - 1],didClickCallBack: (){
+               widget.didClickItemCallBack(index - 1);
+            },);
+          }
         }
       },
     );

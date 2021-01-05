@@ -1,8 +1,13 @@
 import 'dart:async';
-
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_detail_order_page.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/View/purse_bottom_cell.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/View/purse_first_cell.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/View/tp_purse_info_list_view.dart';
+import 'package:dragon_sword_purse/Purse/MyPurse/Page/tld_my_purse_page.dart';
+import 'package:dragon_sword_purse/Purse/MyPurse/View/tp_add_purse_action_sheet.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
@@ -11,7 +16,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'Purse/FirstPage/View/message_button.dart';
 import 'IMUI/Page/tld_im_page.dart';
 import 'Message/Page/tld_message_page.dart';
@@ -35,12 +42,20 @@ class _TPNotPurseHomePageState extends State<TPNotPurseHomePage> with WidgetsBin
 
   TPDataBaseManager _manager;
 
+  List _dataSource = [];
+
+  double _totalAmount = 0.0;
+
+  bool _isLoading = false;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
+
+    _dataSource = [];
 
     _manager = TPDataBaseManager();
 
@@ -97,90 +112,54 @@ class _TPNotPurseHomePageState extends State<TPNotPurseHomePage> with WidgetsBin
       }
     }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _getBodyWidget(context),
+      body: LoadingOverlay(
+        isLoading: _isLoading,
+        child: _getBodyWidget(context),
+      ),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
-        backgroundColor: Color.fromARGB(255, 242, 242, 242),
+        backgroundColor: Theme.of(context).primaryColor,
         border: Border.all(
-          color: Color.fromARGB(0, 0, 0, 0),
+          color : Color.fromARGB(0, 0, 0, 0),
         ),
         heroTag: 'purse_page',
         transitionBetweenRoutes: false,
-        middle: Text(I18n.of(context).commonPageTitle),
+        middle: Text(I18n.of(context).commonPageTitle,style: TextStyle(color : Colors.white),),
         automaticallyImplyLeading: false,
-      ),
-    );
+    ));
   }
 
   Widget _getBodyWidget(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: ScreenUtil().setHeight(130)),
-          child: Image.asset(
-            'assetss/images/no_purse_page_icon.png',
-            width: ScreenUtil().setWidth(200),
-            height: ScreenUtil().setHeight(200),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: ScreenUtil().setHeight(60)),
-          child: Text(I18n.of(context).noWalletHint,
-              style: TextStyle(
-                  fontSize: ScreenUtil().setSp(28),
-                  color: Color.fromARGB(255, 153, 153, 153))),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-              top: ScreenUtil().setHeight(70),
-              left: ScreenUtil().setWidth(100),
-              right: ScreenUtil().setWidth(100)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: (size.width - ScreenUtil().setWidth(220)) / 2,
-                height: ScreenUtil().setHeight(80),
-                child: _getActionButton(I18n.of(context).createWalletBtnTitle, () {
-                  _createPurse(context);
-                }),
-              ),
-              Container(
-                width: (size.width - ScreenUtil().setWidth(220)) / 2,
-                height: ScreenUtil().setHeight(80),
-                child: _getActionButton(I18n.of(context).importWalletBtnTitle, () {
-                  _importPurse(context);
-                }),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-              top: ScreenUtil().setHeight(70),
-              left: ScreenUtil().setWidth(30),
-              right: ScreenUtil().setWidth(30)),
-          child: Container(
-              padding: EdgeInsets.all(ScreenUtil().setWidth(30)),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(4)),
-                  color: Colors.white),
-              child: Text(
-                I18n.of(context).homePageNotice,
-                style: TextStyle(
-                    fontSize: ScreenUtil().setSp(24),
-                    color: Color.fromARGB(255, 153, 153, 153)),
-              )),
-        )
-      ],
-    ));
+    return ListView.builder(
+      itemBuilder: (context, index) => _getListViewItem(context,index),
+      itemCount: 3,
+    );
+  }
+
+  Widget _getListViewItem(BuildContext context, int index) {
+    if (index == 0) {
+      return TPPurseHeaderCell(totalAmount:  _totalAmount,);
+    }else if (index == 1){
+      return TPPurseInfoListView(walletList: _dataSource,
+      didClickAddPurseCallBack: (){
+        showModalBottomSheet(context: context, builder: (context){
+          return TPAddPurseActionSheet(
+            didClickCreatePurseCallBack: (){
+              _createPurse(context);
+            },
+            didClickImportPurseCallBack: (){
+              _importPurse(context);
+            },
+          );
+        });
+      },
+      );
+    }else {
+      return TPPurseFirstPageBottomCell();
+    } 
   }
 
   Widget _getActionButton(String title, Function didClickCallBack) {
@@ -210,7 +189,6 @@ class _TPNotPurseHomePageState extends State<TPNotPurseHomePage> with WidgetsBin
     String password = await TPDataManager.instance.getPassword();
     if (password == null){
          Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatePursePage(type: TPCreatePursePageType.create,setPasswordSuccessCallBack: (){
-           Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreateImportPurseInputPasswordPage(type : 0)));
          },)));
          return;
     }
@@ -239,7 +217,6 @@ class _TPNotPurseHomePageState extends State<TPNotPurseHomePage> with WidgetsBin
     String password = await TPDataManager.instance.getPassword();
     if (password == null){
          Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreatePursePage(type: TPCreatePursePageType.import,setPasswordSuccessCallBack: (){
-           Navigator.push(context, MaterialPageRoute(builder: (context)=> TPCreateImportPurseInputPasswordPage(type : 1)));
          },)));
          return;
     }
@@ -249,31 +226,4 @@ class _TPNotPurseHomePageState extends State<TPNotPurseHomePage> with WidgetsBin
     //       MaterialPageRoute(builder: (context) => TPImportPursePage()));
     // }, TPCreatePursePageType.import, null);
   }
-
-  
-
-  //  @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   print("--" + state.toString());
-  //   switch (state) {
-  //     case AppLifecycleState.inactive: {
-  //       TPIMManager.instance.isInBackState = true;
-  //     }// 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
-  //       break;
-  //     case AppLifecycleState.resumed:{
-  //       TPIMManager.instance.isInBackState = false;
-  //       TPIMManager.instance.connectClient();
-  //     }
-  //       break;
-  //     case AppLifecycleState.paused:{
-  //       TPIMManager.instance.isInBackState = true;
-  //     } // 应用程序不可见，后台
-  //       break;
-  //     default : {
-  //       TPIMManager.instance.isInBackState = true;
-  //     }
-  //       break;
-  //   }
-  // }
-
 }

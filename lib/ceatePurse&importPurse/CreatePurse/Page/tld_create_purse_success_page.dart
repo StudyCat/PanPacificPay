@@ -18,9 +18,6 @@ class TPCreatePurseSuccessPage extends StatefulWidget {
 
 class _TPCreatePurseSuccessPageState extends State<TPCreatePurseSuccessPage> {
 
-
-
-
   @override
   void initState() {
     // TODO: implement initState

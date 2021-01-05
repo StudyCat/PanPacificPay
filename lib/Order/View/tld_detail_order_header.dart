@@ -47,7 +47,7 @@ class _TPDetailOrderHeaderViewState extends State<TPDetailOrderHeaderView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColor,
+      color: Color.fromARGB(255, 242, 242, 242),
       child: Padding(
         padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), ScreenUtil().setHeight(168), ScreenUtil().setWidth(30), ScreenUtil().setHeight(40)),
         child: _getColumnView(context),
@@ -122,12 +122,12 @@ class _TPDetailOrderHeaderViewState extends State<TPDetailOrderHeaderView> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text(_subStr,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Colors.white),),
+        Text(_subStr,style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Theme.of(context).primaryColor),),
         Offstage(
           offstage: !isNeedAppeal,
           child: GestureDetector(
             onTap: () => widget.didClickAppealBtnCallBack(),
-            child : Text(_getAppealStatusString(),style: TextStyle(fontSize : ScreenUtil().setSp(32),color : Colors.white),),
+            child : Text(_getAppealStatusString(),style: TextStyle(fontSize : ScreenUtil().setSp(32),color : Theme.of(context).primaryColor),),
           ),
         ),
       ],
@@ -158,8 +158,8 @@ class _TPDetailOrderHeaderViewState extends State<TPDetailOrderHeaderView> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Text(statusStr,style :TextStyle(fontSize : ScreenUtil().setSp(44),color: Colors.white)),
-        IconButton(icon: Icon(IconData(0xe6a2,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(46),color:Colors.white),onPressed:widget.didClickChatBtnCallBack,)
+        Text(statusStr,style :TextStyle(fontSize : ScreenUtil().setSp(44),color:Theme.of(context).primaryColor)),
+        IconButton(icon: Icon(IconData(0xe6a2,fontFamily: 'appIconFonts'),size: ScreenUtil().setWidth(46),color:Theme.of(context).primaryColor),onPressed:widget.didClickChatBtnCallBack,)
       ],
     );
   }

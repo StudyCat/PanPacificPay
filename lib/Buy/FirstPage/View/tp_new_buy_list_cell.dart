@@ -1,25 +1,22 @@
-import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_do_mission_model_manager.dart';
-import 'package:dragon_sword_purse/Find/Mission/View/pp_mission_list_do_mission_header_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dragon_sword_purse/Buy/FirstPage/Model/tld_buy_model_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
-import 'package:dragon_sword_purse/generated/i18n.dart';
-import 'package:dragon_sword_purse/CommonWidget/ltd_sale_buy_cell_header.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PPMissionListDoMissionCell extends StatefulWidget {
-  PPMissionListDoMissionCell({Key key,this.didClickBuyBtnCallBack,this.missionModel}) : super(key: key);
+class TPNewBuyListCell extends StatefulWidget {
+  TPNewBuyListCell({Key key,this.model,this.didClickBuyBtnCallBack}) : super(key: key);
+
+    final TPBuyListInfoModel model;
 
     final Function didClickBuyBtnCallBack;
 
-    final TPMissionBuyModel missionModel;
-
   @override
-  _PPMissionListDoMissionCellState createState() => _PPMissionListDoMissionCellState();
+  _TPNewBuyListCellState createState() => _TPNewBuyListCellState();
 }
 
-class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell> {
- @override
+class _TPNewBuyListCellState extends State<TPNewBuyListCell> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
        padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(30)),
@@ -33,7 +30,7 @@ class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell>
            crossAxisAlignment: CrossAxisAlignment.start,
            children: <Widget>[
             _getUserInfoWidget(),
-            _getInfoTextWidget('数量', widget.missionModel.currentCount + 'TP'),
+            _getInfoTextWidget('数量', widget.model.currentCount + 'TP'),
             _getBottomWidget()
            ],
          ),
@@ -49,7 +46,7 @@ class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell>
           child: Container(
             height : ScreenUtil().setHeight(80),
             width: ScreenUtil().setHeight(80),
-            child: CachedNetworkImage(imageUrl: widget.missionModel.avatar,fit: BoxFit.fill,),
+            child: CachedNetworkImage(imageUrl: widget.model.avatar,fit: BoxFit.fill,),
           ),
         ),
         Padding(
@@ -58,13 +55,13 @@ class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell>
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children : [
-            Text(widget.missionModel.nickName,style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),fontWeight: FontWeight.bold),),
+            Text(widget.model.nickName,style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(28),fontWeight: FontWeight.bold),),
             Container(
               width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(240),
               child: Row(
                 children: <Widget>[
                   Text('地址：',style: TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize : ScreenUtil().setSp(24)),),
-                  Expanded(child: Text(widget.missionModel.sellerWalletAddress,style: TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize : ScreenUtil().setSp(24)),maxLines: 1,overflow: TextOverflow.ellipsis,softWrap:true,),)
+                  Expanded(child: Text(widget.model.sellerWalletAddress,style: TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize : ScreenUtil().setSp(24)),maxLines: 1,overflow: TextOverflow.ellipsis,softWrap:true,),)
                 ],
               )
             )
@@ -91,13 +88,13 @@ class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell>
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children : [
-              Text('限额' + '：' + widget.missionModel.max + '~' + widget.missionModel.maxAmount + 'TP',style: TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24)),),
+              Text('限额' + '：' + widget.model.max + '~' + widget.model.maxAmount + 'TP',style: TextStyle(color : Color.fromARGB(255, 153, 153, 153),fontSize: ScreenUtil().setSp(24)),),
              Padding(
                padding: EdgeInsets.only(top : ScreenUtil().setHeight(6)),
                child:   Container(
             height : ScreenUtil().setSp(28),
             width :  ScreenUtil().setSp(28),
-            child: CachedNetworkImage(imageUrl: widget.missionModel.payMethodVO.payIcon,fit : BoxFit.fill),
+            child: CachedNetworkImage(imageUrl: widget.model.payMethodVO.payIcon,fit : BoxFit.fill),
           )
              )
             ]
@@ -119,4 +116,5 @@ class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell>
       ),
     );
   }
+
 }

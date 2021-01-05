@@ -2,6 +2,7 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Buy/FirstPage/Model/tld_buy_model_manager.dart';
 import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_buy_action_sheet.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_do_mission_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Mission/Page/pp_mission_detail_order_page.dart';
 import 'package:dragon_sword_purse/Find/Mission/View/pp_mission_list_do_mission_cell.dart';
@@ -109,9 +110,7 @@ class _PPMissionListDoMissionPageState extends State<PPMissionListDoMissionPage>
         });
       }
       Navigator.push(context, MaterialPageRoute(builder : (context) => PPMissionDetailOrderPage(orderNo : orderNo))).then((value){
-        _page = 1;
         _refreshController.requestRefresh();
-        _getMissionList(_page);
       });
     }, (TPError error){
       if (mounted){
@@ -166,7 +165,8 @@ class _PPMissionListDoMissionPageState extends State<PPMissionListDoMissionPage>
   }
 
   Widget _getBodWidget(){
-    return ListView.builder(
+    if (_dataSource.length > 0){
+        return ListView.builder(
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
       TPMissionBuyModel missionBuyModel = _dataSource[index];
@@ -177,7 +177,13 @@ class _PPMissionListDoMissionPageState extends State<PPMissionListDoMissionPage>
         },
       );
      },
-    );
+      );
+    }else {
+      return TPEmptyDataView(
+        imageAsset: 'assetss/images/no_mission.png',
+        title: '暂无任务单',
+      );
+    }
   }
 
     @override

@@ -14,7 +14,8 @@ class TPExchangeNormalCell extends StatefulWidget {
   final String content;
   final TextStyle contentStyle;
   final Function didClickCallBack;
-  TPExchangeNormalCell({Key key,this.type,this.title,this.top,this.contentStyle,this.content,this.didClickCallBack}) : super(key: key);
+  final double borderRadius;
+  TPExchangeNormalCell({Key key,this.type,this.title,this.top,this.contentStyle,this.content,this.didClickCallBack,this.borderRadius}) : super(key: key);
 
   @override
   _TPExchangeNormalCellState createState() => _TPExchangeNormalCellState();
@@ -30,7 +31,7 @@ class _TPExchangeNormalCellState extends State<TPExchangeNormalCell> {
       padding: EdgeInsets.only(left: 15, top: widget.top, right: 15),
       width: screenSize.width - 30,
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
+        borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius == null ? 4 : widget.borderRadius)),
         child: Container(
           color: Colors.white,
           height: ScreenUtil().setHeight(88),

@@ -6,13 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 
 class TPExchangeRateSliderCell extends StatefulWidget {
-  TPExchangeRateSliderCell({Key key,this.title,this.didChangeRateCallBack,this.infoModel}) : super(key: key);
+  TPExchangeRateSliderCell({Key key,this.title,this.didChangeRateCallBack,this.infoModel,this.borderRadius}) : super(key: key);
 
   final String title;
 
   final TPWalletInfoModel infoModel;
 
   final Function(String) didChangeRateCallBack;
+
+  final double borderRadius;
 
   @override
   _TPExchangeRateSliderCellState createState() => _TPExchangeRateSliderCellState();
@@ -38,7 +40,7 @@ class _TPExchangeRateSliderCellState extends State<TPExchangeRateSliderCell> {
       padding: EdgeInsets.only(left: 15, top: 1, right: 15),
       width: screenSize.width - 30,
       child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius == null ? 4 : widget.borderRadius)),
           child: Container(
             color: Colors.white,
             child: Column(

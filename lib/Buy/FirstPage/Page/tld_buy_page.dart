@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_quick_buy_action_sheet.dart';
 import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_quick_buy_view.dart';
+import 'package:dragon_sword_purse/Buy/FirstPage/View/tp_new_buy_list_cell.dart';
 import 'package:dragon_sword_purse/CommonFunction/tld_common_function.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
@@ -285,22 +286,10 @@ class _TPBuyPageState extends State<TPBuyPage> with AutomaticKeepAliveClientMixi
           color : Color.fromARGB(0, 0, 0, 0),
         ),
         heroTag: 'buy_page',
-        backgroundColor: Color.fromARGB(255, 242, 242, 242),
+        backgroundColor: Theme.of(context).primaryColor,
         transitionBetweenRoutes: false,
-        middle: Text(I18n.of(context).commonPageTitle),
-        leading: Builder(builder: (BuildContext context) {
-          return CupertinoButton(
-              child: Icon(
-                IconData(0xe608, fontFamily: 'appIconFonts'),
-                color: Color.fromARGB(255, 51, 51, 51),
-              ),
-              padding: EdgeInsets.all(0),
-              minSize: 20,
-              onPressed: () {
-                _focusNode.unfocus();
-                TPMoreBtnClickNotification().dispatch(context);
-              });
-        }),
+        middle: Text(I18n.of(context).commonPageTitle,style: TextStyle(color : Colors.white),),
+        actionsForegroundColor: Colors.white,
         automaticallyImplyLeading: false,
         trailing: Container(
           width : ScreenUtil().setWidth(160),
@@ -310,7 +299,6 @@ class _TPBuyPageState extends State<TPBuyPage> with AutomaticKeepAliveClientMixi
             CupertinoButton(
                 child: Icon(
                   IconData(0xe663, fontFamily: 'appIconFonts'),
-                  color: Color.fromARGB(255, 51, 51, 51),
                 ),
                 padding: EdgeInsets.all(0),
                 minSize: 20,
@@ -319,6 +307,7 @@ class _TPBuyPageState extends State<TPBuyPage> with AutomaticKeepAliveClientMixi
                   Navigator.push(context, MaterialPageRoute(builder: (context) => TPOrderListPage()));
                 }),
             MessageButton(
+              color: Colors.white,
               didClickCallBack: (){
                 _focusNode.unfocus(); 
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TPMessagePage()));
@@ -334,7 +323,7 @@ class _TPBuyPageState extends State<TPBuyPage> with AutomaticKeepAliveClientMixi
   Widget _getBodyWidget(double screenWidth){
     return Column(
       children: <Widget>[
-        Padding(padding: EdgeInsets.only(left : 15 , top : 5 ,right: 15),child: TPQuickBuyView(focusNode: _focusNode,textDidChange: (String text){
+         TPQuickBuyView(focusNode: _focusNode,textDidChange: (String text){
           _quickBuyCount = text;
         },didClickDonehBtnCallBack: (){
           if (_quickBuyCount.length > 0){
@@ -342,14 +331,14 @@ class _TPBuyPageState extends State<TPBuyPage> with AutomaticKeepAliveClientMixi
           }else{
             Fluttertoast.showToast(msg: '请填写购买数量');
           }
-        },),),
+        },),
         Expanded(child: TPEmptyListView(getListViewCellCallBack:(int index){
         TPBuyListInfoModel model = _dataSource[index];
-          return TPBuyFirstPageCell(model: model,didClickBuyBtnCallBack: (){
+          return TPNewBuyListCell(model: model,didClickBuyBtnCallBack: (){
             _getRate(0, model, null,null);
           },);
       }, getEmptyViewCallBack:(){
-        return TPEmptyDataView(imageAsset: 'assetss/images/creating_purse.png', title: '暂无可购买的单子');
+        return TPEmptyDataView(imageAsset: 'assetss/images/no_data.png', title: '暂无可购买的单子');
       }, streamController: _streamController,
       refreshController: _refreshController,
       refreshCallBack: (){

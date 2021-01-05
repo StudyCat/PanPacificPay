@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_do_mission_model_manager.dart';
+
 import '../../../Base/tld_base_request.dart';
 import 'tld_sale_list_info_model.dart';
 import '../../../CommonWidget/tld_data_manager.dart';
@@ -6,7 +8,7 @@ import '../../../dataBase/tld_database_manager.dart';
 
 
 class TPSaleModelManager{
-  void getSaleList(int type,Function(List) success,Function(TPError) failure) {
+  void getSaleList(int type,Function success,Function(TPError) failure) {
     List purseList = TPDataManager.instance.purseList;
       List addressList = [];
       for (TPWallet item in purseList) {
@@ -17,6 +19,7 @@ class TPSaleModelManager{
     request.postNetRequest((dynamic data) { 
       Map dataMap = data;
       List dataList = dataMap['list'];
+      TPTMissionUserInfoModel userInfoModel = TPTMissionUserInfoModel.fromJson(dataMap['userInfo']);
       List result = [];
       for (Map item in dataList) {
         TPSaleListInfoModel model = TPSaleListInfoModel.fromJson(item);
@@ -30,7 +33,7 @@ class TPSaleModelManager{
           }
         }
       }
-      success(result);
+      success(result,userInfoModel);
     }, (error) => failure(error));
   }
 

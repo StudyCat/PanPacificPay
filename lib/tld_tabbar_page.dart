@@ -56,40 +56,32 @@ class TPTabbarPage extends StatefulWidget {
 class _TPTabbarPageState extends State<TPTabbarPage> with WidgetsBindingObserver {
   List<BottomNavigationBarItem> items = [
     BottomNavigationBarItem(
-      activeIcon: Image.asset('assetss/images/icon_purse.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      icon: Image.asset('assetss/images/icon_purse_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      activeIcon: Image.asset('assetss/images/icon_purse.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_purse_unsel.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
       title: Text(
         I18n.of(navigatorKey.currentContext).wallet,
         style: TextStyle(fontSize: 10),
       ),
     ),
     BottomNavigationBarItem(
-      activeIcon: Image.asset('assetss/images/icon_buy.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      icon: Image.asset('assetss/images/icon_buy_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      activeIcon: Image.asset('assetss/images/icon_buy.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_buy_unsel.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
       title: Text(I18n.of(navigatorKey.currentContext).buyBtnTitle,
           style: TextStyle(
             fontSize: 10,
           )),
     ),
     BottomNavigationBarItem(
-      activeIcon: Image.asset('assetss/images/icon_message.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      icon: Image.asset('assetss/images/icon_message_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      title: Text(I18n.of(navigatorKey.currentContext).message,
-          style: TextStyle(
-            fontSize: 10,
-          )),
-    ),
-    BottomNavigationBarItem(
-      activeIcon: Image.asset('assetss/images/icon_sale.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      icon: Image.asset('assetss/images/icon_sale_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      activeIcon: Image.asset('assetss/images/icon_sale.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_sale_unsel.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
       title: Text(I18n.of(navigatorKey.currentContext).sale,
           style: TextStyle(
             fontSize: 10,
           )),
     ),
     BottomNavigationBarItem(
-      activeIcon: Image.asset('assetss/images/icon_find.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-      icon: Image.asset('assetss/images/icon_find_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      activeIcon: Image.asset('assetss/images/icon_find.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_find_unsel.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
       title: Text(I18n.of(navigatorKey.currentContext).findPageTitle,
           style: TextStyle(
             fontSize: 10,
@@ -97,7 +89,7 @@ class _TPTabbarPageState extends State<TPTabbarPage> with WidgetsBindingObserver
     )
   ];
 
-  List pages = [TPPursePage(), TPBuyPage(), TPMessagePage(),TPTabSalePage(),TPFindRootPage()];
+  List pages = [TPPursePage(), TPBuyPage(),TPTabSalePage(),TPFindRootPage()];
 
   int currentIndex;
 

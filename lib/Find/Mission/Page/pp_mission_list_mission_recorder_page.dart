@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_empty_data_view.dart';
 import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_award_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_mission_recorder_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Mission/Page/pp_mission_detail_order_page.dart';
@@ -102,7 +103,8 @@ class _PPMissionListMissionRecorderPageState extends State<PPMissionListMissionR
   }
 
    Widget _getBodWidget(){
-    return ListView.builder(
+    if (_dataSource.length > 0){
+      return ListView.builder(
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
       TPMissionOrderListModel model = _dataSource[index];
@@ -118,6 +120,12 @@ class _PPMissionListMissionRecorderPageState extends State<PPMissionListMissionR
       );
      },
     );
+    }else{
+      return TPEmptyDataView(
+        imageAsset: 'assetss/images/no_data.png',
+        title: '暂无任务记录',
+      );
+    }
   }
 
     @override

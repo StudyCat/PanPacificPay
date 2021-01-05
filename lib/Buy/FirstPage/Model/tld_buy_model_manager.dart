@@ -22,6 +22,8 @@ class TPBuyListInfoModel {
   TPPaymentModel payMethodVO;
   bool isMine = false;
   String maxAmount;
+  String nickName;
+  String avatar;
 
   TPBuyListInfoModel(
       {this.sellId,
@@ -33,7 +35,7 @@ class TPBuyListInfoModel {
       this.sellerWalletAddress,
       this.createTime,
       this.isMine,
-      this.payMethodVO,this.maxAmount});
+      this.payMethodVO,this.maxAmount,this.nickName,this.avatar});
 
   TPBuyListInfoModel.fromJson(Map<String, dynamic> json) {
     sellId = json['sellId'];
@@ -46,6 +48,8 @@ class TPBuyListInfoModel {
     createTime = json['createTime'];
     payMethodVO = TPPaymentModel.fromJson(json['payMethodVO']);
     maxAmount = json['maxAmount'];
+    avatar = json['avatar'];
+    nickName = json['nickName'];
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +64,8 @@ class TPBuyListInfoModel {
     data['createTime'] = this.createTime;
     data['payMethodVO'] = this.payMethodVO.toJson();
     data['maxAmount'] = this.maxAmount;
+    data['avatar'] = this.avatar;
+    data['nickName'] = this.nickName;
     return data;
   }
 }

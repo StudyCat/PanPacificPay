@@ -17,6 +17,8 @@ class TPSaleListInfoModel {
   String tmpWalletAddress;
   TPPaymentModel payMethodVO;
   String maxAmount;
+  String nickName;
+  String avatar;
 
   TPSaleListInfoModel(
       {this.sellId,
@@ -30,7 +32,7 @@ class TPSaleListInfoModel {
       this.realCount,
       this.tmpWalletAddress,
       this.wallet,
-      this.payMethodVO,this.maxAmount});
+      this.payMethodVO,this.maxAmount,this.nickName,this.avatar});
 
   TPSaleListInfoModel.fromJson(Map<String, dynamic> json) {
     sellId = json['sellId'];
@@ -45,6 +47,8 @@ class TPSaleListInfoModel {
     tmpWalletAddress = json['tmpWalletAddress'];
     payMethodVO = TPPaymentModel.fromJson(json['payMethodVO']);
     maxAmount = json['maxAmount'];
+    nickName = json['nickName'];
+    avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
@@ -61,6 +65,8 @@ class TPSaleListInfoModel {
     data['tmpWalletAddress'] = this.tmpWalletAddress;
     data['payMethodVO'] = this.payMethodVO.toJson();
     data['maxAmount'] = this.maxAmount;
+    data['avatar'] = this.avatar;
+    data['nickName'] = this.nickName;
     return data;
   }
 }

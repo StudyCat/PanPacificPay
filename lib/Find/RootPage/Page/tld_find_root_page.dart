@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
@@ -50,6 +50,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -97,6 +98,27 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
       }
     }, (TPError error) {
       Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _uploadAvatar(File avatar){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.uploadAvatar(avatar, (String avatarPath){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+          _userModel.avatar = avatarPath;
+        });
+      }
+    }, (TPError error){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: error.msg); 
     });
   }
 
@@ -151,24 +173,12 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
           '我的',
           style: TextStyle(fontSize: ScreenUtil().setSp(32)),
         ),
-        leading: Builder(builder: (BuildContext context) {
-          return CupertinoButton(
-              child: Icon(
-                IconData(0xe608, fontFamily: 'appIconFonts'),
-                color: Color.fromARGB(255, 51, 51, 51),
-              ),
-              padding: EdgeInsets.all(0),
-              minSize: 20,
-              onPressed: () {
-                TPMoreBtnClickNotification().dispatch(context);
-              });
-        }),
         automaticallyImplyLeading: false,
         actions : <Widget>[
                 CupertinoButton(
                     child: Icon(
                       IconData(0xe663, fontFamily: 'appIconFonts'),
-                      color: Color.fromARGB(255, 51, 51, 51),
+                      color: Colors.white,
                     ),
                     padding: EdgeInsets.all(0),
                     minSize: 20,
@@ -179,6 +189,7 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
                               builder: (context) => TPOrderListPage()));
                     }),
                 MessageButton(
+                  color: Colors.white,
                   didClickCallBack: () {
                     Navigator.push(
                         context,
@@ -233,7 +244,26 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
                                 )));
                   }
                 }
-          },);
+          },didClickHeaderCallBack: (){
+              showCupertinoModalPopup(context: context,builder : (BuildContext context){
+                    return CupertinoActionSheet(
+                      actions: <Widget>[
+                        CupertinoButton(child: Text('拍摄'), onPressed: (){
+                          _takePhoto();
+                          Navigator.of(context).pop();
+                        }),
+                        CupertinoButton(child: Text('从相册选择'), onPressed: (){
+                          _openGallery();
+                          Navigator.of(context).pop();
+                        }),
+                      ],
+                      cancelButton: CupertinoButton(child: Text('取消'), onPressed: (){
+                        Navigator.of(context).pop();
+                      }),
+                    );
+                  });
+          },
+          );
           }else if(index == 1){
            return TPFindRootADBannerView(
               bannerList: _bannerList,
@@ -384,101 +414,32 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
         );
   }
 
-  // Future _scanPhoto() async {
-  //   var status = await Permission.camera.status;
-  //   if (status == PermissionStatus.denied ||
-  //       status == PermissionStatus.restricted ||
-  //       status == PermissionStatus.undetermined) {
-  //     Map<Permission, PermissionStatus> statuses = await [
-  //       Permission.camera,
-  //     ].request();
-  //     return;
-  //   }
+     /*拍照*/
+  void _takePhoto() async {
+    var status = await Permission.camera.status;
+    if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      ].request();
+      return;
+    }
 
-  //   Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //           builder: (context) => TPScanQrCodePage(
-  //                 scanCallBack: (String result) {
-  //                   _modelManager.get3rdWebInfo(result,
-  //                       (TP3rdWebInfoModel infoModel) {
-  //                     bool isHaveSameUrl = false;
-  //                     TPFindRootCellUIModel findRootCellUIModel =
-  //                         _iconDataSource.first;
-  //                     for (TPFindRootCellUIItemModel item
-  //                         in findRootCellUIModel.items) {
-  //                       if (item.url == infoModel.url) {
-  //                         isHaveSameUrl = true;
-  //                         break;
-  //                       }
-  //                     }
-  //                     if (isHaveSameUrl) {
-  //                       Fluttertoast.showToast(
-  //                           msg: I18n.of(context).haveSameApplicationAlertDesc);
-  //                     } else {
-  //                       Fluttertoast.showToast(
-  //                           msg: I18n.of(context)
-  //                               .jointhirdPartyApplictionAlertDesc);
-  //                       TPFindRootCellUIItemModel uiItemModel =
-  //                           TPFindRootCellUIItemModel(
-  //                               title: infoModel.name,
-  //                               iconUrl: infoModel.iconUrl,
-  //                               url: infoModel.url,
-  //                               appType: 0,
-  //                               isNeedHideNavigation:
-  //                                   infoModel.isNeedHideNavigation);
-  //                       setState(() {
-  //                         findRootCellUIModel.items.insert(
-  //                             findRootCellUIModel.items.length - 1,
-  //                             uiItemModel);
-  //                       });
+    File image = await ImagePicker.pickImage(source: ImageSource.camera);
+    _uploadAvatar(image);
+  }
 
-  //                       _save3rdPartWebInfo(infoModel);
-  //                     }
-  //                   }, (TPError error) {
-  //                     Fluttertoast.showToast(
-  //                         msg: error.msg,
-  //                         toastLength: Toast.LENGTH_SHORT,
-  //                         timeInSecForIosWeb: 1);
-  //                   });
-  //                 },
-  //               )));
-  // }
 
-  // void _save3rdPartWebInfo(TP3rdWebInfoModel infoModel) async {
-  //   List webInfoList = TPDataManager.instance.webList;
-  //   webInfoList.add(infoModel);
-  //   List result = [];
-  //   for (TP3rdWebInfoModel infoModel in webInfoList) {
-  //     result.add(infoModel.toJson());
-  //   }
-  //   String jsonStr = jsonEncode(result);
-  //   SharedPreferences pre = await SharedPreferences.getInstance();
-  //   pre.setString('3rdPartWeb', jsonStr);
+  /*相册*/
+void  _openGallery() async {
+    var status = await Permission.camera.status;
+    if (status == PermissionStatus.denied || status == PermissionStatus.restricted|| status == PermissionStatus.undetermined) {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      ].request();
+      return;
+    }
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _uploadAvatar(image);
+  }
 
-  //   _save3rdPartWebInService(infoModel);
-  // }
-
-  // void _delete3rdPartWebInfo(TPFindRootCellUIItemModel infoModel) async {
-  //   List webInfoList = TPDataManager.instance.webList;
-  //   TP3rdWebInfoModel deleteModel;
-  //   for (TP3rdWebInfoModel item in webInfoList) {
-  //     if (item.url == infoModel.url) {
-  //       deleteModel = item;
-  //       break;
-  //     }
-  //   }
-  //   List result = [];
-  //   webInfoList.remove(deleteModel);
-  //   for (TP3rdWebInfoModel infoModel in webInfoList) {
-  //     result.add(infoModel.toJson());
-  //   }
-  //   String jsonStr = jsonEncode(result);
-  //   SharedPreferences pre = await SharedPreferences.getInstance();
-  //   pre.setString('3rdPartWeb', jsonStr);
-  // }
-
-  // void _save3rdPartWebInService(TP3rdWebInfoModel infoModel) {
-  //   _modelManager.save3rdPartWeb(infoModel, () {}, (error) {});
-  // }
 }

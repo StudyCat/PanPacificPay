@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
@@ -349,6 +351,20 @@ class TPFindRootModelManager {
     TPBaseRequest request = TPBaseRequest({}, 'merchant/isMerchant');
     request.postNetRequest((value) {
       success(value);
+    }, (error) => failure(error));
+  }
+
+  void uploadAvatar(File image,Function success,failure){
+      TPBaseRequest imageRequest = TPBaseRequest({}, '');
+    imageRequest.uploadFile([image], (List filePathList) {
+      Map payImagePathMap = filePathList.first;
+      String imagePath = payImagePathMap['url'];
+      TPBaseRequest request = TPBaseRequest({
+        'avatarUrl' : imagePath
+      }, 'acpt/user/uploadAvatar');
+      request.postNetRequest((dynamic value) {
+        success(imagePath);
+      }, (error) => failure(error));
     }, (error) => failure(error));
   }
 }

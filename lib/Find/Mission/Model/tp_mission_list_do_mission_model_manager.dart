@@ -23,6 +23,8 @@ class TPMissionBuyModel {
     this.payMethodVO,
     this.sellerWalletAddress,
     this.createTime,
+    this.avatar,
+    this.nickName
   });
 
   factory TPMissionBuyModel.fromJson(Map<String, dynamic> jsonRes) =>
@@ -40,6 +42,8 @@ class TPMissionBuyModel {
                   asT<Map<String, dynamic>>(jsonRes['payMethodVO'])),
               sellerWalletAddress: asT<String>(jsonRes['sellerWalletAddress']),
               createTime: asT<String>(jsonRes['createTime']),
+              nickName : asT<String>(jsonRes['nickName']),
+              avatar: asT<String>(jsonRes['avatar'])
             );
 
   String sellId;
@@ -53,6 +57,8 @@ class TPMissionBuyModel {
   String sellerWalletAddress;
   String createTime;
   String payImage;
+  String avatar;
+  String nickName;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'sellId': sellId,
@@ -65,6 +71,8 @@ class TPMissionBuyModel {
         'payMethodVO': payMethodVO,
         'sellerWalletAddress': sellerWalletAddress,
         'createTime': createTime,
+        'nickName' : nickName,
+        'avatar' : avatar
       };
 
   @override
@@ -78,22 +86,26 @@ class TPTMissionUserInfoModel {
 this.userLevelIcon,
 this.curQuota,
 this.totalQuota,
+this.avatar
     });
 
 
   factory TPTMissionUserInfoModel.fromJson(Map<String, dynamic> jsonRes)=>jsonRes == null? null:TPTMissionUserInfoModel(userLevelIcon : asT<String>(jsonRes['userLevelIcon']),
 curQuota : asT<String>(jsonRes['curQuota']),
 totalQuota : asT<String>(jsonRes['totalQuota']),
+avatar: asT<String>(jsonRes['avatar'])
 );
 
   String userLevelIcon;
   String curQuota;
   String totalQuota;
+  String avatar;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'userLevelIcon': userLevelIcon,
         'curQuota': curQuota,
         'totalQuota': totalQuota,
+        'avatar' : avatar
 };
 
   @override

@@ -82,8 +82,12 @@ class _PPMissionListMissionRecorderCellState extends State<PPMissionListMissionR
     String statustStr = infoModel.orderStatusName;
     Color statusColor = infoModel.orderStatusColor;
     if (widget.orderListModel.status == 2 && widget.orderListModel.orderType == 2){
-      statustStr = '预计24h后到账';
-      statusColor = Colors.red;
+      if (widget.orderListModel.expireTime < 0){
+        statustStr = '已完成';
+      }else{
+        statustStr = '预计24h后到账';
+        statusColor = Colors.red;
+      }
     }
     return Padding(
       padding: EdgeInsets.only(top: ScreenUtil().setHeight(24)),

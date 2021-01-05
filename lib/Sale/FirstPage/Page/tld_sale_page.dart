@@ -2,8 +2,10 @@
 import 'dart:async';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_do_mission_model_manager.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Model/tld_sale_list_info_model.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/View/tld_sale_suspend_button.dart';
+import 'package:dragon_sword_purse/Sale/FirstPage/View/tp_new_sale_cell.dart';
 import 'package:dragon_sword_purse/Socket/tld_im_manager.dart';
 import 'package:dragon_sword_purse/Socket/tld_new_im_manager.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
@@ -22,9 +24,11 @@ import '../../../Exchange/FirstPage/Page/tld_exchange_page.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 class TPSalePage extends StatefulWidget {
-  TPSalePage({Key key,this.type}) : super(key: key);
+  TPSalePage({Key key,this.type,this.didRefreshUserInfo}) : super(key: key);
 
   final int type;
+
+  final Function didRefreshUserInfo; 
 
   @override
   _TPSalePageState createState() => _TPSalePageState();
@@ -90,12 +94,13 @@ class _TPSalePageState extends State<TPSalePage> with AutomaticKeepAliveClientMi
   // }
 
   void getSaleListInfo(){
-    _modelManager.getSaleList(widget.type,(List dataList){
+    _modelManager.getSaleList(widget.type,(List dataList,TPTMissionUserInfoModel userInfoModel){
       if (mounted){
               setState(() {
         _saleDatas = List.from(dataList);
       });
       }
+      widget.didRefreshUserInfo(userInfoModel);
       _refreshController.refreshCompleted();
     } , (TPError error) {
       _refreshController.refreshCompleted();
@@ -142,27 +147,16 @@ class _TPSalePageState extends State<TPSalePage> with AutomaticKeepAliveClientMi
 
   Widget _getBody() {
     if (_saleDatas.length > 0){
-      return Stack(
-              alignment: FractionalOffset(0.9, 0.95),
-              children: <Widget>[
-              _getRsfreshWidget(ListView.builder(
+      return _getRsfreshWidget(ListView.builder(
               itemCount: _saleDatas.length,
               itemBuilder: (BuildContext context, int index) {
                 TPSaleListInfoModel model = _saleDatas[index];
-                return getSaleFirstPageCell(
-                    I18n.of(context).cancelSaleBtnTitle,
-                    () => _cancelSale(model,index),
-                    context,model,()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>TPDetailSalePage(sellNo: model.sellNo,walletName: model.wallet.name,))),widget.type);
+                return TPNewSaleCell(
+                    model : model,
+                    didClickCancelCallBack :  () => _cancelSale(model,index),
+                    didClickItemCallBack : ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>TPDetailSalePage(sellNo: model.sellNo,walletName: model.wallet.name,))));
               },
-             )),
-             TPSaleSuspendButton(didClickCallBack:(){
-               Navigator.push(context, MaterialPageRoute(builder: (context) => TPExchangePage())).then((dynamic value){
-              _refreshController.requestRefresh();
-              getSaleListInfo();
-            });
-             } ,)
-              ],
-            );
+             ));
     }else{
       return _getRsfreshWidget(TPSaleNotDataView(didClickCallBack: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => TPExchangePage())).then((dynamic value){

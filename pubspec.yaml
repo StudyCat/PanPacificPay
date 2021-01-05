@@ -156,6 +156,8 @@ flutter:
      - assetss/images/my_purse_get_money.png
      - assetss/images/my_purse_scan.png
      - assetss/images/find_bg.png
+     - assetss/images/have_logo_bg.png
+     - assetss/images/no_mission.png
      
     
 

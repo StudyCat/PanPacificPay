@@ -340,11 +340,11 @@ void  _openGallery() async {
   Widget _getAppBar() {
     return SliverAppBar(
       centerTitle: true, //标题居中
-      expandedHeight: 200.0, //展开高度200
-      backgroundColor: Theme.of(context).primaryColor,
+      expandedHeight: ScreenUtil().setHeight(300), //展开高度200
+      backgroundColor:  Color.fromARGB(255, 242, 242, 242),
       actions: <Widget>[
         Padding(padding: EdgeInsets.only(right : ScreenUtil().setWidth(30)),
-        child : IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')), onPressed: (){
+        child : IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts')),color: Color.fromARGB(255, 51, 51, 51) ,onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder : (context) => TPWebPage(type: TPWebPageType.orderDescUrl,title: '转账指引',)));
         }))
       ],
@@ -357,7 +357,7 @@ void  _openGallery() async {
               0xe600,
               fontFamily: 'appIconFonts',
             ),
-            color: Colors.white,
+            color: Color.fromARGB(255, 51, 51, 51),
           ),
           padding: EdgeInsets.all(0),
           onPressed: () {
@@ -367,7 +367,7 @@ void  _openGallery() async {
       ),
       floating: true, //不随着滑动隐藏标题
       pinned: true, //不固定在顶部
-      title: Text(I18n.of(context).detailOrderPageTitle),
+      title: Text(I18n.of(context).detailOrderPageTitle,style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(32)),),
       flexibleSpace: FlexibleSpaceBar(
         background: TPDetailOrderHeaderView(detailOrderModel: _detailOrderModel,isBuyer: _detailOrderModel.amIBuyer,
         didClickChatBtnCallBack: (){
@@ -400,6 +400,7 @@ void  _openGallery() async {
             Navigator.push(context, MaterialPageRoute(builder: (context)=> TPJustNoticePage(appealId: _detailOrderModel.appealId,type: TPJustNoticePageType.appealWatching,))).then((value) => _getDetailOrderInfo());
           }
   }
+
 
   Widget _getBodyWidget(BuildContext context) {
    bool isNeedAppeal = false;

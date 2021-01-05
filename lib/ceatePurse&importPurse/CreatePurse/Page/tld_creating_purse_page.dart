@@ -154,7 +154,7 @@ class _TPCreatingPursePageState extends State<TPCreatingPursePage> {
         Padding(
           padding: EdgeInsets.only(top: ScreenUtil().setHeight(250)),
           child: Image.asset(
-            'assetss/images/creat_purse_wait.png',
+            'assetss/images/creating_purse.png',
             width: ScreenUtil().setWidth(176),
             height: ScreenUtil().setHeight(212),
           ),

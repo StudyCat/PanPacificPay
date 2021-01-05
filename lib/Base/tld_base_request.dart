@@ -33,7 +33,7 @@ class TPBaseRequest{
   //18.166.113.166:8030  新生产环境 
   //http://testtp.esbug.com:7000  测试环境
 
-  static String baseUrl = 'http://192.168.1.120:8030/';
+  static String baseUrl = 'http://testtp.esbug.com:7000/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;

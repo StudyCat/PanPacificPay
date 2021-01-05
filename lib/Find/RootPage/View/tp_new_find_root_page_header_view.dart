@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TPNewFindRootPageHeaderView extends StatefulWidget {
-  TPNewFindRootPageHeaderView({Key key,this.userModel,this.didClickItemCallBack}) : super(key: key);
+  TPNewFindRootPageHeaderView({Key key,this.userModel,this.didClickItemCallBack,this.didClickHeaderCallBack}) : super(key: key);
+
+  final Function didClickHeaderCallBack;
 
   final TPfindUserModel userModel;
 
@@ -48,16 +50,24 @@ class _TPNewFindRootPageHeaderViewState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Padding(
+              GestureDetector(
+                onTap: (){
+                  widget.didClickHeaderCallBack();
+                },
+                child: Padding(
                 padding: EdgeInsets.only(
                     top: kToolbarHeight + ScreenUtil().setHeight(20)),
-                child: Container(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(44)),
+                  child:  Container(
                   height: ScreenUtil().setHeight(88),
                   width: ScreenUtil().setHeight(88),
                   child: widget.userModel == null ? Container(): CachedNetworkImage(
                       imageUrl:
                           widget.userModel.avatar),
                 ),
+                )
+              ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(20)),

@@ -27,48 +27,28 @@ class _TPQuickBuyViewState extends State<TPQuickBuyView> {
   Widget build(BuildContext context) {
     return  Container(
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(4))),
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.only(bottomLeft : Radius.circular(8),bottomRight: Radius.circular(8))),
+          width: MediaQuery.of(context).size.width,
         child: Padding(
           padding: EdgeInsets.only(
-              left: ScreenUtil().setWidth(20),
-              right: ScreenUtil().setWidth(20),
-              top: ScreenUtil().setHeight(20),
-              bottom: ScreenUtil().setHeight(20)),
+              left: ScreenUtil().setWidth(50),
+              right: ScreenUtil().setWidth(50),
+              top: ScreenUtil().setHeight(34),
+              bottom: ScreenUtil().setHeight(40)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
                 I18n.of(context).quickToBuy,
                 style: TextStyle(
-                    fontSize: ScreenUtil().setSp(30),
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 51, 51, 51)),
+                    fontSize: ScreenUtil().setSp(28),
+                    color: Colors.white),
               ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
                 child: _getInputView(),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
-                child: Container(
-                    height: ScreenUtil().setHeight(80),
-                    width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
-                    child: CupertinoButton(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(4)),
-                      color: Color.fromARGB(255, 126, 211, 33),
-                      child: Text(
-                        I18n.of(context).buyBtnTitle,
-                        style: TextStyle(
-                            fontSize: ScreenUtil().setSp(30),
-                            color: Colors.white),
-                      ),
-                      onPressed: () {
-                        widget.didClickDonehBtnCallBack();
-                      },
-                    )),
-              )
+              )            
             ],
           ),
         ),
@@ -80,17 +60,42 @@ class _TPQuickBuyViewState extends State<TPQuickBuyView> {
       width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(100),
       height: ScreenUtil().setHeight(80),
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
+        borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
         child: Container(
             color: Color.fromARGB(255, 242, 242, 242),
-            padding: EdgeInsets.only(left: 10, right: 10),
+            padding: EdgeInsets.only(left: 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _getTextField(),
+                 Container(
+            width : ScreenUtil().setWidth(180),
+            height : ScreenUtil().setHeight(80),
+            child: CupertinoButton(
+                                color: Color.fromARGB(255, 146, 207, 243),
+                                borderRadius: BorderRadius.all(Radius.circular(ScreenUtil().setHeight(40))),
+                                padding: EdgeInsets.zero,
+                                child: Text('购买',style:TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(28)),),
+                                onPressed: (){
+                                  widget.didClickDonehBtnCallBack();
+                                },
+                              ),
+          )
+              ],
+            )
+            ),
+      ),
+    );
+  }
+
+  Widget _getTextField(){
+    return  Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width -
-                      ScreenUtil().setWidth(280),
+                      ScreenUtil().setWidth(440),
                   alignment: Alignment.centerLeft,
                   child: TextField(
                     focusNode: widget.focusNode,
@@ -126,8 +131,6 @@ class _TPQuickBuyViewState extends State<TPQuickBuyView> {
                   ),
                 )
               ],
-            )),
-      ),
-    );
+            );
   }
 }

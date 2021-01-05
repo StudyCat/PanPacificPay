@@ -77,7 +77,7 @@ class _TPCreateImportPurseInputPasswordPageState
             height: MediaQuery.of(context).size.width / 750 * 398,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assetss/images/find_bg.png'),
+                    image: AssetImage('assetss/images/have_logo_bg.png'),
                     fit: BoxFit.fill)),
           )
         ],
@@ -137,6 +137,8 @@ class _TPCreateImportPurseInputPasswordPageState
                    }else {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=> TPImportPursePage(walletName: _walletName,)));
                    }
+                 }else {
+                   Fluttertoast.showToast(msg: '安全密码不正确');
                  }
 
               }),

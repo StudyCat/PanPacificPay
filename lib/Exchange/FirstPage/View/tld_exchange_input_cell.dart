@@ -16,7 +16,9 @@ class TPExchangeInputCell extends StatefulWidget {
 
   final double top;
 
-  TPExchangeInputCell({Key key, this.title,this.infoModel,this.inputCallBack,this.focusNode,this.top = 20}) : super(key: key);
+  final double borderRadius;
+
+  TPExchangeInputCell({Key key, this.title,this.infoModel,this.inputCallBack,this.focusNode,this.top = 20,this.borderRadius}) : super(key: key);
 
   @override
   _TPExchangeInputCellState createState() => _TPExchangeInputCellState();
@@ -60,7 +62,7 @@ class _TPExchangeInputCellState extends State<TPExchangeInputCell> {
       padding: EdgeInsets.only(left: 15, top: widget.top, right: 15),
       width: screenSize.width - 30,
       child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderRadius: BorderRadius.all(Radius.circular(widget.borderRadius == null ? 4 : widget.borderRadius)),
           child: Container(
             color: Colors.white,
             height: ScreenUtil().setHeight(88),
