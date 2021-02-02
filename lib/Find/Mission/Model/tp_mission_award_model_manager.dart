@@ -93,28 +93,87 @@ class TPMissionAwardPoolInfoModel {
   }
 }
 
+class TPMissionLevelDescModel {
+  TPMissionLevelDescModel({
+    this.taskProfitLevel,
+    this.profitRate,
+    this.addProfitRate,
+    this.curQuota,
+    this.nextQuota,
+    this.levelIcon,
+    this.createTime,
+    this.valid,
+  });
+
+  factory TPMissionLevelDescModel.fromJson(Map<String, dynamic> jsonRes) =>
+      jsonRes == null
+          ? null
+          : TPMissionLevelDescModel(
+              taskProfitLevel: asT<int>(jsonRes['taskProfitLevel']),
+              profitRate: asT<String>(jsonRes['profitRate']),
+              addProfitRate: asT<String>(jsonRes['addProfitRate']),
+              curQuota: asT<String>(jsonRes['curQuota']),
+              nextQuota: asT<String>(jsonRes['nextQuota']),
+              levelIcon: asT<String>(jsonRes['levelIcon']),
+              createTime: asT<Object>(jsonRes['createTime']),
+              valid: asT<bool>(jsonRes['valid']),
+            );
+
+  int taskProfitLevel;
+  String profitRate;
+  String addProfitRate;
+  String curQuota;
+  String nextQuota;
+  String levelIcon;
+  Object createTime;
+  bool valid;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'taskProfitLevel': taskProfitLevel,
+        'profitRate': profitRate,
+        'addProfitRate': addProfitRate,
+        'curQuota': curQuota,
+        'nextQuota': nextQuota,
+        'levelIcon': levelIcon,
+        'createTime': createTime,
+        'valid': valid,
+      };
+
+  @override
+  String toString() {
+    return json.encode(this);
+  }
+}
+
 class TPMissionAwardModelManager {
   void getAwardPoolInfo(int page, Function success, Function failure) {
     TPBaseRequest request = TPBaseRequest(
         {'pageNo': page, 'pageSize': 10}, 'task/profitPoolDetail');
     request.postNetRequest((value) {
-      TPTMissionUserInfoModel userInfoModel = TPTMissionUserInfoModel.fromJson(value['taskUserInfo']);
-      TPMissionAwardPoolInfoModel awardPoolInfoModel = TPMissionAwardPoolInfoModel.fromJson(value['profitPoolInfo']);
+      TPTMissionUserInfoModel userInfoModel =
+          TPTMissionUserInfoModel.fromJson(value['taskUserInfo']);
+      TPMissionAwardPoolInfoModel awardPoolInfoModel =
+          TPMissionAwardPoolInfoModel.fromJson(value['profitPoolInfo']);
       List detailsList = value['list'];
+      List descList = value['taskProfitDesc'];
       List result = [];
+      List descResult = [];
       for (var item in detailsList) {
         result.add(TPMissionBuyDealDetailsModel.fromJson(item));
       }
-      success(userInfoModel,awardPoolInfoModel,result);
+      for (var item in descList) {
+        descResult.add(TPMissionLevelDescModel.fromJson(item));
+      }
+      success(userInfoModel, awardPoolInfoModel, result,descResult);
     }, (error) => failure(error));
   }
 
-  void exCharge(String amount,String walletAddress,Function success,Function failure){
-     TPBaseRequest request = TPBaseRequest(
+  void exCharge(
+      String amount, String walletAddress, Function success, Function failure) {
+    TPBaseRequest request = TPBaseRequest(
         {'num': amount, 'walletAddress': walletAddress}, 'task/exchangeProfit');
     request.postNetRequest((value) {
       success();
     }, (error) => failure(error));
   }
-
 }

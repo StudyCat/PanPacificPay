@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dragon_sword_purse/Buy/FirstPage/View/tld_buy_pay_type_screen_view.dart';
 import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_do_mission_model_manager.dart';
+import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_mission_recorder_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Mission/Page/pp_mission_list_do_mission_page.dart';
 import 'package:dragon_sword_purse/Find/Mission/Page/pp_mission_list_mission_recorder_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,10 +22,24 @@ class _PPMissionListPageState extends State<PPMissionListPage> with SingleTicker
 
   bool _isLoading = false;
 
+  List _payTypeList = [];
+
+  int _payType = 0;
+
+  String _payName = '';
+
+  bool _platformModel = true;
+
   TPTMissionUserInfoModel _userInfoModel;
+
+  TPBuyPayTypeScreenViewController _screenViewController;
+
+  TPMissionChoosePayTypeController _choosePayTypeController;
 
   List<String> _tabTitles = [ "做任务",
       "任务记录"];
+
+  int _index = 0;
 
   @override
   void initState() {
@@ -32,10 +48,18 @@ class _PPMissionListPageState extends State<PPMissionListPage> with SingleTicker
 
     _tabController =  TabController(length: 2,vsync: this);
 
+    _screenViewController = TPBuyPayTypeScreenViewController(false);
+
+    _choosePayTypeController = TPMissionChoosePayTypeController(7);
+
     _pages =  [
-    PPMissionListDoMissionPage(didRefreshUserInfo: (TPTMissionUserInfoModel userInfoModel){
+    PPMissionListDoMissionPage(
+      payTypeController: _choosePayTypeController,
+      didRefreshUserInfo: (TPTMissionUserInfoModel userInfoModel,List payTypeList){
       setState(() {
         _userInfoModel = userInfoModel;
+        _platformModel = userInfoModel.platformModel;
+        _payTypeList = payTypeList;
       });
     },),
     PPMissionListMissionRecorderPage()
@@ -57,6 +81,24 @@ class _PPMissionListPageState extends State<PPMissionListPage> with SingleTicker
           '任务',
           style: TextStyle(fontSize: ScreenUtil().setSp(32)),
         ),
+        actions: [
+            Offstage(
+              offstage: (_index == 1 || _platformModel == true),
+              child:  Padding(
+            padding: EdgeInsets.only(right : ScreenUtil().setWidth(30),),
+            child : CupertinoButton(
+            child: _payName.length > 0 ? Text(_payName,style:TextStyle(color : Colors.white)):Icon(
+              IconData(0xe60a, fontFamily: 'appIconFonts',),
+              color: Colors.white
+            ),
+            padding: EdgeInsets.all(0),
+            minSize: 20,
+            onPressed: () {
+              _screenViewController.value = !_screenViewController.value;
+            })
+          ),
+            )
+            ],
         automaticallyImplyLeading: false,
           leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(
@@ -70,19 +112,6 @@ class _PPMissionListPageState extends State<PPMissionListPage> with SingleTicker
                 Navigator.of(context).pop();
               });
         }),
-        // trailing:  CupertinoButton(
-        //             child: Icon(
-        //               IconData(0xe663, fontFamily: 'appIconFonts'),
-        //               color: Color.fromARGB(255, 51, 51, 51),
-        //             ),
-        //             padding: EdgeInsets.all(0),
-        //             minSize: 20,
-        //             onPressed: () {
-        //               // Navigator.push(
-        //               //     context,
-        //               //     MaterialPageRoute(
-        //               //         builder: (context) => TPOrderListPage()));
-        //             })
         ),
       ),
     );
@@ -90,7 +119,9 @@ class _PPMissionListPageState extends State<PPMissionListPage> with SingleTicker
 
   
   Widget _getBodyWidget(){
-    return Column(
+    return Stack(
+      children: <Widget>[
+        Column(
       children: <Widget>[
          Column(
         children: <Widget>[
@@ -110,34 +141,28 @@ class _PPMissionListPageState extends State<PPMissionListPage> with SingleTicker
           )
         ],
       ),
-        // GestureDetector(
-        //   child: _getWalletRowView(),
-        // ),
-        // Padding(
-        //   padding: EdgeInsets.only(
-        //   left: ScreenUtil().setWidth(30),
-        //   right: ScreenUtil().setWidth(30),
-        //   top: ScreenUtil().setHeight(20)),
-        //   child: TabBar(
-        //     tabs: _tabTitles.map((title) {
-        //       return Tab(text: title);
-        //     }).toList(),
-        //     labelStyle: TextStyle(
-        //         fontSize: ScreenUtil().setSp(32), fontWeight: FontWeight.bold),
-        //     unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
-        //     indicatorColor: Theme.of(context).hintColor,
-        //     labelColor: Color.fromARGB(255, 51, 51, 51),
-        //     unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
-        //     controller: _tabController,
-        //     indicatorSize: TabBarIndicatorSize.label,
-        //   ),
-        // ),
         Expanded(
           child: TabBarView(
             children: _pages,
             controller: _tabController,
           )
           )
+      ],
+    ),
+      TPBuyPayTypeScreenView(controller: _screenViewController,payTypeList: _payTypeList,didClickSureBtnCallBack: (TPScreenPayTypeModel typeModel){
+        String payName = '';
+        if (typeModel != null){
+          _choosePayTypeController.value = typeModel.payType;
+          payName = typeModel.payName;
+        }else{
+          _choosePayTypeController.value = 0;
+          payName = '';
+        }
+        setState(() {
+          _payName = payName;
+        });
+        _screenViewController.value = !_screenViewController.value;
+      },)
       ],
     );
   }
@@ -153,7 +178,7 @@ class _PPMissionListPageState extends State<PPMissionListPage> with SingleTicker
             child: Container(
               height : ScreenUtil().setHeight(80),
               width : ScreenUtil().setHeight(80),
-              child: _userInfoModel != null ? CachedNetworkImage(imageUrl: _userInfoModel.avatar,fit: BoxFit.fill,) : Container(),
+              child: _userInfoModel != null ? CachedNetworkImage(imageUrl: _userInfoModel.avatar,fit: BoxFit.fitWidth) : Container(),
             ),
           ),
         ),
@@ -178,6 +203,11 @@ class _PPMissionListPageState extends State<PPMissionListPage> with SingleTicker
             unselectedLabelColor: Color.fromARGB(255, 222, 222, 222),
             controller: _tabController,
             indicatorSize: TabBarIndicatorSize.label,
+            onTap: (int index){
+              setState(() {
+                _index = index;
+              });
+            },
           ),
         ),
       ],

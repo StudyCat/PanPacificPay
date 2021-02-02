@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_diy_info_page.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_trc_usdt_info_page.dart';
 import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tp_new_payment_info_page.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
@@ -119,6 +120,8 @@ class _TPPaymentManagerPageState extends State<TPPaymentManagerPage> {
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPBankCardInfoPage(walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
             }else if(widget.typeModel.payType == 4){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPPaymentDiyInfoPage(walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
+            }else if(widget.typeModel.payType == 7){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TPTRCUSDTInfoPage(typeModel: widget.typeModel,walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
             }else if (widget.typeModel.payType > 4){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPNewPaymentInfoPage(typeModel: widget.typeModel,walletAddress: widget.walletAddress,))).then((value) => refreshPaymentList());
             }else{
@@ -142,6 +145,8 @@ class _TPPaymentManagerPageState extends State<TPPaymentManagerPage> {
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPBankCardInfoPage(walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
             }else if(paymentModel.type == 4){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPPaymentDiyInfoPage(walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
+            }else if(widget.typeModel.payType == 7){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> TPTRCUSDTInfoPage(typeModel: widget.typeModel,walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
             }else if (widget.typeModel.payType > 4){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TPNewPaymentInfoPage(typeModel: widget.typeModel,walletAddress: widget.walletAddress,paymentModel: paymentModel,))).then((value) => refreshPaymentList());
             }else{

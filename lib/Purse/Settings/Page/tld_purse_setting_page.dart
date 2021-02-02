@@ -46,10 +46,14 @@ class _TPPurseSettingPageState extends State<TPPurseSettingPage> {
 
     if (widget.wallet.mnemonic.length != null && widget.wallet.mnemonic.length > 0){
       hasMnemonicWord = true;
-      titles = [ I18n.of(navigatorKey.currentContext).changeWalletName,I18n.of(navigatorKey.currentContext).backupWalletMnemonicWord,I18n.of(navigatorKey.currentContext).exportPrivateKey,I18n.of(navigatorKey.currentContext).deleteWallet,I18n.of(navigatorKey.currentContext).levelDescription];
+      titles = [ I18n.of(navigatorKey.currentContext).changeWalletName,I18n.of(navigatorKey.currentContext).backupWalletMnemonicWord,I18n.of(navigatorKey.currentContext).exportPrivateKey,I18n.of(navigatorKey.currentContext).deleteWallet
+      // ,I18n.of(navigatorKey.currentContext).levelDescription
+      ];
     }else{
       hasMnemonicWord = false;
-      titles = [ I18n.of(navigatorKey.currentContext).changeWalletName,I18n.of(navigatorKey.currentContext).exportPrivateKey,I18n.of(navigatorKey.currentContext).deleteWallet,I18n.of(navigatorKey.currentContext).levelDescription];
+      titles = [ I18n.of(navigatorKey.currentContext).changeWalletName,I18n.of(navigatorKey.currentContext).exportPrivateKey,I18n.of(navigatorKey.currentContext).deleteWallet,
+      //I18n.of(navigatorKey.currentContext).levelDescription
+      ];
     }  
   }
 

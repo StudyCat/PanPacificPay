@@ -11,36 +11,35 @@ T asT<T>(dynamic value) {
 }
 
 class TPMissionOrderListModel {
-  TPMissionOrderListModel({
-    this.orderId,
-    this.orderNo,
-    this.orderType,
-    this.buyUserId,
-    this.sellId,
-    this.buyerAddress,
-    this.sellerAddress,
-    this.buyerUserName,
-    this.sellerUserName,
-    this.amIBuyer,
-    this.tmpWalletAddress,
-    this.payId,
-    this.payMethodVO,
-    this.appealId,
-    this.appealStatus,
-    this.status,
-    this.txCount,
-    this.createTime,
-    this.payTime,
-    this.finishTime,
-    this.expireTime,
-    this.overtime,
-    this.remarkPayNo,
-    this.profitCount,
-    this.profitRate,
-    this.payImage,
-    this.realPayAmount,
-    this.cnyPayAmount
-  });
+  TPMissionOrderListModel(
+      {this.orderId,
+      this.orderNo,
+      this.orderType,
+      this.buyUserId,
+      this.sellId,
+      this.buyerAddress,
+      this.sellerAddress,
+      this.buyerUserName,
+      this.sellerUserName,
+      this.amIBuyer,
+      this.tmpWalletAddress,
+      this.payId,
+      this.payMethodVO,
+      this.appealId,
+      this.appealStatus,
+      this.status,
+      this.txCount,
+      this.createTime,
+      this.payTime,
+      this.finishTime,
+      this.expireTime,
+      this.overtime,
+      this.remarkPayNo,
+      this.profitCount,
+      this.profitRate,
+      this.payImage,
+      this.realPayAmount,
+      this.cnyPayAmount,this.taskOrderRemark});
 
   factory TPMissionOrderListModel.fromJson(Map<String, dynamic> jsonRes) =>
       jsonRes == null
@@ -72,10 +71,10 @@ class TPMissionOrderListModel {
               remarkPayNo: asT<String>(jsonRes['remarkPayNo']),
               profitCount: asT<String>(jsonRes['profitCount']),
               profitRate: asT<String>(jsonRes['profitRate']),
-              payImage : asT<String>(jsonRes['payImage']),
+              payImage: asT<String>(jsonRes['payImage']),
               realPayAmount: asT<String>(jsonRes['realPayAmount']),
-              cnyPayAmount: asT<String>(jsonRes['cnyPayAmount'])
-            );
+              cnyPayAmount: asT<String>(jsonRes['cnyPayAmount']),
+              taskOrderRemark : asT<String>(jsonRes['taskOrderRemark']));
 
   int orderId;
   String orderNo;
@@ -105,6 +104,7 @@ class TPMissionOrderListModel {
   String payImage;
   String cnyPayAmount;
   String realPayAmount;
+  String taskOrderRemark;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'orderId': orderId,
@@ -130,11 +130,44 @@ class TPMissionOrderListModel {
         'expireTime': expireTime,
         'overtime': overtime,
         'remarkPayNo': remarkPayNo,
-        'profitRate' : profitRate,
-        'profitCount' : profitCount,
-        'payImage' : payImage,
-        'cnyPayAmount' : cnyPayAmount,
-        'realPayAmount' : realPayAmount
+        'profitRate': profitRate,
+        'profitCount': profitCount,
+        'payImage': payImage,
+        'cnyPayAmount': cnyPayAmount,
+        'realPayAmount': realPayAmount,
+        'taskOrderRemark' : taskOrderRemark
+      };
+
+  @override
+  String toString() {
+    return json.encode(this);
+  }
+}
+
+class TPScreenPayTypeModel {
+  TPScreenPayTypeModel({
+    this.payType,
+    this.payIcon,
+    this.payName,
+  });
+
+  factory TPScreenPayTypeModel.fromJson(Map<String, dynamic> jsonRes) =>
+      jsonRes == null
+          ? null
+          : TPScreenPayTypeModel(
+              payType: asT<int>(jsonRes['payType']),
+              payIcon: asT<String>(jsonRes['payIcon']),
+              payName: asT<String>(jsonRes['payName']),
+            );
+
+  int payType;
+  String payIcon;
+  String payName;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'payType': payType,
+        'payIcon': payIcon,
+        'payName': payName,
       };
 
   @override

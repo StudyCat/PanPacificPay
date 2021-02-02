@@ -145,7 +145,7 @@ class _TPTabSalePageState extends State<TPTabSalePage> with SingleTickerProvider
             child: Container(
               height : ScreenUtil().setHeight(80),
               width : ScreenUtil().setHeight(80),
-              child: _userInfoModel != null ? CachedNetworkImage(imageUrl: _userInfoModel.avatar,fit: BoxFit.fill,) : Container(),
+              child: _userInfoModel != null ? CachedNetworkImage(imageUrl: _userInfoModel.avatar,fit: BoxFit.fitWidth) : Container(),
             ),
           ),
         ),

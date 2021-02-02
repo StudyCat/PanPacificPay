@@ -66,7 +66,7 @@ class _TPTabbarPageState extends State<TPTabbarPage> with WidgetsBindingObserver
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_buy.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_buy_unsel.png',width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
-      title: Text(I18n.of(navigatorKey.currentContext).buyBtnTitle,
+      title: Text('交易',
           style: TextStyle(
             fontSize: 10,
           )),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:aliossflutter/aliossflutter.dart';
 import 'package:dio/dio.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:package_info/package_info.dart';
 import 'package:uuid_enhanced/uuid.dart';
 import 'package:web3dart/crypto.dart';
@@ -30,10 +32,10 @@ class TPBaseRequest{
   //120.92.141.131:8030 测试环境
   //192.168.1.120 本地环境
   //139.224.83.9:8030 生成环境
-  //18.166.113.166:8030  新生产环境 
-  //http://testtp.esbug.com:7000  测试环境
+  //18.163.186.111:8030  新生产环境 
+  //http://api.panpacificpay.com:8030  测试环境
 
-  static String baseUrl = 'http://testtp.esbug.com:7000/';
+  static String baseUrl = 'http://api.panpacificpay.com:8030/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;
@@ -185,36 +187,30 @@ class TPBaseRequest{
 
 
   void uploadFile(List datas,Function(List) success,Function(TPError) failure)async{
-      BaseOptions options = BaseOptions(
-        contentType : 'application/json',
-        receiveDataWhenStatusError: false
-     );
-     String url = baseUrl + 'common/uploadFile';
-      Dio dio = Dio(options);
-      List uploadDatas = [];
+      List result = [];
       for (File item in datas) {
-        String path = item.path;
-        var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-        MultipartFile file = await MultipartFile.fromFile(item.path,filename: name);
-        uploadDatas.add(file); 
-      }
-      FormData formData = FormData.fromMap({
-        'files' : uploadDatas
-      });
-      Response response = await dio.post(url,data:formData,cancelToken: cancelToken);
-      Map responseMap = response.data;
-      String codeStr = responseMap['code'];
-     Map dataStr = responseMap['data'];
-     List fileUrlList = dataStr['list'];
-     if(int.parse(codeStr) == 200){
-       success(fileUrlList);
-     }else{
-       if (int.parse(codeStr) == -2 || int.parse(codeStr) == -4){
-         _logout(int.parse(codeStr), responseMap['msg']);
+         var resultFile =  await FlutterImageCompress.compressWithFile(
+            item.absolute.path,
+            quality: 88
+          );
+        AliOSSFlutter  alioss=AliOSSFlutter();
+        item.writeAsBytesSync(resultFile);
+        alioss.upload("tldwallet", item.path,  Uuid.randomUuid().toString() + '.png');
+    //监听上传
+      alioss.responseFromUpload.listen((data) {
+        if(data.success) {
+          String url = 'http://tldwallet.oss-cn-hangzhou.aliyuncs.com/' + data.key;
+          result.add({'url':url});
+          if (result.length == datas.length){
+            success(result);
+          }
+        }else{
+          TPError error = TPError(-1520, '上传图片失败');
+          failure(error);
        }
-       TPError error = TPError(400,'您的网络异常');
-       failure(error);
-     }
+     });
+      }
+      
   }
 
   void _logout(int code,String msg){

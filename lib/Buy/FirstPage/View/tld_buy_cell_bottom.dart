@@ -20,7 +20,7 @@ Widget getCellBottomView(TPBuyListInfoModel model,BuildContext context){
           child: Row(
             mainAxisAlignment : MainAxisAlignment.end,
             children: <Widget>[
-              CachedNetworkImage(imageUrl: model.payMethodVO.payIcon,width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32),),
+              CachedNetworkImage(imageUrl: model.payMethodVO.payIcon,width: ScreenUtil().setWidth(50),height: ScreenUtil().setWidth(50),fit: BoxFit.cover,),
             ],
           ),
         ),

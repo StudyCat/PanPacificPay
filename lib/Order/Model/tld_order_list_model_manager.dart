@@ -31,6 +31,7 @@ class TPOrderListModel {
   int appealStatus; ////申诉状态(-1：没有申诉，0：正在申诉，1：申诉成功，2：申诉失败)
   int appealId;
   int orderType; // 1.普通订单 2.任务订单
+  String taskOrderRemark;
 
   TPOrderListModel(
       {this.orderId,
@@ -48,7 +49,7 @@ class TPOrderListModel {
       this.overtime,
       this.remarkPayNo,
       this.payMethodVO,
-      this.taskLevel,this.quote,this.profit,this.taskBuyNo,this.buyerUserName,this.sellerUserName,this.amIBuyer,this.appealStatus,this.appealId,this.orderType});
+      this.taskLevel,this.quote,this.profit,this.taskBuyNo,this.buyerUserName,this.sellerUserName,this.amIBuyer,this.appealStatus,this.appealId,this.orderType,this.taskOrderRemark});
 
   TPOrderListModel.fromJson(Map<String, dynamic> json) {
     orderId = json['orderId'];
@@ -76,6 +77,7 @@ class TPOrderListModel {
     appealStatus = json['appealStatus'];
     appealId = json['appealId'];
     orderType = json['orderType'];
+    taskOrderRemark = json['taskOrderRemark'];
   }
 
   Map<String, dynamic> toJson() {
@@ -105,6 +107,7 @@ class TPOrderListModel {
     data['appealStatus'] = this.appealStatus;
     data['appealId'] = this.appealId;
     data['orderType'] = this.orderType;
+    data['taskOrderRemark'] = this.taskOrderRemark;
     return data;
   }
 }

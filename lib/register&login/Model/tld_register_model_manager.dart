@@ -11,6 +11,7 @@ class TPRegisterPramater {
   String telCode;
   String nickname;
   String mobileOperators;
+  String loginPassword;
 }
 
 class TPRegisterModelManager{
@@ -19,7 +20,10 @@ class TPRegisterModelManager{
     String registerId = TPDataManager.instance.registrationID;
     String password = TPDataManager.instance.password;
     TPWallet wallet = TPDataManager.instance.purseList.first;
-    Map pramaterMap = {'code':pramater.telCode,'nickName':pramater.nickname,'registrationId' : registerId,'password' : password,'tel':pramater.tel,'type' : wallet.type,'walletAddress' : wallet.address};
+    Map pramaterMap = {
+      // 'code':pramater.telCode,
+      'loginPassword' : pramater.loginPassword,
+      'nickName':pramater.nickname,'registrationId' : registerId,'password' : password,'tel':pramater.tel,'type' : wallet.type,'walletAddress' : wallet.address};
     if (pramater.inviteCode != null){
       pramaterMap.addEntries({'inviteCode' : pramater.inviteCode}.entries);
     }
@@ -64,7 +68,7 @@ class TPRegisterModelManager{
 
     void getInvationCodeFromQrCode(
       String qrCode, Function(String) success, Function(TPError) failure) {
-    if (qrCode.contains('http://www.tldollar.com')) {
+    if (qrCode.contains('isTPQRCode')) {
       if (qrCode.contains('inviteCode')) {
         Uri uri = Uri.parse(qrCode);
         String walletAddress = uri.queryParameters['inviteCode'];

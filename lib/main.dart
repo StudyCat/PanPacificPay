@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aliossflutter/aliossflutter.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Withdraw/Page/tld_acceptance_detail_withdraw_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_just_notice_page.dart';
@@ -23,6 +24,16 @@ void main(){
 
   Future<void> initPlatformState() async {
     TPNewIMManager().init();
+
+    AliOSSFlutter  alioss=AliOSSFlutter();
+    alioss.secretInit("LTAI4G77uU74Ddv5EX332h63", "jjK5dEFi2fnJOWeXsKgR705vLoHW2J","http://oss-cn-hangzhou.aliyuncs.com");
+    alioss.responseFromInit.listen((data){
+      if(data) { 
+          // _msg="初始化成功"; 
+      }else{
+        // _msg="初始化失败";
+      }
+    });
 
     jPush.setup(
       appKey: '553c2e8d1d518aa0a1359151',

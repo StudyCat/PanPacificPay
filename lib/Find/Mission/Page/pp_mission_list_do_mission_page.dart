@@ -14,16 +14,24 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class PPMissionListDoMissionPage extends StatefulWidget {
-  PPMissionListDoMissionPage({Key key,this.didRefreshUserInfo}) : super(key: key);
+class TPMissionChoosePayTypeController extends ValueNotifier<int>{
+    TPMissionChoosePayTypeController(int payType) : super(payType);
+}
 
-  final Function didRefreshUserInfo; 
+class PPMissionListDoMissionPage extends StatefulWidget {
+  PPMissionListDoMissionPage({Key key,this.didRefreshUserInfo,this.payTypeController}) : super(key: key);
+
+  final Function didRefreshUserInfo;
+
+  final TPMissionChoosePayTypeController payTypeController;
 
   @override
   _PPMissionListDoMissionPageState createState() => _PPMissionListDoMissionPageState();
 }
 
 class _PPMissionListDoMissionPageState extends State<PPMissionListDoMissionPage> with AutomaticKeepAliveClientMixin {
+
+  int _payType = 0;
 
   TPMissionListDoMissionModelManager _modelManager;
 
@@ -35,6 +43,7 @@ class _PPMissionListDoMissionPageState extends State<PPMissionListDoMissionPage>
 
   bool _isLoading = false;
 
+
   @override
   void initState() {
     // TODO: implement initState
@@ -43,16 +52,24 @@ class _PPMissionListDoMissionPageState extends State<PPMissionListDoMissionPage>
     _refreshController = RefreshController(initialRefresh : true);
     
     _modelManager =  TPMissionListDoMissionModelManager();
+
+    _payType = 7;
+
+    widget.payTypeController.addListener(() {
+      _page = 1; 
+      _payType = widget.payTypeController.value;
+      _refreshController.requestRefresh();
+    });
   }
 
   void _getMissionList(int page){
-    _modelManager.getMissionList(page, (TPTMissionUserInfoModel userInfoModel,List missionList){
+    _modelManager.getMissionList(page, _payType , (TPTMissionUserInfoModel userInfoModel,List missionList,List payTypeList){
       _refreshController.loadComplete();
       _refreshController.refreshCompleted();
-      if (_page == 1){
+      if (page == 1){
         _dataSource = [];
       }
-      widget.didRefreshUserInfo(userInfoModel);
+      widget.didRefreshUserInfo(userInfoModel,payTypeList);
       setState(() {
         _dataSource.addAll(missionList);
       });

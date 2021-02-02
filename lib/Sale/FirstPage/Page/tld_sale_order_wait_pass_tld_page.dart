@@ -60,7 +60,7 @@ class _TPSaleOrderWaitTPPageState extends State<TPSaleOrderWaitTPPage>  {
 
     _streamController = StreamController();
 
-    _getOrderListDataWithPramaterModel(_pramaterModel);
+    _getOrderListDataWithPramaterModel(_pramaterModel,_pramaterModel.page);
     
     // _registerSystemEvent();
 
@@ -84,7 +84,7 @@ class _TPSaleOrderWaitTPPageState extends State<TPSaleOrderWaitTPPage>  {
       if (contentType == 100 || contentType == 101 || contentType == 103 || contentType == 104){
         _pramaterModel.page = 1;
         _refreshController.requestRefresh();
-        _getOrderListDataWithPramaterModel(_pramaterModel);
+        _getOrderListDataWithPramaterModel(_pramaterModel,_pramaterModel.page);
       }
     });
   }
@@ -100,16 +100,16 @@ class _TPSaleOrderWaitTPPageState extends State<TPSaleOrderWaitTPPage>  {
   //   });
   // }
 
-  void _getOrderListDataWithPramaterModel(TPOrderListPramaterModel model){
+  void _getOrderListDataWithPramaterModel(TPOrderListPramaterModel model,int page){
     _modelManager.getOrderList(model, (List orderList){
-      if(model.page == 1){
+      if(page == 1){
         _dataSource = [];
          _streamController.sink.add(_dataSource);
       }
        _dataSource.addAll(orderList);
        _streamController.sink.add(_dataSource);
       if (orderList.length > 0){
-        _pramaterModel.page = model.page + 1;
+        _pramaterModel.page = page + 1;
       }
       _refreshController.refreshCompleted();
       _refreshController.loadComplete();
@@ -141,7 +141,7 @@ class _TPSaleOrderWaitTPPageState extends State<TPSaleOrderWaitTPPage>  {
       }
       _pramaterModel.page = 1;
       _refreshController.requestRefresh();
-      _getOrderListDataWithPramaterModel(_pramaterModel);
+      _getOrderListDataWithPramaterModel(_pramaterModel,_pramaterModel.page);
       Fluttertoast.showToast(msg: I18n.of(context).sureReleaseTPSuccessMessage,toastLength: Toast.LENGTH_SHORT,
                         timeInSecForIosWeb: 1);
     },  (TPError error){
@@ -166,9 +166,9 @@ class _TPSaleOrderWaitTPPageState extends State<TPSaleOrderWaitTPPage>  {
       refreshController: _refreshController,
       refreshCallBack: (){
         _pramaterModel.page = 1;
-        _getOrderListDataWithPramaterModel(_pramaterModel);
+        _getOrderListDataWithPramaterModel(_pramaterModel,_pramaterModel.page);
       },loadCallBack: (){
-        _getOrderListDataWithPramaterModel(_pramaterModel);
+        _getOrderListDataWithPramaterModel(_pramaterModel,_pramaterModel.page);
       },));
   }
 
@@ -193,20 +193,20 @@ class _TPSaleOrderWaitTPPageState extends State<TPSaleOrderWaitTPPage>  {
           Navigator.push(context, MaterialPageRoute(builder: (context) => TPIMPage(toUserName: toUserName,orderNo: model.orderNo,))).then((value) {
             _pramaterModel.page = 1;
             _refreshController.requestRefresh();
-            _getOrderListDataWithPramaterModel(_pramaterModel);
+            _getOrderListDataWithPramaterModel(_pramaterModel,_pramaterModel.page);
           });
       },
       didClickItemCallBack: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => TPDetailOrderPage(orderNo: model.orderNo,))).then((value) {
           _pramaterModel.page = 1;
           _refreshController.requestRefresh();
-          _getOrderListDataWithPramaterModel(_pramaterModel);
+          _getOrderListDataWithPramaterModel(_pramaterModel,_pramaterModel.page);
         });
       },
       didClickAppealBtn: (){
          Navigator.push(context, MaterialPageRoute(builder: (context)=> TPJustNoticePage(appealId: model.appealId,type: TPJustNoticePageType.appealWatching,))).then((value){
             _pramaterModel.page = 1;
-            _getOrderListDataWithPramaterModel(_pramaterModel);
+            _getOrderListDataWithPramaterModel(_pramaterModel,_pramaterModel.page);
          });
       },
       );

@@ -33,7 +33,10 @@ class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell>
            crossAxisAlignment: CrossAxisAlignment.start,
            children: <Widget>[
             _getUserInfoWidget(),
-            _getInfoTextWidget('数量', widget.missionModel.currentCount + 'TP'),
+            Offstage(
+              offstage: !widget.missionModel.showCurrentCount,
+              child: _getInfoTextWidget('数量', widget.missionModel.currentCount + 'TP'),
+            ),
             _getBottomWidget()
            ],
          ),
@@ -49,7 +52,7 @@ class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell>
           child: Container(
             height : ScreenUtil().setHeight(80),
             width: ScreenUtil().setHeight(80),
-            child: CachedNetworkImage(imageUrl: widget.missionModel.avatar,fit: BoxFit.fill,),
+            child: CachedNetworkImage(imageUrl: widget.missionModel.avatar,fit: BoxFit.fitWidth),
           ),
         ),
         Padding(
@@ -95,9 +98,9 @@ class _PPMissionListDoMissionCellState extends State<PPMissionListDoMissionCell>
              Padding(
                padding: EdgeInsets.only(top : ScreenUtil().setHeight(6)),
                child:   Container(
-            height : ScreenUtil().setSp(28),
-            width :  ScreenUtil().setSp(28),
-            child: CachedNetworkImage(imageUrl: widget.missionModel.payMethodVO.payIcon,fit : BoxFit.fill),
+            height : ScreenUtil().setHeight(40),
+            width :  ScreenUtil().setHeight(40),
+            child: CachedNetworkImage(imageUrl: widget.missionModel.payMethodVO.payIcon,fit : BoxFit.cover),
           )
              )
             ]

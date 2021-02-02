@@ -92,18 +92,18 @@ class _TPExchangeInputCellState extends State<TPExchangeInputCell> {
       children: <Widget>[
         Container(
       width: ScreenUtil().setWidth(200),
-      height: ScreenUtil().setWidth(48),
+      height: ScreenUtil().setWidth(62),
       padding: EdgeInsets.only(right : ScreenUtil().setWidth(20)),
       child: CupertinoTextField(
       enabled: widget.infoModel == null ? false : true,
-      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24),textBaseline: TextBaseline.alphabetic),
+      style: TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(36),textBaseline: TextBaseline.alphabetic),
       controller: _controller,
       focusNode: widget.focusNode,
       inputFormatters: [
         TPAmountTextInputFormatter()
       ],
     )),
-    Text('TP',style:TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(24)))
+    Text('TP',style:TextStyle(color: Theme.of(context).primaryColor, fontSize: ScreenUtil().setSp(36)))
       ],
     );
   }

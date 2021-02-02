@@ -11,7 +11,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:uuid_enhanced/uuid.dart';
 import 'package:web3dart/credentials.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 
 final String tableWallet = 'wallet';
 final String walletId = '_id';

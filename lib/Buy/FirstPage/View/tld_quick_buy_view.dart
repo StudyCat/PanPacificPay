@@ -108,10 +108,10 @@ class _TPQuickBuyViewState extends State<TPQuickBuyView> {
                       hintText: I18n.of(context).buySearchFieldPlaceholder,
                       hintStyle: TextStyle(
                           color: Color.fromARGB(255, 153, 153, 153),
-                          fontSize: 12),
+                          fontSize: 18),
                     ),
                     style: TextStyle(
-                        color: Color.fromARGB(255, 51, 51, 51), fontSize: 12),
+                        color: Color.fromARGB(255, 51, 51, 51), fontSize: 18),
                   ),
                 ),
                 Container(

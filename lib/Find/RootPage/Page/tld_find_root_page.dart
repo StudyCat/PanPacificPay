@@ -232,8 +232,15 @@ class _TPFindRootPageState extends State<TPFindRootPage> {
                         MaterialPageRoute(
                           builder: (context) => PPMissionTabPage(),
                         ));
-                  } else if (infoModel.url == 'RECHARGE') {
-                  } else {
+                  } 
+                  // else if (infoModel.url == 'RED_ENVELOPE') {
+                  //   Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => TPRedEnvelopePage(),
+                  //      ));
+                  // } 
+                  else {
                     Navigator.push(
                         context,
                         MaterialPageRoute(

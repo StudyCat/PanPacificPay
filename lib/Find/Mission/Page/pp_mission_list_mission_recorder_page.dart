@@ -44,7 +44,7 @@ class _PPMissionListMissionRecorderPageState extends State<PPMissionListMissionR
     _modelManager.getOrderList(page, (List orderList){
       _refreshController.loadComplete();
       _refreshController.refreshCompleted();
-      if (_page == 1){
+      if (page == 1){
         _dataSource = [];
       }
       setState(() {

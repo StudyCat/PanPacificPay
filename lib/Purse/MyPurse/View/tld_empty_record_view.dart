@@ -25,7 +25,7 @@ class _TPEmptyRecordViewState extends State<TPEmptyRecordView> {
         ),
         Container(
           padding: EdgeInsets.only(
-            top: ScreenUtil().setHeight(68),
+            top: ScreenUtil().setHeight(40),
           ),
           child: Center(
             child: Text('暂无记录',

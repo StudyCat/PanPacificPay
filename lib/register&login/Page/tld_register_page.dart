@@ -151,11 +151,15 @@ class _TPRegisterViewState extends State<TPRegisterView> {
       Fluttertoast.showToast(msg: I18n.of(context).pleaseEnterYourCellPhoneNumber);
       return;
     } 
-    if (_pramater.telCode == null){
-      Fluttertoast.showToast(msg: I18n.of(context).pleaseEnterVerifyCode);
+    // if (_pramater.telCode == null){
+    //   Fluttertoast.showToast(msg: I18n.of(context).pleaseEnterVerifyCode);
+    //   return;
+    // }
+    if (_pramater.loginPassword == null){
+      Fluttertoast.showToast(msg: '请输入您的登录密码');
       return;
     }
-    if (_pramater.telCode == null){
+    if (_pramater.loginPassword == null){
       Fluttertoast.showToast(msg: I18n.of(context).pleaseEnterYourNickName);
       return;
     }
@@ -222,28 +226,34 @@ class _TPRegisterViewState extends State<TPRegisterView> {
       itemBuilder: (BuildContext context, int index) {
       if (index == 0){
         return TPRegisterHeaderCell();
-      }else if(index < 3){
+      }else if(index < 4){
         String placeholder;
         if (index == 1){
           placeholder = I18n.of(context).pleaseEnterYourCellPhoneNumber;
-        }else{
+        }else if (index == 2){
           placeholder = I18n.of(context).pleaseEnterYourNickName;
+        }else {
+          placeholder = '请输入您的登录密码';
         }
         return TPRegisterInputCell(placeHolder : placeholder,index: index,textDidChangeCallBack: (String text,int index){
           if (index == 1){
             _pramater.tel = text;
-          }else{
+          }else if(index == 2) {
             _pramater.nickname = text;
+          }else {
+            _pramater.loginPassword = text;
           }
         },);
-      }else if (index == 3){
-        return TPRegisterVerifyCodeCell(didClickSendCodeBtnCallBack: (){
-          _getSimVerify();
-        },codeDidChangeCallBack: (str){
-          _pramater.telCode = str;
-        },
-        );
-      }else if (index == 4){
+      }
+      // else if (index == 3){
+      //   return TPRegisterVerifyCodeCell(didClickSendCodeBtnCallBack: (){
+      //     _getSimVerify();
+      //   },codeDidChangeCallBack: (str){
+      //     _pramater.telCode = str;
+      //   },
+      //   );
+      // }
+      else if (index == 4){
          return Padding(
            padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30)),
            child: Container(

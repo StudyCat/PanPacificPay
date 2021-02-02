@@ -46,7 +46,7 @@ class _TPNewBuyListCellState extends State<TPNewBuyListCell> {
           child: Container(
             height : ScreenUtil().setHeight(80),
             width: ScreenUtil().setHeight(80),
-            child: CachedNetworkImage(imageUrl: widget.model.avatar,fit: BoxFit.fill,),
+            child: CachedNetworkImage(imageUrl: widget.model.avatar,fit: BoxFit.fitWidth,),
           ),
         ),
         Padding(
@@ -92,9 +92,9 @@ class _TPNewBuyListCellState extends State<TPNewBuyListCell> {
              Padding(
                padding: EdgeInsets.only(top : ScreenUtil().setHeight(6)),
                child:   Container(
-            height : ScreenUtil().setSp(28),
-            width :  ScreenUtil().setSp(28),
-            child: CachedNetworkImage(imageUrl: widget.model.payMethodVO.payIcon,fit : BoxFit.fill),
+            height : ScreenUtil().setHeight(40),
+            width :  ScreenUtil().setHeight(40),
+            child: CachedNetworkImage(imageUrl: widget.model.payMethodVO.payIcon,fit : BoxFit.cover,width: ScreenUtil().setHeight(40),height: ScreenUtil().setHeight(40),),
           )
              )
             ]

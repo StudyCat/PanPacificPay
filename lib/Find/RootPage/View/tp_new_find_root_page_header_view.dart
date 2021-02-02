@@ -64,7 +64,7 @@ class _TPNewFindRootPageHeaderViewState
                   width: ScreenUtil().setHeight(88),
                   child: widget.userModel == null ? Container(): CachedNetworkImage(
                       imageUrl:
-                          widget.userModel.avatar),
+                          widget.userModel.avatar,fit: BoxFit.fitWidth,),
                 ),
                 )
               ),

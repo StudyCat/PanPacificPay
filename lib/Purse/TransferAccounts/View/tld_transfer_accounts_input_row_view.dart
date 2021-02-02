@@ -123,7 +123,7 @@ class _TPTransferAccountsInputRowViewState extends State<TPTransferAccountsInput
   Widget _getTextField(bool isOnlyNeedNumber){
     return CupertinoTextField(
       controller: _controller,
-      style: TextStyle(fontSize : ScreenUtil().setSp(24),color: Color.fromARGB(255, 153, 153, 153)),
+      style: TextStyle(fontSize : ScreenUtil().setSp(widget.type == TPTransferAccountsInputRowViewType.normal? 24 :36),color: Color.fromARGB(255, 153, 153, 153)),
       decoration: BoxDecoration(
         border : Border.all(
           color : Color.fromARGB(0, 0, 0, 0)

@@ -4,6 +4,8 @@ import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_award_model_man
 import 'package:dragon_sword_purse/Find/Mission/Model/tp_mission_list_do_mission_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Mission/View/pp_mission_deal_details_cell.dart';
 import 'package:dragon_sword_purse/Find/Mission/View/pp_mission_excharge_action_sheet.dart';
+import 'package:dragon_sword_purse/Find/Mission/View/tp_mission_level_desc_cell.dart';
+import 'package:dragon_sword_purse/Find/Mission/View/tp_mission_level_desc_header_view.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,6 +39,8 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
 
   bool _isLoading = false;
 
+  List _descList = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -48,13 +52,14 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
   }
 
   void _getAwardPoolInfo(int page){
-    _modelManager.getAwardPoolInfo(page, (TPTMissionUserInfoModel userInfoModel,TPMissionAwardPoolInfoModel awardPoolInfoModel,List detailsList){
+    _modelManager.getAwardPoolInfo(page, (TPTMissionUserInfoModel userInfoModel,TPMissionAwardPoolInfoModel awardPoolInfoModel,List detailsList,List descList){
        _refreshController.loadComplete();
       _refreshController.refreshCompleted();
-      if (_page == 1){
+      if (page == 1){
         _dataSource = [];
       }
       setState(() {
+        _descList = descList;
         _userInfoModel = userInfoModel;
         _awardPoolInfoModel = awardPoolInfoModel;
         _dataSource.addAll(detailsList);
@@ -107,11 +112,11 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
           heroTag: 'mission_root_page',
           transitionBetweenRoutes: false,
           middle: Text('任务'),
-          trailing: GestureDetector(
-            child: Text('更高奖励'),
-           onTap : (){
-          Navigator.push(context, MaterialPageRoute(builder : (context) => TPWebPage(type: TPWebPageType.upgradeDesc,title: '升级说明',)));
-        }),
+        //   trailing: GestureDetector(
+        //     child: Text('更高奖励'),
+        //    onTap : (){
+        //   Navigator.push(context, MaterialPageRoute(builder : (context) => TPWebPage(type: TPWebPageType.upgradeDesc,title: '升级说明',)));
+        // }),
           ),
     );
   }
@@ -122,6 +127,11 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
       children: <Widget>[
         // _getUserLevelWidget(),
         _getAwardPoolWidget(),
+         Padding(
+          padding: EdgeInsets.only(left: ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(10),),
+          child: Text('升级奖励说明',style : TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51))),
+        ),
+        _getDescListView(),
         Padding(
           padding: EdgeInsets.only(left: ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(10),),
           child: Text('交易明细',style : TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51))),
@@ -132,6 +142,31 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
         ))
       ],
     );
+  }
+
+  Widget _getDescListView(){
+    return Padding(
+      padding: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30), ScreenUtil().setHeight(20), ScreenUtil().setWidth(30), 0),
+      child: Container(
+        padding: EdgeInsets.only(bottom : ScreenUtil().setHeight(20)),
+         decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color: Colors.white
+         ),
+         child: Column(
+           children: _getDescList(),
+         ),
+      ), 
+      );
+  }
+
+  List<Widget> _getDescList(){
+    List<Widget> result = [TPMissionLevelDescHeaderView()];
+    for (TPMissionLevelDescModel descModel in _descList) {
+      TPMissionLevelDescCell cell = TPMissionLevelDescCell(descModel: descModel,); 
+      result.add(cell);     
+    }
+    return result;
   }
 
   Widget _getUserLevelWidget() {
@@ -279,22 +314,26 @@ class _PPMissionAwardPageState extends State<PPMissionAwardPage> {
                           width: ScreenUtil().setHeight(30),
                         ) : Container()
                     ),
-                      TextSpan(
-                        text: _awardPoolInfoModel != null ? ' ${_awardPoolInfoModel.profitPoolCount} ' : ' 0 ',
-                        style: TextStyle(
-                            color: Theme.of(context).hintColor,
-                            fontSize: ScreenUtil().setSp(32)),
-                      ),
-                       WidgetSpan(
-                        child: Icon(
+                    WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.only(left : ScreenUtil().setWidth(5)),
+                          child: Icon(
                           IconData(
                           0xe622,
                           fontFamily: 'appIconFonts'
                         ),
                         color: Theme.of(context).hintColor,
                         size: ScreenUtil().setHeight(30),
+                        ),
                         )
-                )]),
+                ),
+                      TextSpan(
+                        text: _awardPoolInfoModel != null ? ' ${_awardPoolInfoModel.profitPoolCount} ' : ' 0 ',
+                        style: TextStyle(
+                            color: Theme.of(context).hintColor,
+                            fontSize: ScreenUtil().setSp(32)),
+                      ),
+                       ]),
         )
         ),
         Padding(

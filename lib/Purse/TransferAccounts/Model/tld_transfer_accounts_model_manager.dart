@@ -14,7 +14,7 @@ class TPTranferAmountPramaterModel {
 class TPTransferAccountsModelManager {
   void getAddressFromQrCode(
       String qrCode, Function(String) success, Function(TPError) failure) {
-    if (qrCode.contains('http://www.tldollar.com')) {
+    if (qrCode.contains('isTPQRCode')) {
       if (qrCode.contains('walletAddress')) {
         Uri uri = Uri.parse(qrCode);
         String walletAddress = uri.queryParameters['walletAddress'];

@@ -55,7 +55,10 @@ class _TPPaymentManagerCellState extends State<TPPaymentManagerCell> {
         CachedNetworkImage(imageUrl: widget.paymentModel.payIcon,width: ScreenUtil().setWidth(32),height: ScreenUtil().setWidth(32),),
         Padding(
           padding: EdgeInsets.only(left :ScreenUtil().setWidth(20)),
-          child: Text(_getPaymentInfoString(),style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(28)),),
+          child: Container(
+            width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(250),
+            child: Text(_getPaymentInfoString(),style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize:ScreenUtil().setSp(28)),maxLines: 2,overflow: TextOverflow.ellipsis,softWrap: true,),
+          )
         )
       ],
     );

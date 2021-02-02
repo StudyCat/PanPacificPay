@@ -111,7 +111,7 @@ class _TPBuyActionSheetInputViewState
   Widget _getTextField() {
     return CupertinoTextField(
       style: TextStyle(
-          fontSize: ScreenUtil().setSp(24),
+          fontSize: ScreenUtil().setSp(36),
           color: Color.fromARGB(255, 51, 51, 51)),
       decoration:
           BoxDecoration(border: Border.all(color: Color.fromARGB(0, 0, 0, 0))),
@@ -120,7 +120,7 @@ class _TPBuyActionSheetInputViewState
       placeholder: I18n.of(context).inputBuyAmountFieldPlaceholder,
       focusNode:widget.focusNode,
       placeholderStyle: TextStyle(
-          fontSize: ScreenUtil().setSp(24),
+          fontSize: ScreenUtil().setSp(36),
           color: Color.fromARGB(255, 153, 153, 153),height: 1.1),
       inputFormatters: [
           TPAmountTextInputFormatter()
